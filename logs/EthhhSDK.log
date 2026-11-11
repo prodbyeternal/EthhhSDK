@@ -3922,3 +3922,93 @@
 16:27:28.431 [INF] [halflife_movement] activated (movement=1 camera=1)
 16:27:28.461 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
 16:27:28.461 [INF] EthhhPatch orbit: waiting for a playable camera -> HL / external camera owns control (native 0.00 u, orbit 6.00 u, capture off)
+16:28:04.527 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:28:04.527 [INF] overlay: opened
+16:28:37.937 [INF] overlay: game resumed (time scale 1.00)
+16:28:37.942 [INF] overlay: closed
+16:28:40.138 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:28:40.138 [INF] overlay: opened
+16:28:41.277 [INF] overlay: game resumed (time scale 1.00)
+16:28:41.281 [INF] overlay: closed
+16:28:56.238 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:28:56.238 [INF] overlay: opened
+16:28:59.989 [INF] overlay: game resumed (time scale 1.00)
+16:28:59.993 [INF] overlay: closed
+16:30:06.041 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:06.042 [INF] overlay: opened
+16:30:10.931 [INF] overlay: game resumed (time scale 1.00)
+16:30:10.937 [INF] overlay: closed
+16:30:11.952 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:11.952 [INF] overlay: opened
+16:30:13.382 [INF] overlay: game resumed (time scale 1.00)
+16:30:13.386 [INF] overlay: closed
+16:30:14.963 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:14.963 [INF] overlay: opened
+16:30:16.391 [INF] overlay: game resumed (time scale 1.00)
+16:30:16.399 [INF] overlay: closed
+16:30:16.844 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:16.844 [INF] overlay: opened
+16:30:18.353 [INF] overlay: game resumed (time scale 1.00)
+16:30:18.358 [INF] overlay: closed
+16:30:21.974 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:21.974 [INF] overlay: opened
+16:30:23.154 [INF] overlay: game resumed (time scale 1.00)
+16:30:23.158 [INF] overlay: closed
+16:30:23.984 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:23.984 [INF] overlay: opened
+16:30:25.673 [INF] overlay: game resumed (time scale 1.00)
+16:30:25.677 [INF] overlay: closed
+16:30:26.634 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:26.634 [INF] overlay: opened
+16:30:27.953 [INF] overlay: game resumed (time scale 1.00)
+16:30:27.961 [INF] overlay: closed
+16:30:33.474 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:33.474 [INF] overlay: opened
+16:30:35.244 [INF] overlay: game resumed (time scale 1.00)
+16:30:35.248 [INF] overlay: closed
+16:30:36.343 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:36.343 [INF] overlay: opened
+16:30:37.543 [INF] overlay: game resumed (time scale 1.00)
+16:30:37.548 [INF] overlay: closed
+16:30:37.904 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:30:37.904 [INF] overlay: opened
+16:30:39.743 [INF] overlay: game resumed (time scale 1.00)
+16:30:39.744 [INF] overlay: closed
+16:36:13.084 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:36:13.084 [INF] overlay: opened
+16:36:15.473 [INF] overlay: game resumed (time scale 1.00)
+16:36:15.477 [INF] overlay: closed
+16:40:06.534 [INF] [halflife_movement] deactivated
+16:40:15.134 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:41:00.653 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+16:41:00.653 [INF] [halflife_movement] deactivated
+16:41:00.807 [WRN] player: manual strat 052EDD88 disappeared
+16:41:02.705 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:41:02.706 [INF] overlay: opened
+16:41:08.506 [INF] overlay: game resumed (time scale 1.00)
+16:41:08.506 [INF] overlay: closed
+16:41:09.006 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:41:09.006 [INF] overlay: opened
+16:41:10.383 [INF] player: exact Ninja 052D5278 class 0E42FFC0 handle 000003B6
+16:41:11.451 [INF] player: manual selection 052D5278 (class 0E42FFC0) pos 247.43 33.17 44.29
+16:41:12.452 [INF] overlay: game resumed (time scale 1.00)
+16:41:12.452 [INF] overlay: closed
+16:41:14.224 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:41:16.326 [INF] [halflife_movement] deactivated
+16:41:20.746 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:43:00.540 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:43:00.540 [INF] overlay: opened
+16:43:12.310 [INF] overlay: game resumed (time scale 1.00)
+16:43:12.310 [INF] overlay: closed
+16:44:31.153 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:44:31.153 [INF] overlay: opened
+16:44:33.833 [INF] overlay: game resumed (time scale 1.00)
+16:44:33.833 [INF] overlay: closed
+16:45:08.678 [INF] [halflife_movement] deactivated
+16:45:15.227 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:45:28.495 [INF] [halflife_movement] deactivated
+16:45:37.105 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:46:41.368 [INF] [halflife_movement] deactivated
+16:47:33.511 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:48:41.073 [INF] [halflife_movement] deactivated
+16:48:51.610 [INF] [halflife_movement] activated (movement=1 camera=1)

@@ -27,6 +27,11 @@ $cases = @(
     @('camera',1152,704,1,0,1,1),
     @('camera-narrow',900,640,1,0,1,1),
     @('camera-hidpi',1728,1056,1.5,0,1,1),
+    @('camera-small',640,480,1,0,1,1),
+    @('camera-bottom',900,640,1,0,1,1,1),
+    @('camera-1080p',1920,1080,1,0,1,1),
+    @('camera-4k',3840,2160,1,0,1,1),
+    @('camera-4k-hidpi',3840,2160,2,0,1,1),
     @('animation',1152,704,1,0,1,2),
     @('animation-narrow',900,640,1,0,1,2),
     @('animation-hidpi',1728,1056,1.5,0,1,2),
@@ -36,6 +41,9 @@ $cases = @(
 )
 foreach ($case in $cases) {
     $tab = if ($case.Length -gt 6) { $case[6] } else { 0 }
-    & $preview (Join-Path $OutputDir "ethhh-chrome-$($case[0]).png") $case[1] $case[2] $case[3] $case[4] $case[5] $tab
+    $bottom = if ($case.Length -gt 7) { $case[7] } else { 0 }
+    & $preview (Join-Path $OutputDir "ethhh-chrome-$($case[0]).png") $case[1] $case[2] $case[3] $case[4] $case[5] $tab $bottom
     if ($LASTEXITCODE -ne 0) { throw "Chrome/routing regression failed: $($case[0])" }
 }
+Write-Output "PASS all $($cases.Count) off-screen preview cases"
+exit 0

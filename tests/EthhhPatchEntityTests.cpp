@@ -215,5 +215,89 @@ int main() {
     mem.Word(0x50000+511*0x50+0x44,0x50000+512*0x50);
     Check(!MeshFits(0x50000,1,read),"513-mesh chain refused");
     Check(!MeshFits(UINT32_MAX-0x20,1,read),"mesh address overflow refused");
+
+    ReadScope scope;
+    size_t queryCalls=0,copyCalls=0;
+    bool queryOk=true,copyOk=true;
+    const auto query=[&](uintptr_t p,ReadableRegion& region) {
+        ++queryCalls; region={0x10000,0x90000}; return queryOk && p>=region.begin && p<region.end;
+    };
+    const auto copy=[&](uintptr_t p,void* out,size_t n) { ++copyCalls; return copyOk && mem.Read(p,out,n); };
+    uint32_t value=0;
+    for(int i=0;i<1000;++i) Check(scope.Read(0x30140,&value,4,query,copy),"scoped readable copy");
+    Check(queryCalls==1 && scope.Queries()==1 && copyCalls==1000 && scope.Copies()==1000,"one page query, every copy protected");
+    Check(scope.Bytes()==4000,"bounded copy-byte telemetry");
+    mem.Word(0x30140,17);
+    Check(scope.Read(0x30140,&value,4,query,copy) && value==17,"scope caches permissions, never native bytes");
+    copyOk=false;
+    Check(!scope.Read(0x30140,&value,4,query,copy) && queryCalls==1,"cached permission does not suppress protected-copy failure");
+    copyOk=true; scope.Reset(); queryOk=false;
+    Check(!scope.Read(0x30140,&value,4,query,copy) && scope.Copies()==0,"new phase revalidates revoked region");
+    queryOk=true; scope.Reset();
+    Check(!scope.Read(0x8FFFF,&value,4,query,copy),"cross-region copy refused");
+    const size_t q=scope.Queries();
+    Check(!scope.Read(0,&value,4,query,copy) && !scope.Read(0x30140,nullptr,4,query,copy) &&
+        !scope.Read(0x30140,&value,0,query,copy) && !scope.Read(UINT32_MAX-1,&value,4,query,copy),"invalid/overflow copies refused");
+    Check(scope.Queries()==q && scope.Copies()==0,"invalid copy never queries or copies");
+    const auto pages=[&](uintptr_t p,ReadableRegion& region) { region={p&~uintptr_t(0xFFF),(p&~uintptr_t(0xFFF))+0x1000}; return true; };
+    scope.Reset();
+    for(uint32_t i=0;i<100;++i) Check(scope.Read(0x10000+i*0x1000,&value,4,pages,copy),"region cache overflow stays bounded and safe");
+    Check(scope.Queries()==100,"one query per distinct region");
+
+    OwnerList owners;
+    mem.Word(0x1000,0x30000); mem.Word(0x30198,0x31000); mem.Word(0x31198,0);
+    Check(owners.Collect(0x1000,read,[]{return true;}) && owners.Size()==2 && owners[0]==0x30000 && owners[1]==0x31000,"complete lightweight owner list");
+    mem.Word(0x31198,0x30000);
+    Check(!owners.Collect(0x1000,read,[]{return true;}),"owner-list cycle refused");
+    mem.Word(0x31198,0x31000);
+    Check(!owners.Collect(0x1000,read,[]{return true;}),"owner-list self-link refused");
+    mem.Word(0x31198,0); mem.fail=0x31198;
+    Check(!owners.Collect(0x1000,read,[]{return true;}),"unreadable owner link is incomplete"); mem.fail=0;
+    Check(!owners.Collect(0x1000,read,[]{return false;}),"sampling budget cannot accept an incomplete list");
+    bool changedHead=false;
+    const auto changingList=[&](uintptr_t p,void* out,size_t n) {
+        const bool ok=mem.Read(p,out,n);
+        if(p==0x31198 && !changedHead) { mem.Word(0x1000,0x31000); changedHead=true; }
+        return ok;
+    };
+    Check(!owners.Collect(0x1000,changingList,[]{return true;}),"changed list head refused");
+    mem.Word(0x1000,0);
+    Check(owners.Collect(0x1000,read,[]{return true;}) && !owners.Size(),"empty terminated list complete");
+    mem.data.resize(0x500000);
+    for(uint32_t i=0;i<8193;++i) mem.Word(0x10000+i*0x200+0x198,i==8191?0:0x10000+(i+1)*0x200);
+    mem.Word(0x1000,0x10000);
+    Check(owners.Collect(0x1000,read,[]{return true;}) && owners.Size()==8192,"8192-owner complete-list cap accepted");
+    mem.Word(0x10000+8191*0x200+0x198,0x10000+8192*0x200);
+    Check(!owners.Collect(0x1000,read,[]{return true;}),"8193-owner list refused, never treated as complete");
+
+    WorkBudget budget; budget.Reset(2000);
+    Check(budget.Available(),"optional work budget starts available");
+    budget.Charge(1000,1500); budget.Charge(100000,101499);
+    Check(budget.Available(),"native renderer gap is not charged");
+    budget.Charge(200000,200001);
+    Check(!budget.Available(),"exact budget boundary stops new interpolation");
+    budget.Charge(200000,INT64_MAX);
+    Check(!budget.Available(),"budget charge saturates without overflow");
+    budget.Reset(0); Check(!budget.Available(),"unavailable clock uses native fallback");
+    budget.Reset(2000); budget.Charge(0,1); Check(!budget.Available(),"failed clock closes optional budget");
+    budget.Reset(2000); budget.Charge(100,99); Check(!budget.Available(),"reversed clock closes optional budget");
+
+    // Stable scene: both affine endpoint buffers rotate without losing their
+    // capacity, and native/render vectors retain allocations after warm-up.
+    mem.Init(); cache.Reset(); ReadKey(0x30000,0x10000,key,read);
+    for(uint32_t tick=100;tick<103;++tick) { cache.BeginTick(tick); Check(cache.Sample(key,0x10000,read),"capacity warmup sample"); cache.EndTick(); }
+    rendered=cache.Render(key.owner,key.instance,Rotation(0),0x10000,102,.5f,read);
+    Check(rendered!=nullptr,"capacity fixture render");
+    auto nativeStorage=rendered->nativeNodes.data(),renderStorage=rendered->renderNodes.data();
+    auto endpointA=rendered->nodes.data(),endpointB=rendered->previousNodes.data();
+    for(uint32_t tick=103;tick<1103;++tick) {
+        cache.BeginTick(tick); Check(cache.Sample(key,0x10000,read),"reused pose sample"); cache.EndTick();
+        rendered=cache.Render(key.owner,key.instance,Rotation(0),0x10000,tick,.5f,read);
+        Check(rendered && rendered->nativeNodes.data()==nativeStorage && rendered->renderNodes.data()==renderStorage,"matrix buffers retain allocation");
+        Check((rendered->nodes.data()==endpointA && rendered->previousNodes.data()==endpointB) ||
+            (rendered->nodes.data()==endpointB && rendered->previousNodes.data()==endpointA),"two affine buffers reused");
+    }
+    mem.Word(0x301A0,0x405);
+    Check(!cache.Render(key.owner,key.instance,Rotation(0),0x10000,1102,.5f,read),"cached blend never bypasses fresh identity guards");
     printf("PASS entity render-only interpolation: %d assertions\n",checks);
 }

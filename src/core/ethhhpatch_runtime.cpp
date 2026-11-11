@@ -1,7 +1,7 @@
 #include "ethhhpatch_runtime.h"
 #include "ethhhpatch_runtime_policy.h"
 #include "ethhhpatch_interpolation.h"
-#include "ethhhpatch_entity_interpolation.h"
+#include "ethhhpatch_entity_reader.h"
 #include "game.h"
 #include "config.h"
 #include "log.h"
@@ -9,6 +9,7 @@
 #include "input.h"
 
 #include <MinHook.h>
+#include <intrin.h>
 
 namespace eth::patch::runtime {
 void UninstallHooks();
@@ -20,6 +21,7 @@ constexpr uintptr_t kSphereCull = 0x449420;
 constexpr uintptr_t kHudPulse = 0x4483B0;
 constexpr uintptr_t kMovieDraw = 0x497D40;
 constexpr uintptr_t kViewRender = 0x43F290;
+constexpr uintptr_t kPrimaryViewReturn = 0x43E230;
 constexpr uintptr_t kAppRender = 0x43E170;
 constexpr uintptr_t kEntitySubmit = 0x44A490;
 constexpr uintptr_t kNodeSubmit = 0x449EB0;
@@ -39,6 +41,13 @@ ViewRenderFn g_appRenderOrig = nullptr;
 EntitySubmitFn g_entitySubmitOrig = nullptr;
 NodeSubmitFn g_nodeSubmitOrig = nullptr;
 entity::Cache g_entityPoses;
+entity::OwnerList g_entityOwners;
+entity::ReadScope g_entitySampleReads, g_entityRenderReads;
+entity::WorkBudget g_entityRenderBudget;
+constexpr int kEntityWorkBudgetMilliseconds = 2;
+EntityTelemetry g_entityFrameTelemetry;
+int64_t g_entityRenderWorkTicks = 0;
+bool g_entityRenderBudgetStopped = false;
 thread_local entity::Pose* g_submittedPose = nullptr;
 thread_local bool g_entitySubmission = false;
 std::atomic<bool> g_entityInterpolationEnabled{true};
@@ -56,9 +65,16 @@ std::atomic<bool> g_externalCameraOwned{false};
 bool g_mouseLookEnabled = false, g_mouseCaptureOwned = false, g_inGameRender = false;
 OrbitPolicy g_orbit;
 RenderCameraBackup g_cameraBackup;
+RenderLensBackup g_lensBackup;
+PrimaryViewPass g_primaryViewPass;
+std::atomic<bool> g_normalFovEnabled{false};
+std::atomic<float> g_normalFovDegrees{60};
 uintptr_t g_orbitPlayer = 0, g_orbitClass = 0, g_orbitCamera = 0, g_orbitView = 0;
 uint32_t g_orbitHandle = 0;
 int64_t g_lastCameraTraceCounter = 0, g_counterFrequency = 0;
+int64_t g_lastOrbitLogCounter = 0;
+uint64_t g_orbitSuppressedTransitions = 0;
+uint32_t g_orbitRenderGuardFailures = 0, g_orbitRenderGuardMask = 0;
 bool g_cameraRestoreFailed = false;
 std::atomic<int64_t> g_movieUntilCounter{0};
 std::atomic<bool> g_interpolationLogged{false};
@@ -265,12 +281,14 @@ void PublishOrbitTelemetry()
     OrbitTelemetry next;
     next.enabled = g_mouseLookEnabled;
     next.state = g_orbit.state;
-    next.following = g_orbit.state == OrbitState::Following && g_orbit.initialized;
+    next.following = g_mouseLookEnabled && g_orbit.state == OrbitState::Following && g_orbit.initialized;
     next.capture = g_mouseCaptureOwned && input::CaptureActive();
     next.nativeDistance = g_orbit.nativeDistance;
     next.orbitDistance = g_orbit.distance;
     next.yawDegrees = g_orbit.yaw * 57.29577951308232f;
     next.pitchDegrees = g_orbit.pitch * 57.29577951308232f;
+    next.renderGuardFailures = g_orbitRenderGuardFailures;
+    next.renderGuardMask = g_orbitRenderGuardMask;
     OrbitState previous = OrbitState::Waiting;
     uint64_t transitions = 0;
     {
@@ -280,10 +298,19 @@ void PublishOrbitTelemetry()
         next.transitions = transitions;
         g_orbitTelemetry = next;
     }
-    if (previous != next.state)
-        ETH_INFO("EthhhPatch orbit: %s -> %s (native %.2f u, orbit %.2f u, capture %s)",
-            OrbitStateName(previous), OrbitStateName(next.state), next.nativeDistance,
-            next.orbitDistance, next.capture ? "on" : "off");
+    if (previous != next.state) {
+        const int64_t counter = CameraCounter();
+        // File logging flushes synchronously. Preserve every transition in UI
+        // counters, but never turn an ownership/capture failure into log spam.
+        if (counter && (!g_lastOrbitLogCounter || counter-g_lastOrbitLogCounter >= g_counterFrequency)) {
+            g_lastOrbitLogCounter = counter;
+            ETH_INFO("EthhhPatch orbit: %s -> %s (native %.2f u, orbit %.2f u, capture %s; guard mask %02X, failures %u; %llu transitions coalesced)",
+                OrbitStateName(previous), OrbitStateName(next.state), next.nativeDistance,
+                next.orbitDistance, next.capture ? "on" : "off", g_orbitRenderGuardMask,
+                g_orbitRenderGuardFailures, (unsigned long long)g_orbitSuppressedTransitions);
+            g_orbitSuppressedTransitions = 0;
+        } else ++g_orbitSuppressedTransitions;
+    }
 }
 
 void LoadOrbitTuning()
@@ -292,6 +319,8 @@ void LoadOrbitTuning()
     const float sensitivity = cfg.GetFloat("ethhhpatch", "orbit_sensitivity", 1.0f);
     g_orbitSensitivity.store(std::isfinite(sensitivity) ? std::clamp(sensitivity, 0.05f, 5.0f) : 1.0f);
     g_orbitInvertY.store(cfg.GetBool("ethhhpatch", "orbit_invert_y", false));
+    g_normalFovEnabled.store(cfg.GetBool("ethhhpatch", "normal_fov_enabled", false));
+    g_normalFovDegrees.store(NormalFovDegrees(cfg.GetFloat("ethhhpatch", "normal_fov_degrees", 60)));
 }
 
 void ReleaseOrbitCapture()
@@ -302,11 +331,13 @@ void ReleaseOrbitCapture()
 
 void RestoreRenderCamera()
 {
-    if (!g_cameraBackup.pending) return;
+    if (!g_cameraBackup.pending && !g_lensBackup.pending) return;
     uintptr_t camera = 0, view = 0;
     SafeRead(game::A(game::off::pCamera), camera);
     SafeRead(game::A(game::off::pView), view);
-    if (!g_cameraBackup.Restore(camera, view, SafeReadBytes, SafeWriteBytes)) {
+    const bool cameraRestored = g_cameraBackup.Restore(camera, view, SafeReadBytes, SafeWriteBytes);
+    const bool lensRestored = g_lensBackup.Restore(view, SafeReadBytes, SafeWriteBytes);
+    if (!cameraRestored || !lensRestored) {
         g_cameraRestoreFailed = true;
         g_orbit.Suspend(OrbitState::Unavailable);
         ReleaseOrbitCapture();
@@ -316,7 +347,7 @@ void RestoreRenderCamera()
 
 void SampleOrbitCamera()
 {
-    if (!g_mouseLookEnabled || g_cameraRestoreFailed) { PublishOrbitTelemetry(); return; }
+    if ((!g_mouseLookEnabled && !g_normalFovEnabled.load()) || g_cameraRestoreFailed) { PublishOrbitTelemetry(); return; }
     if (g_externalCameraOwned.load()) {
         g_orbit.Suspend(OrbitState::External); PublishOrbitTelemetry(); return;
     }
@@ -365,11 +396,14 @@ void ApplyRenderMouseLook()
     uint32_t handle = 0;
     // No class-name/live-list traversal per rendered frame. The full exact-Ninja
     // check is sampled once per completed tick, followed by these reuse guards.
-    if (game::PlayerTracker::Get().Addr() != g_orbitPlayer ||
-        !SafeRead(g_orbitPlayer + game::off::StratClass, pClass) || pClass != g_orbitClass ||
-        !SafeRead(g_orbitPlayer + game::off::StratSelfHandle, handle) || handle != g_orbitHandle ||
-        !SafeRead(game::A(game::off::pCamera), camera) || camera != g_orbitCamera ||
-        !SafeRead(game::A(game::off::pView), view) || view != g_orbitView) {
+    uint32_t guardMask = 0;
+    if (game::PlayerTracker::Get().Addr() != g_orbitPlayer) guardMask |= 1;
+    if (!SafeRead(g_orbitPlayer + game::off::StratClass, pClass) || pClass != g_orbitClass) guardMask |= 2;
+    if (!SafeRead(g_orbitPlayer + game::off::StratSelfHandle, handle) || handle != g_orbitHandle) guardMask |= 4;
+    if (!SafeRead(game::A(game::off::pCamera), camera) || camera != g_orbitCamera) guardMask |= 8;
+    if (!SafeRead(game::A(game::off::pView), view) || view != g_orbitView) guardMask |= 16;
+    if (guardMask) {
+        g_orbitRenderGuardMask = guardMask; ++g_orbitRenderGuardFailures;
         g_orbit.Suspend(OrbitState::Unavailable); ReleaseOrbitCapture(); PublishOrbitTelemetry(); return;
     }
     // SetCapture can fail while the window is losing/gaining focus. Retry each
@@ -460,6 +494,23 @@ float CurrentRenderFraction()
     return RenderInterpolationFraction(tickMilliseconds, ticksPerMillisecond, remainderMilliseconds);
 }
 
+void ApplyNormalRenderFov(void* self)
+{
+    if (!g_active.load() || !g_normalFovEnabled.load() || g_cameraRestoreFailed ||
+        g_externalCameraOwned.load() || g_orbit.state != OrbitState::Following ||
+        input::OverlayOpen() || !input::Window() || GetForegroundWindow() != input::Window()) return;
+    const int64_t counter = CameraCounter();
+    if (!counter || counter < g_movieUntilCounter.load()) return;
+    uintptr_t camera = 0, view = 0, cls = 0;
+    uint32_t handle = 0;
+    if (game::PlayerTracker::Get().Addr() != g_orbitPlayer ||
+        !SafeRead(g_orbitPlayer + game::off::StratClass, cls) || cls != g_orbitClass ||
+        !SafeRead(g_orbitPlayer + game::off::StratSelfHandle, handle) || handle != g_orbitHandle ||
+        !SafeRead(game::A(game::off::pCamera), camera) || camera != g_orbitCamera ||
+        !SafeRead(game::A(game::off::pView), view) || view != g_orbitView || uintptr_t(self) != view) return;
+    if (!g_lensBackup.Apply(view, g_normalFovDegrees.load(), SafeReadBytes, SafeWriteBytes)) RestoreRenderCamera();
+}
+
 void SampleEntityPoses()
 {
     if (!g_entityInterpolationEnabled.load(std::memory_order_relaxed)) return;
@@ -472,26 +523,88 @@ void SampleEntityPoses()
     }
     const uint32_t tick = game::TickCount();
     if (!g_entityPoses.BeginTick(tick)) return;
-    // One complete bounded list per completed simulation tick, never per mesh.
-    bool complete = false;
-    const auto strats = game::SnapshotStrats(8192, &complete);
+    const int64_t begin = CameraCounter();
+    const int64_t limit = g_counterFrequency * kEntityWorkBudgetMilliseconds / 1000;
+    bool budgetStopped = false;
+    const auto withinBudget = [&]() {
+        const int64_t now = CameraCounter();
+        const bool available = begin && now >= begin && limit > 0 && now-begin < limit;
+        budgetStopped |= !available;
+        return available;
+    };
+    g_entitySampleReads.Reset();
+    const auto read = [](uintptr_t address, void* output, size_t bytes) {
+        return entity::ReadProtected(g_entitySampleReads, address, output, bytes);
+    };
+    // Only links/owners, no inspector snapshots, strings or quadratic scans.
+    // Do not sample ANY pose unless this bounded live list completes unchanged.
+    const bool complete = g_entityOwners.Collect(game::A(game::off::StratListHead), read, withinBudget);
     if (!complete) {
         g_entityPoses.Reset();
-        std::lock_guard<std::mutex> lock(g_entityTelemetryMutex);
-        g_entityTelemetry.sampled = g_entityTelemetry.paired = 0;
-        return;
+    } else {
+        const uintptr_t manager = game::A(game::off::StratMgrObject);
+        for (size_t i=0; i<g_entityOwners.Size(); ++i) {
+            if (!withinBudget()) break; // unprocessed owners use native poses
+            entity::Key key;
+            if (entity::ReadKey(g_entityOwners[i], manager, key, read))
+                g_entityPoses.Sample(key, manager, read);
+        }
+        g_entityPoses.EndTick();
+        withinBudget();
     }
-    const uintptr_t manager = game::A(game::off::StratMgrObject);
-    for (const auto& strat : strats) {
-        entity::Key key;
-        if (entity::ReadKey(strat.addr, manager, key, SafeReadBytes) &&
-            key.pClass == uintptr_t(strat.pClass) && key.handle == strat.selfHandle)
-            g_entityPoses.Sample(key, manager, SafeReadBytes);
-    }
-    g_entityPoses.EndTick();
+    const int64_t end = CameraCounter();
     std::lock_guard<std::mutex> lock(g_entityTelemetryMutex);
     g_entityTelemetry.sampled = g_entityPoses.Size();
     g_entityTelemetry.paired = g_entityPoses.Paired();
+    g_entityTelemetry.owners = g_entityOwners.Size();
+    g_entityTelemetry.listComplete = complete;
+    g_entityTelemetry.sampleQueries = g_entitySampleReads.Queries();
+    g_entityTelemetry.sampleMs = begin && end >= begin && g_counterFrequency ?
+        1000.0 * double(end-begin) / g_counterFrequency : 0;
+    if (budgetStopped) ++g_entityTelemetry.sampleBudgetStops;
+    g_entitySampleReads.Reset();
+}
+
+bool ReadEntityRender(uintptr_t address, void* output, size_t bytes)
+{
+    return entity::ReadProtected(g_entityRenderReads, address, output, bytes);
+}
+
+void ChargeEntityRenderWork(int64_t begin)
+{
+    const int64_t end = CameraCounter();
+    g_entityRenderBudget.Charge(begin, end);
+    if (begin && end >= begin) g_entityRenderWorkTicks += end-begin;
+    if (!g_entityRenderBudget.Available() && !g_entityRenderBudgetStopped) {
+        g_entityRenderBudgetStopped = true;
+        ++g_entityFrameTelemetry.renderBudgetStops;
+    }
+}
+
+void BeginEntityFrame()
+{
+    g_entityRenderReads.Reset();
+    CameraCounter(); // initialize the cached QPC frequency, not the sim clock
+    g_entityRenderBudget.Reset(g_counterFrequency * kEntityWorkBudgetMilliseconds / 1000);
+    g_entityFrameTelemetry = {};
+    g_entityRenderWorkTicks = 0;
+    g_entityRenderBudgetStopped = false;
+}
+
+void FinishEntityFrame()
+{
+    // One telemetry publication per frame; NEVER a mutex/file flush per entity.
+    std::lock_guard<std::mutex> lock(g_entityTelemetryMutex);
+    g_entityTelemetry.interpolatedSubmissions += g_entityFrameTelemetry.interpolatedSubmissions;
+    g_entityTelemetry.nativeSubmissions += g_entityFrameTelemetry.nativeSubmissions;
+    g_entityTelemetry.renderBudgetStops += g_entityFrameTelemetry.renderBudgetStops;
+    // F9 suspends interpolation; retain the last eligible gameplay measurement
+    // instead of replacing it with zero just as the user opens Diagnostics.
+    if (g_entityFrameAlpha < 1) {
+        g_entityTelemetry.renderQueries = g_entityRenderReads.Queries();
+        g_entityTelemetry.renderMs = g_counterFrequency ? 1000.0 * double(g_entityRenderWorkTicks) / g_counterFrequency : 0;
+    }
+    g_entityRenderReads.Reset();
 }
 
 void __fastcall NodeSubmitDetour(void* self, void*, void* mesh,
@@ -501,9 +614,11 @@ void __fastcall NodeSubmitDetour(void* self, void*, void* mesh,
     const entity::Matrix* supplied = nodes;
     const entity::Matrix* suppliedWorld = world;
     if (pose && g_inGameRender && world == &pose->renderWorld) {
-        if (uintptr_t(nodes) == pose->key.nodes && entity::MeshFits(uintptr_t(mesh), pose->key.count, SafeReadBytes))
+        const int64_t begin = CameraCounter();
+        if (uintptr_t(nodes) == pose->key.nodes && entity::MeshFits(uintptr_t(mesh), pose->key.count, ReadEntityRender))
             supplied = pose->renderNodes.data();
         else suppliedWorld = &pose->nativeWorld; // never mix a blended root with native bones
+        ChargeEntityRenderWork(begin); // finish an accepted pose even at the budget boundary
     }
     if (g_nodeSubmitOrig) g_nodeSubmitOrig(self, mesh, suppliedWorld, supplied);
 }
@@ -527,25 +642,38 @@ void __fastcall EntitySubmitDetour(void* self, void*, void* owner, void* instanc
         SubmitEntityScoped(self, owner, instance, world, nullptr);
         return;
     }
+    if (!g_entityRenderBudget.Available()) {
+        ++g_entityFrameTelemetry.nativeSubmissions;
+        SubmitEntityScoped(self, owner, instance, world, nullptr);
+        return;
+    }
+    const int64_t begin = CameraCounter();
     entity::Matrix copied;
-    entity::Pose* pose = SafeReadBytes(uintptr_t(world), &copied, sizeof(copied)) ?
+    entity::Pose* pose = ReadEntityRender(uintptr_t(world), &copied, sizeof(copied)) ?
         g_entityPoses.Render(uintptr_t(owner), uintptr_t(instance), copied,
-            game::A(game::off::StratMgrObject), g_entityFrameTick, g_entityFrameAlpha, SafeReadBytes) : nullptr;
+            game::A(game::off::StratMgrObject), g_entityFrameTick, g_entityFrameAlpha, ReadEntityRender) : nullptr;
     // Validate BOTH native passes before changing even the root input. A failed
     // mesh check must not combine an interpolated root with native bones.
     uint32_t meshes[2]{};
-    if (pose && (!SafeReadBytes(uintptr_t(instance), meshes, sizeof(meshes)) ||
-        !entity::MeshFits(meshes[0], pose->key.count, SafeReadBytes) ||
-        (meshes[1] && !entity::MeshFits(meshes[1], pose->key.count, SafeReadBytes)))) pose = nullptr;
+    if (pose && (!ReadEntityRender(uintptr_t(instance), meshes, sizeof(meshes)) ||
+        !entity::MeshFits(meshes[0], pose->key.count, ReadEntityRender) ||
+        (meshes[1] && !entity::MeshFits(meshes[1], pose->key.count, ReadEntityRender)))) pose = nullptr;
+    ChargeEntityRenderWork(begin); // do NOT charge the native renderer/Present
+    if (pose) ++g_entityFrameTelemetry.interpolatedSubmissions;
+    else ++g_entityFrameTelemetry.nativeSubmissions;
     SubmitEntityScoped(self, owner, instance, world, pose);
-    std::lock_guard<std::mutex> lock(g_entityTelemetryMutex);
-    if (pose) ++g_entityTelemetry.interpolatedSubmissions;
-    else ++g_entityTelemetry.nativeSubmissions;
 }
 
 void __fastcall ViewRenderDetour(void* self, void*)
 {
-    ApplyRenderMouseLook();
+    // Secondary calls rebuild transforms after effect passes. They must not
+    // capture/install again: the primary endpoints remain valid for this frame.
+    const uintptr_t caller = uintptr_t(_ReturnAddress());
+    uintptr_t liveView = 0;
+    if (g_inGameRender) SafeRead(game::A(game::off::pView), liveView);
+    const bool primary = g_primaryViewPass.Acquire(g_inGameRender, caller,
+        game::A(kPrimaryViewReturn), uintptr_t(self), liveView);
+    if (primary) { ApplyRenderMouseLook(); ApplyNormalRenderFov(self); }
     // Fn_RenderStep forces App+0x28 to 1.0 (0x43E1DC), so the engine normally
     // renders the newest simulated pose. While the render split is active we
     // substitute the timer's sub-tick remainder here, immediately around the
@@ -555,8 +683,8 @@ void __fastcall ViewRenderDetour(void* self, void*)
     uintptr_t app = 0;
     float savedFraction = 1.0f;
     bool interpolated = false;
-    if (g_active.load(std::memory_order_relaxed) &&
-        !(g_mouseLookEnabled && g_orbit.state == OrbitState::Following) &&
+    if (g_inGameRender && g_active.load(std::memory_order_relaxed) &&
+        !(g_cameraBackup.pending && g_cameraBackup.installed) &&
         SafeRead(game::A(game::off::pApp), app) && app) {
         {
             const float fraction = CurrentRenderFraction();
@@ -577,12 +705,14 @@ void __fastcall AppRenderDetour(void* self, void*)
 {
     if (g_inGameRender) { if (g_appRenderOrig) g_appRenderOrig(self); return; }
     g_inGameRender = true;
+    g_primaryViewPass.Reset();
     g_entityFrameAlpha = g_active.load(std::memory_order_relaxed) ? CurrentRenderFraction() : 1;
     g_entityFrameTick = game::TickCount();
+    BeginEntityFrame();
     // Includes all queue building, scene drawing, EndScene and Present paths,
     // including early returns and exception unwinding. Never leak into Fn_Tick.
     __try { if (g_appRenderOrig) g_appRenderOrig(self); }
-    __finally { RestoreRenderCamera(); g_entityFrameAlpha = 1; g_inGameRender = false; }
+    __finally { RestoreRenderCamera(); FinishEntityFrame(); g_entityFrameAlpha = 1; g_inGameRender = false; }
 }
 } // namespace
 
@@ -598,6 +728,14 @@ bool InstallHooks()
     const uint8_t submitBytes[] = {0x55,0x8B,0xEC,0x83,0xE4,0xF0,0x83,0xEC,0x24};
     const uint8_t nodeBytes[] = {0x55,0x8B,0xEC,0x83,0xE4,0xF0,0x81,0xEC,0x94,0,0,0};
     uint8_t current[12]{};
+    const uint8_t primaryCall[] = {0xE8,0xD0,0xBB,0,0}; // 0x43E22B -> 0x449E00
+    const uint8_t primaryTail[] = {0xE9,0x61,0x54,0xFF,0xFF}; // 0x449E2A -> 0x43F290
+    if (!SafeReadBytes(game::A(kPrimaryViewReturn - 5), current, sizeof(primaryCall)) ||
+        memcmp(current, primaryCall, sizeof(primaryCall)) ||
+        !SafeReadBytes(game::A(0x449E2A), current, sizeof(primaryTail)) ||
+        memcmp(current, primaryTail, sizeof(primaryTail))) {
+        ETH_ERROR("EthhhPatch refused camera hooks: primary render path changed"); return false;
+    }
     if (!SafeReadBytes(game::A(kEntitySubmit),current,sizeof(submitBytes)) || memcmp(current,submitBytes,sizeof(submitBytes)) ||
         !SafeReadBytes(game::A(kNodeSubmit),current,sizeof(nodeBytes)) || memcmp(current,nodeBytes,sizeof(nodeBytes))) {
         ETH_ERROR("EthhhPatch refused entity hooks: render entry bytes changed"); return false;
@@ -665,6 +803,8 @@ bool ActivateRenderSplit(float aspect, unsigned width, unsigned height, int targ
     g_orbit.Reset(); g_cameraRestoreFailed = false; g_lastCameraTraceCounter = 0;
     LoadOrbitTuning();
     g_entityPoses.Reset();
+    g_orbitRenderGuardFailures = g_orbitRenderGuardMask = 0;
+    g_lastOrbitLogCounter = 0; g_orbitSuppressedTransitions = 0;
     g_entityInterpolationEnabled.store(Config::Get().GetBool("ethhhpatch", "entity_interpolation", true));
     { std::lock_guard<std::mutex> lock(g_entityTelemetryMutex); g_entityTelemetry = {}; }
     { std::lock_guard<std::mutex> lock(g_orbitTelemetryMutex); g_orbitTelemetry = {}; }
@@ -898,7 +1038,7 @@ void NotifyMoviePresent()
 {
     const int64_t counter = CameraCounter();
     if (counter) g_movieUntilCounter.store(counter + g_counterFrequency / 2);
-    if (g_active.load() && g_mouseLookEnabled && !g_externalCameraOwned.load()) {
+    if (g_active.load() && !g_externalCameraOwned.load()) {
         RestoreRenderCamera(); g_orbit.Suspend(OrbitState::Movie); ReleaseOrbitCapture();
     }
 }
@@ -910,6 +1050,14 @@ void SetOrbitEnabled(bool enabled)
     g_orbit.Reset(); g_lastCameraTraceCounter = 0;
     if (enabled) LoadOrbitTuning();
     PublishOrbitTelemetry();
+}
+
+NormalFovTuning ReadNormalFovTuning() { return {g_normalFovEnabled.load(), g_normalFovDegrees.load()}; }
+void SetNormalFovTuning(bool enabled, float verticalDegrees)
+{
+    RestoreRenderCamera();
+    g_normalFovDegrees.store(NormalFovDegrees(verticalDegrees));
+    g_normalFovEnabled.store(enabled);
 }
 
 void ResumeOrbit() { g_orbit.RequestResume(); PublishOrbitTelemetry(); }

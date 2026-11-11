@@ -1,4 +1,4 @@
-# EthhhPatch — display, free-look camera and animation interpolation
+# EthhhPatch — display, camera/FOV, mouse attacks and animation interpolation
 
 ## Current behavior
 
@@ -193,13 +193,20 @@ matrix at `+0x60`, inverse at `+0xA0`, and product at `+0xE0`. Updating Camera a
 could therefore give CPU culling and the visible viewpoint different poses.
 
 The orbit updates both View endpoints and the camera's world/inverse/product
-only inside the verified complete `App_render_step` (`0x43E170`) scope. At the
+only inside the verified complete `App_render_step` (`0x43E170`) scope. Installation
+runs once, at the primary `0x43E22B` call to `renderer_prepare`, whose tail jump
+at `0x449E2A` reaches `View_Render` with return address **`0x43E230`**. Secondary
+effect calls return at `0x44EC69`, `0x44F576`, `0x44FA5C` and `0x450953`; they
+rebuild transforms using the same installed endpoints and never recapture the
+native baseline. This corrects the repeated-capture ownership failure, but the
+reported camera flicker is not live-accepted until retested. At the
 end of the full frame, including early returns/exception unwinding, it restores:
 
 - camera `[0,0x40)` and `[0x80,0x100)`;
 - View `[0x20,0x120)` (pose endpoints and derived render matrices).
 
-FOV, projection, player position, animation and script state are not overridden.
+Orbit itself leaves lens/projection parameters, player position, animation and
+script state native. The separate optional FOV policy is described below.
 Replaced objects are not restored through stale pointers. If a script/mod
 changes the installed pose during the frame, its edits are preserved and the
 orbit disables itself rather than overwriting the new owner.
@@ -218,12 +225,70 @@ orthonormal basis are checked before acquisition.
 Unchecking orbit switches back to the native camera without a display Reset.
 False positives and indistinguishable gameplay-shaped cinematic shots remain
 possible; live cutscene acceptance is required, not implied by offline tests.
+Orbit transitions are counted individually but synchronous file messages are
+coalesced to at most one per second. Render ownership failures expose a diagnostic
+mask (1 player, 2 class, 4 handle, 8 camera, 16 View); the existing safety fallback
+is retained. Instrumentation alone is not a fix or live acceptance claim.
 
 A five-ray padded camera query is capped at at most 60 batches per second,
 retracts immediately for obstructions and eases back outward. It is not a verified
 camera hull; it can miss geometry between directions/samples. Failed/unreadable
 queries retain the native camera instead of assuming a clear path. The full
 exact-Ninja identity/list check runs once per completed tick, not every render.
+
+### Normal-mode FOV
+
+**EthhhPatch > Camera > Override normal-mode FOV** enables the **Normal-mode FOV**
+slider, from **30 to 120 vertical degrees** (default tuning 60; override off).
+It persists `ethhhpatch.normal_fov_enabled` and `normal_fov_degrees`. It requires
+an active display patch, but **does not require mouse orbit to be enabled**.
+
+At the verified primary View call, the SDK temporarily installs the full angle
+at `View+0x08/+0x0C`, tangent-half-angle at `+0x10`, and secant-half-angle at
+`+0x14`. Original `View_Render` builds/submits projection at `+0x120`; the active
+sphere culler reads that same lens. The saved lens `[0x08,0x18)` and derived
+projection `[0x120,0x160)` are restored in the full render scope's `finally`,
+before the next native tick. **Native `Camera+0x108` is never changed**, so native
+simulation and scripted lens-change detection do not see the user override.
+
+F9, focus loss, movies, explicit HL camera ownership, changed identities and
+suspected scripted framing retain native/HL lens behavior. FOV-only sampling uses
+the same stable-gameplay/cut heuristic as orbit without taking mouse capture.
+There is still no verified in-engine cutscene flag: cinematic exclusions require
+live testing. A replaced View or foreign lens edit is not overwritten at cleanup;
+an ownership/cleanup failure disables further camera/lens overrides.
+
+### Native mouse attacks
+
+**Mouse attacks: M1 slash / M2 spin** is enabled by default and persists as
+`ethhhpatch.mouse_attacks`. It is independent of the high-refresh display patch:
+Mouse 1 adds the normal slash action, and Mouse 2 adds held spin pressure for the
+native mid-air sword-hover behavior. It does not force an attack state, create
+extra ticks, or send Windows keyboard input. Keyboard and gamepad controls remain
+native. **Release both mouse buttons after startup, F9, focus/owner changes,
+disable/re-enable or remapping before the bridge rearms.**
+
+The verified keyboard poll `0x4427A0` updates a 512-byte down/press-edge buffer at
+`Input+8` inside a native tick. The current action table begins at `Input+0x240`:
+20 actions, two 28-byte descriptors each. Native action pressure at `0x441BB0`
+reaches `0x442FE7`, which reads the down byte, producing held pressure rather than
+a repeated tap. Mouse presses only add their corresponding down/edge bytes;
+existing native edges and simultaneous physical-key holds are preserved.
+
+`KEYBOARD.CFM` is embedded in `Data/general.vol` at `0x3800` (630 bytes), not a
+loose settings file. Rows 9 and 7 bind Left Arrow (`0xCB`) and Right Arrow
+(`0xCD`). Embedded `PS2.CFM` maps their alternate-bank rows to square/circle
+buttons. **Slash/spin names are layout inference**, not recovered named engine
+symbols; actual attack/held hover must be confirmed in-game.
+
+The bridge follows live custom bindings but accepts only ungated keyboard
+descriptors. It refuses movement/jump/modifier/menu/F-key scans, overlapping
+slash/spin keys, and overlap with any other action or keyboard gate in either
+bank. Unsupported remaps leave all native controls untouched. It validates the
+selected exact-Ninja class/handle/live membership once per tick without allocating
+inspector snapshots, rechecks player/keyboard ownership at the poll, respects
+native `Input+0x37CC` keyboard suppression, and requires positive bounded time,
+focus, closed F9 and an active native-tick scope.
 
 ### Camera and entity render interpolation
 
@@ -274,6 +339,42 @@ Both mesh passes are bounded before root substitution. Unsupported paths such
 as custom vertex deformers and particles are not claimed as interpolated; actual
 live entity coverage and visual smoothness must be checked in-game.
 
+#### Entity performance correction
+
+The previous live build was reported to fall to approximately **20 FPS and
+3–11 active simulation Hz** with entity interpolation enabled. That regression
+is not considered accepted or resolved merely because offline math tests pass.
+
+Sampling now walks only the complete bounded owner/link list, using reused
+8,192-owner storage and a fixed hash set rather than inspector snapshots and
+quadratic cycle searches. Batched identity/allocation reads still validate the
+same owner, handle generation, class, model/controller, instances and bone bounds.
+Readable-region metadata is cached only within a sampling phase or full render
+frame; **every copy remains SEH-protected**, and no native bytes are cached by
+the reader. General `SafeReadBytes` is unchanged.
+
+Stable pose buffers reuse allocation capacity; invalid new poses are rejected
+before creating cache entries. Render validation reuses bounded scratch matrices.
+Mesh walks remain capped at 512 links, with linear work and batched index/link
+reads. Repeated identical-alpha blends reuse SDK output only after all fresh
+identity/root/bone checks succeed. Telemetry publishes once per frame, not under
+a mutex for every entity submission.
+
+Optional sampling has a **2 ms soft budget per completed tick**; SDK render
+validation/blending has a **2 ms aggregate soft budget per frame**, excluding
+the original renderer and Present/pacing. A started bounded operation and its
+cleanup can finish beyond the limit; subsequent owners use native poses. An
+incomplete/changed/cyclic live list discards all sampled poses. Budget exhaustion
+after a complete list prunes unprocessed owners, so stale pairs cannot render.
+No simulation debt, tick count, animation updates or engine scheduling is changed.
+
+The Animation tab reports last sample/render SDK milliseconds, page-query counts,
+list completeness and cumulative budget stops. Check performance with F9 closed:
+the manager deliberately suspends pose sampling while open. These observations
+and manual enabled/disabled testing are required before claiming recovered FPS.
+Last eligible gameplay timing/query measurements remain visible while F9 is open
+instead of being overwritten by paused-frame zeros.
+
 ### Redesigned workspace
 
 Launcher, F9 overlay and previews share `DrawManagerLayout`: compact 64-unit
@@ -298,13 +399,17 @@ The runtime uses the game's original timer rather than instantiating the offline
 scheduler class. The prototype remains a deterministic oracle for 30..360-Hz
 cadence and debt policy.
 
-The patch is implemented and user-gated, but has **not yet been installed or
-live-accepted in this build**. Live acceptance must confirm exact 1080p/4K Reset,
+Earlier builds were installed and manually exercised; this performance/camera/input/FOV correction
+is **staged only, not installed or live-accepted**. Live acceptance must confirm exact 1080p/4K Reset,
 100-Hz game Presents with 60 active ticks/s, edge visibility, HUD containment,
 movie fit, pause/focus/load behavior, and successful manual restore. Unsupported
 or mismatched modes are refused or rolled back rather than silently accepted.
 Camera acceptance must also cover close and distant in-engine cutscenes, movies,
 wall proximity, respawn, explicit resume, F9/focus transitions and HL handoff.
+Check FOV at 30/60/90/120 degrees with orbit on and off, including projection/culling
+at screen edges and native lens restoration after disabling the override. Check
+M1 slash, held M2 spin/hover, keyboard/gamepad coexistence, custom keys, and safe
+release-to-rearm after F9/alt-tab/respawn.
 Animation acceptance must compare enabled/disabled blending at 100 render Hz
 while active simulation remains 60 Hz, with visible Ninja/enemy/attachment poses,
 pause/load/respawn, teleports and double-buffered models. UI acceptance includes
@@ -318,10 +423,11 @@ python .\tools\inspect-ethhhpatch.py --out "$env:LOCALAPPDATA\Temp\opencode\ethh
 .\tests\run-preview-tests.ps1
 ```
 
-The inspector checks 159 instruction anchors, 47 bounded disassembly slices,
-41 explicit render/lifecycle/collision/camera/entity edges, PE import/section mapping,
-the projection/movie/entity submissions and both Present return sites. Twenty-six evidence tests
-exercise those checks. It refuses altered executable
+The inspector checks 199 instruction anchors, 59 bounded disassembly slices,
+51 explicit render/lifecycle/collision/camera/entity/input edges, PE import/section mapping,
+the projection/movie/entity submissions, primary/secondary View callers, native
+keyboard action/pressure paths and both Present return sites. Thirty evidence tests
+exercise those checks and the fingerprinted embedded control maps. It refuses altered executable/archive
 fingerprints, output outside the approved temporary directory, and overwrite.
 It never opens a process or modifies executable/archive bytes. Off-screen
 preview tests cover the new page without starting or controlling the game.
@@ -332,13 +438,24 @@ sizes; those screenshots explicitly say **OFF-SCREEN FIXTURE**. Their example
 `EthhhPatchEntityTests.cpp` tests all-axis and composed quaternion rotations,
 reflected/nonuniform scale, zero native writes across repeated renders, instance
 swaps, intervening writes, lifetime/allocation/mesh bounds, tick wrap and resource
-ceilings. The twenty preview cases use the real shared layout and all four tabs,
+ceilings, scoped permissions/protected-copy behavior, complete/cyclic/oversize
+lists, reused vector storage and deterministic optional-work budgets.
+`EthhhPatchEntityPerformanceTests.cpp` exercises the exact production Windows
+reader, real page revocation and guard pages, warmed-up allocation counts, and
+conservative `SafeReadBytes` versus scoped-reader sampling/render benchmarks.
+Timing output is evidence, not a flaky pass threshold or in-engine FPS claim.
+The 25 preview cases use the real shared layout and all four tabs,
 check balanced ImGui stacks and launcher routing, and exercise the always-on
-watermark at all four corners and three detail levels.
+watermark at all four corners and three detail levels. Camera cases include
+640x480, 1080p, 4K, high-DPI and bottom-of-page scrolling.
 
 `EthhhPatchCameraTests.cpp` tests the runtime-shared orbit policy, quaternion
 convention and fake-memory restoration behavior. It does not execute the original
 engine rendering or prove cutscene detection/camera collision in a live level.
+`MouseAttackTests.cpp` tests native-edge preservation, independent held mouse
+buttons, safe rearming, custom bindings, flag padding and cross-action conflicts.
+`EthhhPatchLensTests.cpp` tests primary-only installation, coupled orbit/lens
+restoration, projection/culling lens math, foreign edits and failed-write cleanup.
 
 The latest dated offline verification and staged artifact hashes are in
-[the 2026-11-11 UI/animation report](verification-ui-animation-2026-11-11.md).
+[the 2026-11-11 entity performance report](verification-entity-performance-2026-11-11.md).

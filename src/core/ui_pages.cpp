@@ -828,29 +828,62 @@ void DrawPatchPage(bool launcherMode)
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Camera")) {
+            const bool compact=ImGui::GetContentRegionAvail().x<420*ui::Scale();
+            const auto checkbox=[compact](const char* label,bool* value) {
+                if (!compact) return ImGui::Checkbox(label,value);
+                ImGui::PushID(label);
+                bool changed=ImGui::Checkbox("##value",value);
+                ImGui::SameLine(); ImGui::TextWrapped("%s",label);
+                if (ImGui::IsItemClicked()) { *value=!*value; changed=true; }
+                ImGui::PopID(); return changed;
+            };
+            const auto slider=[compact](const char* label,float* value,float low,float high,const char* format) {
+                if (!compact) { ImGui::SetNextItemWidth(210*ui::Scale()); return ImGui::SliderFloat(label,value,low,high,format); }
+                ImGui::TextUnformatted(label); ImGui::PushID(label); ImGui::SetNextItemWidth(-FLT_MIN);
+                const bool changed=ImGui::SliderFloat("##value",value,low,high,format);
+                ImGui::PopID(); return changed;
+            };
+            SectionHeader("NORMAL-MODE FOV", "Vertical field of view for I-Ninja gameplay. HL keeps its own camera settings.");
+            bool fovEnabled=cfg.GetBool("ethhhpatch","normal_fov_enabled",false);
+            float fov=patch::runtime::NormalFovDegrees(cfg.GetFloat("ethhhpatch","normal_fov_degrees",60));
+            bool lensChanged=checkbox("Override normal-mode FOV",&fovEnabled);
+            lensChanged|=slider("Normal-mode FOV",&fov,30,120,"%.0f degrees");
+            if (lensChanged) {
+                cfg.SetBool("ethhhpatch","normal_fov_enabled",fovEnabled); cfg.SetFloat("ethhhpatch","normal_fov_degrees",fov); cfg.Save();
+                patch::runtime::SetNormalFovTuning(fovEnabled,fov);
+            }
+            ImGui::TextWrapped("Requires the active display patch. Applied after closing F9; movies, scripted shots and HL retain native/HL framing.");
+            bool mouseAttacks=cfg.GetBool("ethhhpatch","mouse_attacks",true);
+            if (checkbox("Mouse attacks: M1 slash / M2 spin",&mouseAttacks)) {
+                cfg.SetBool("ethhhpatch","mouse_attacks",mouseAttacks); cfg.Save(); input::SetMouseAttacksEnabled(mouseAttacks);
+            }
+            ImGui::TextWrapped("Hold Mouse 2 for native sword hover. Keyboard/gamepad attacks still work; release mouse buttons after closing F9 or returning to the game.");
+            Divider(4);
             SectionHeader("FREE-LOOK ORBIT","Move the mouse to look around Ninja. Scroll the wheel to zoom.");
-            if (ImGui::Checkbox("Third-person mouse orbit outside HL mode",&plan.mouseLook)) {
+            if (checkbox("Third-person mouse orbit outside HL mode",&plan.mouseLook)) {
                 patch::SavePlan(plan);
                 if (!launcherMode && patch::runtime::Active()) patch::runtime::SetOrbitEnabled(plan.mouseLook);
             }
             float sensitivity=cfg.GetFloat("ethhhpatch","orbit_sensitivity",1);
             bool invert=cfg.GetBool("ethhhpatch","orbit_invert_y",false);
             bool changed=false;
-            ImGui::SetNextItemWidth(210*ui::Scale());
-            changed|=ImGui::SliderFloat("Sensitivity",&sensitivity,.05f,5,"%.2fx");
-            changed|=ImGui::Checkbox("Invert vertical look",&invert);
+            changed|=slider("Sensitivity",&sensitivity,.05f,5,"%.2fx");
+            changed|=checkbox("Invert vertical look",&invert);
             if (changed) {
                 patch::runtime::SetOrbitTuning(sensitivity,invert);
                 cfg.SetFloat("ethhhpatch","orbit_sensitivity",sensitivity); cfg.SetBool("ethhhpatch","orbit_invert_y",invert); cfg.Save();
             }
             const auto orbit=patch::runtime::ReadOrbitTelemetry();
             Divider(4); Badge(orbit.following ? "FOLLOWING" : "NATIVE CAMERA",ui::Accent());
-            ImGui::TextWrapped("%s",patch::runtime::OrbitStateName(orbit.state));
+            ImGui::TextWrapped("%s",orbit.enabled ? patch::runtime::OrbitStateName(orbit.state) : "Mouse orbit disabled; native camera pose retained.");
             ImGui::TextWrapped("Mouse capture %s. Native distance %.2f / orbit %.2f units. Yaw %.1f / pitch %.1f degrees.",
                 orbit.capture ? "active" : "released",orbit.nativeDistance,orbit.orbitDistance,orbit.yawDegrees,orbit.pitchDegrees);
+            if (orbit.renderGuardFailures)
+                ImGui::TextWrapped("Render ownership checks failed %u times; last mask 0x%02X (1 player, 2 class, 4 handle, 8 camera, 16 View).",
+                    orbit.renderGuardFailures,orbit.renderGuardMask);
             float distance=orbit.orbitDistance;
-            ImGui::BeginDisabled(!orbit.following); ImGui::SetNextItemWidth(210*ui::Scale());
-            if (ImGui::SliderFloat("Orbit distance",&distance,2.5f,15,"%.1f units")) patch::runtime::SetOrbitDistance(distance);
+            ImGui::BeginDisabled(!orbit.following);
+            if (slider("Orbit distance",&distance,2.5f,15,"%.1f units")) patch::runtime::SetOrbitDistance(distance);
             ImGui::EndDisabled();
             ImGui::BeginDisabled(launcherMode || !patch::runtime::Active() || !plan.mouseLook);
             if (ui::GhostButton("Resume orbit after scripted camera")) patch::runtime::ResumeOrbit();
@@ -871,6 +904,11 @@ void DrawPatchPage(bool launcherMode)
             ImGui::TextWrapped("%zu entities sampled / %zu continuous pose pairs",animation.sampled,animation.paired);
             ImGui::TextWrapped("%llu interpolated submissions / %llu native fallbacks",
                 (unsigned long long)animation.interpolatedSubmissions,(unsigned long long)animation.nativeSubmissions);
+            ImGui::TextWrapped("Last gameplay SDK sample %.3f ms / render %.3f ms; page queries %zu / %zu. Last list: %zu owners, %s.",
+                animation.sampleMs,animation.renderMs,animation.sampleQueries,animation.renderQueries,
+                animation.owners,animation.listComplete ? "complete" : "unavailable/incomplete");
+            ImGui::TextWrapped("2 ms soft work budgets: %llu sampling stops / %llu render stops. Remaining entities keep native rendering.",
+                (unsigned long long)animation.sampleBudgetStops,(unsigned long long)animation.renderBudgetStops);
             ImGui::TextWrapped("Requires the active high-refresh display patch. Native scripts, collision and animation still run only at the game's fixed tick rate.");
             ImGui::BulletText("Quaternion rotation blending preserves bone scale and reflection.");
             ImGui::BulletText("SDK-owned matrices are passed only to the renderer. Native bone and root memory is never overwritten.");

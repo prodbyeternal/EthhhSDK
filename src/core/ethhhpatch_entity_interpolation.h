@@ -13,24 +13,47 @@ constexpr size_t kMaxEntities = 512, kMaxTotalNodes = 16384;
 struct ReadableRegion { uintptr_t begin=0, end=0; };
 class ReadScope {
 public:
-    void Reset() { used_=0; queries_=0; }
+    void Reset() { used_=0; queries_=copies_=bytes_=0; replace_=0; }
     template<class Query, class Copy>
     bool Read(uintptr_t address, void* output, size_t bytes, Query query, Copy copy) {
         if (!address || !output || !bytes || address>UINT32_MAX || bytes>UINT32_MAX-address) return false;
         for(size_t i=0;i<used_;++i) {
             const auto& r=regions_[i];
             if(address>=r.begin && address<r.end && bytes<=r.end-address)
-                return copy(address,output,bytes); // every copy still has SEH; no cached native data
+                return CopyScoped(address,output,bytes,copy); // every copy still has SEH; no cached native data
         }
         ReadableRegion region; ++queries_;
         if (!query(address,region) || address<region.begin || address>=region.end || bytes>region.end-address) return false;
         if(used_<regions_.size()) regions_[used_++]=region;
-        return copy(address,output,bytes);
+        else { regions_[replace_]=region; replace_=(replace_+1)%regions_.size(); }
+        return CopyScoped(address,output,bytes,copy);
     }
     size_t Queries() const { return queries_; }
+    size_t Copies() const { return copies_; }
+    size_t Bytes() const { return bytes_; }
 private:
+    template<class CopyFn>
+    bool CopyScoped(uintptr_t address, void* output, size_t bytes, CopyFn copy) {
+        ++copies_; bytes_+=bytes;
+        return copy(address,output,bytes);
+    }
     std::array<ReadableRegion,64> regions_{};
-    size_t used_=0, queries_=0;
+    size_t used_=0, queries_=0, copies_=0, bytes_=0, replace_=0;
+};
+
+// Optional interpolation work, not a simulation clock. Render callers charge
+// ONLY SDK validation/blending, excluding the original renderer and Present.
+class WorkBudget {
+public:
+    void Reset(int64_t limit) { limit_=limit>0?limit:0; spent_=0; }
+    bool Available() const { return limit_>0 && spent_<limit_; }
+    void Charge(int64_t begin, int64_t end) {
+        if(begin<=0 || end<begin) { spent_=limit_; return; }
+        const int64_t elapsed=end-begin;
+        spent_=elapsed>=limit_-spent_?limit_:spent_+elapsed;
+    }
+private:
+    int64_t limit_=0, spent_=0;
 };
 
 // Entity sampling needs list membership, not inspector strings/angles. Reuse a
@@ -215,10 +238,11 @@ bool MeshFits(uintptr_t mesh, uint32_t count, Read read)
     while (mesh) {
         // Cycles also hit this fixed link cap. No quadratic seen-vector scan.
         if (mesh > UINT32_MAX-0x48 || length++ == 512) return false;
-        uint16_t index = 0; uint32_t next = 0;
-        if (!read(mesh+0x3C,&index,2) || (index!=0xFFFF && (index>=count || index>=0x8000)) ||
-            !read(mesh+0x44,&next,4)) return false;
-        mesh = next;
+        uint32_t fields[3]{};
+        if (!read(mesh+0x3C,fields,sizeof(fields))) return false;
+        const uint16_t index=uint16_t(fields[0]);
+        if (index!=0xFFFF && (index>=count || index>=0x8000)) return false;
+        mesh = fields[2];
     }
     return length != 0;
 }
@@ -227,6 +251,8 @@ struct Pose {
     Key key;
     uint32_t tick=0;
     bool paired=false;
+    bool blendValid=false;
+    float blendAlpha=1;
     Matrix nativeWorld, renderWorld;
     Affine world, previousWorld;
     std::vector<Matrix> nativeNodes, renderNodes;
@@ -245,22 +271,27 @@ public:
         if (!sampled_ || !key.count || key.count>kMaxNodes) return false;
         if (poses_.size()>=kMaxEntities && !poses_.count(key.owner)) return false;
         if (total_+key.count>kMaxTotalNodes) return false;
-        Pose& p=poses_[key.owner];
-        p.nativeNodes.resize(key.count);
         Key check;
         Matrix world; Affine affine;
         if (!read(key.owner+0x10,&world,sizeof(Matrix)) ||
-            !read(key.nodes,p.nativeNodes.data(),key.count*sizeof(Matrix)) ||
+            !read(key.nodes,current_.data(),key.count*sizeof(Matrix)) ||
             !ReadKey(key.owner,manager,check,read) || !(check==key) ||
             !Decompose(world,affine)) { poses_.erase(key.owner); return false; }
+        for(size_t i=0;i<key.count;++i) if(!Decompose(current_[i],affineScratch_[i])) {
+            poses_.erase(key.owner); return false;
+        }
+        // Unsupported poses never allocate a new cache entry every tick.
+        Pose& p=poses_[key.owner];
+        p.nativeNodes.resize(key.count);
+        memcpy(p.nativeNodes.data(),current_.data(),key.count*sizeof(Matrix));
         p.paired=p.key.SamePoseStorage(key) && uint32_t(tick_-p.tick)==1 && p.nodes.size()==key.count && Continuous(p.world,affine,6);
         p.previousWorld=p.world; p.world=affine; p.nativeWorld=world;
         p.previousNodes.swap(p.nodes); p.nodes.resize(key.count);
         for(size_t i=0;i<key.count;++i) {
-            if(!Decompose(p.nativeNodes[i],p.nodes[i])) { poses_.erase(key.owner); return false; }
+            p.nodes[i]=affineScratch_[i];
             if(p.paired && !Continuous(p.previousNodes[i],p.nodes[i],8)) p.paired=false;
         }
-        p.key=key; p.tick=tick_; p.renderNodes.resize(key.count);
+        p.key=key; p.tick=tick_; p.renderNodes.resize(key.count); p.blendValid=false;
         total_+=key.count; return true;
     }
     void EndTick() {
@@ -285,8 +316,11 @@ public:
             memcmp(current_.data(),p.nativeNodes.data(),p.key.count*sizeof(Matrix)) ||
             !read(owner+0x10,&liveWorld,sizeof(Matrix)) || memcmp(&liveWorld,&p.nativeWorld,sizeof(Matrix)) ||
             !ReadKey(owner,manager,finalKey,read) || !(finalKey==check)) return nullptr;
-        p.renderWorld=Blend(p.previousWorld,p.world,alpha);
-        for (size_t i=0;i<p.key.count;++i) p.renderNodes[i]=Blend(p.previousNodes[i],p.nodes[i],alpha);
+        if(!p.blendValid || p.blendAlpha!=alpha) {
+            p.renderWorld=Blend(p.previousWorld,p.world,alpha);
+            for (size_t i=0;i<p.key.count;++i) p.renderNodes[i]=Blend(p.previousNodes[i],p.nodes[i],alpha);
+            p.blendAlpha=alpha; p.blendValid=true;
+        }
         return &p;
     }
     size_t Size() const { return poses_.size(); }
@@ -294,6 +328,7 @@ public:
 private:
     std::unordered_map<uint32_t,Pose> poses_;
     std::array<Matrix,kMaxNodes> current_{};
+    std::array<Affine,kMaxNodes> affineScratch_{};
     uint32_t tick_=0;
     bool sampled_=false;
     size_t total_=0;

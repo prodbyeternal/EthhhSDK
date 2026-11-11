@@ -25,6 +25,8 @@ void FilterNativeKeyboard(void* keyboard);
 bool KeyDown(int vk);
 bool KeyPressed(int vk);         // true once per press (since last PumpKeys)
 bool MouseDown(int button);      // 0=left 1=right 2=middle
+bool MouseAttacksEnabled();
+void SetMouseAttacksEnabled(bool enabled);
 
 void GetMouseDelta(float& dx, float& dy);   // accumulated raw input, not consumed
 void ConsumeMouseDelta();

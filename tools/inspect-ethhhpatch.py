@@ -14,6 +14,8 @@ from capstone import Cs, CS_ARCH_X86, CS_MODE_32
 EXE = Path(r"C:\Users\Administrator\Desktop\ininja\I-Ninja.exe")
 TEMP = Path(r"C:\Users\Administrator\AppData\Local\Temp\opencode")
 SHA256 = "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0"
+GENERAL = EXE.parent / "Data" / "general.vol"
+GENERAL_SHA256 = "025e4a63d0d702cee48d84593d0754fb4f543e49591e27d0ce234c027d60a3cf"
 
 
 class PEImage:
@@ -131,6 +133,18 @@ RANGES = [
     ("entity_render_owner", 0x43E660, 0x43E894, True),
     ("entity_renderer_owner_submit", 0x44A490, 0x44A759, True),
     ("entity_renderer_copy_node_matrices", 0x449EB0, 0x44A00E, True),
+    ("secondary_effect_view_call_1_fragment", 0x44EC40, 0x44EC69, False),
+    ("secondary_effect_view_call_2_fragment", 0x44F56B, 0x44F576, False),
+    ("secondary_effect_view_call_3_fragment", 0x44FA42, 0x44FA5C, False),
+    ("secondary_effect_view_call_4_fragment", 0x45090E, 0x450953, False),
+    ("native_keyboard_poll", 0x4427A0, 0x4428F2, True),
+    ("native_input_poll_dispatch_fragment", 0x441E60, 0x441E8C, False),
+    ("native_gameplay_poll_caller_fragment", 0x43FEC0, 0x43FEE4, False),
+    ("native_action_binding_loader", 0x441CD0, 0x441E06, True),
+    ("native_action_pressure", 0x441BB0, 0x441C39, True),
+    ("native_attack_pressure_dispatch_fragment", 0x442B43, 0x442B67, False),
+    ("native_binding_pressure_owner_fragment", 0x442FA0, 0x442FD3, False),
+    ("native_keyboard_held_pressure_fragment", 0x442FE3, 0x442FF6, False),
 ]
 
 ANCHORS = {
@@ -293,6 +307,46 @@ ANCHORS = {
     0x449FF0: "f3a5",        # only copies into renderer-owned queue
     0x449FF6: "8b4144",      # mesh list next; no recursion
     0x44A00B: "c20c00",      # node submit is thiscall with 3 stack arguments
+    0x43E22B: "e8d0bb0000",  # primary CALL continuation survives renderer_prepare tail jump
+    0x44EC5E: "8b0d64ab5100",# secondary callers use the SAME global View
+    0x44EC64: "e82706ffff",
+    0x44F56B: "8b0d64ab5100",
+    0x44F571: "e81afdfeff",
+    0x44FA42: "8b0d64ab5100",
+    0x44FA57: "e834f8feff",
+    0x45090E: "8b0d64ab5100",
+    0x45094E: "e83de9feff",
+    0x43EFF2: "d95b10",      # native tick recalculates View tan-half-FOV
+    0x43EFFD: "d95b14",      # native tick recalculates View sec-half-FOV
+    0x4427A0: "a114925200",  # keyboard hook entry
+    0x4427A9: "80780d01",
+    0x4427FA: "6800010000",  # 256-byte DirectInput poll
+    0x442800: "ff5224",
+    0x44282A: "889000010000",# press edges at keyboard+0x100
+    0x442830: "8808",        # current down bytes
+    0x441E63: "8d4e08",      # input+8 keyboard owner
+    0x441E66: "e835090000",
+    0x441E81: "8d8e28020000",# action object input+0x228
+    0x43FED8: "8b782c",      # App+0x2C input owner
+    0x43FEDF: "e87c1f0000",
+    0x441D06: "83c208",      # native pressure keyboard = input+8
+    0x441D0D: "891570c45100",
+    0x441D1C: "c744247402000000", # two binding banks
+    0x441D29: "bd14000000",  # twenty action rows per bank
+    0x441DC6: "884e10",      # inverted flag is a BYTE, padding is not initialized
+    0x441DC9: "83c638",      # action-pair stride 56 bytes
+    0x441BC9: "8a81cc370000",# native keyboard-suppression flag
+    0x441BD7: "8d145f",      # descriptor index = action*2 + bank
+    0x441BDA: "6bd21c",      # descriptor stride 28
+    0x441C0A: "e891130000",  # pressure uses held-state reader
+    0x442B4F: "6a07",        # action 7 pressure
+    0x442B56: "e855f0ffff",
+    0x442B5B: "6a09",        # action 9 pressure
+    0x442B62: "e849f0ffff",
+    0x442FAE: "8b3d70c45100",# keyboard pressure owner
+    0x442FE3: "0fb64604",    # keyboard scan is read as a BYTE
+    0x442FE7: "8a0438",      # pressure reads DOWN, not repeated press edges
+    0x442FF0: "25ff000000",  # held pressure is 0xFF
 }
 
 # Explicit checked edges only; not a guessed whole-program call graph.
@@ -313,7 +367,45 @@ EDGES = [
     (0x412BB2, 0x42E960), (0x412BD2, 0x438260),
     (0x41336E, 0x42FA50), (0x41337A, 0x42ED40),
     (0x43E87F, 0x44A490), (0x44A523, 0x449EB0), (0x44A6DF, 0x449EB0),
+    (0x44EC64, 0x43F290), (0x44F571, 0x43F290),
+    (0x44FA57, 0x43F290), (0x45094E, 0x43F290),
+    (0x441E66, 0x4427A0), (0x43FEDF, 0x441E60), (0x43E0E7, 0x43FEC0),
+    (0x441C0A, 0x442FA0), (0x442B56, 0x441BB0), (0x442B62, 0x441BB0),
 ]
+
+
+def keyboard_archive_evidence(data):
+    if len(data) != 40960 or hashlib.sha256(data).hexdigest() != GENERAL_SHA256:
+        raise ValueError("unsupported general.vol fingerprint")
+    tag, version, count, directory_bytes = struct.unpack_from("<4sIII", data)
+    if (tag, version, count, directory_bytes) != (b"VOLT", 2, 17, 572):
+        raise ValueError("unsupported VOLT directory")
+    cursor, end = 16 + count * 12, 16 + count * 12 + directory_bytes
+    entries = {}
+    for _ in range(count):
+        if cursor + 16 >= end:
+            raise ValueError("truncated VOLT entry")
+        offset, size = struct.unpack_from("<QQ", data, cursor)
+        cursor += 16
+        nul = data.index(0, cursor, end)
+        name = data[cursor:nul].decode("ascii")
+        cursor = nul + 1
+        if name in entries or offset < end or offset + size > len(data):
+            raise ValueError("unbounded/duplicate VOLT entry")
+        entries[name] = (offset, size)
+    if cursor != end or entries["KEYBOARD.CFM"] != (0x3800, 630) or entries["PS2.CFM"] != (0x5000, 635):
+        raise ValueError("embedded control map directory differs")
+    maps = {}
+    for name in ("KEYBOARD.CFM", "PS2.CFM"):
+        offset, size = entries[name]
+        rows = [list(map(int, line.split(":"))) for line in data[offset:offset+size].decode("ascii").splitlines() if line]
+        if len(rows) != 40 or any(len(row) != 7 for row in rows):
+            raise ValueError("unsupported embedded control map rows")
+        maps[name] = {"archive_offset": offset, "bytes": size, "rows": rows}
+    return {"source": str(GENERAL), "sha256": GENERAL_SHA256, "maps": maps,
+            "slash_action": 9, "spin_action": 7,
+            "action_names_verified_in_engine": False,
+            "semantics": "square/circle layout inference; native action row and held pressure verified; live attack/hover acceptance pending"}
 
 
 def evidence(data):
@@ -410,8 +502,12 @@ def evidence(data):
                 "result_point_offset": 0, "result_normal_offset": 0x10,
                 "native_reference_caller": 0x410AA0,
                 "sdk_policy": "max 16 exact-Ninja segments; require empty queue before batch"},
-            "camera_render_contract": {
-                "scope": 0x43E170, "matrix_submission": 0x43F290,
+             "camera_render_contract": {
+                 "scope": 0x43E170, "matrix_submission": 0x43F290,
+                 "primary_call": 0x43E22B, "primary_return_va": 0x43E230,
+                 "prepare_tail_jump": 0x449E2A,
+                 "secondary_return_vas": [0x44EC69, 0x44F576, 0x44FA5C, 0x450953],
+                 "primary_only_installation": True,
                 "view_previous_position": 0x20, "view_previous_quaternion": 0x30,
                 "view_current_position": 0x40, "view_current_quaternion": 0x50,
                 "view_render_world": 0x60, "view_render_inverse": 0xA0, "view_render_product": 0xE0,
@@ -419,7 +515,22 @@ def evidence(data):
                 "view_restored_region": [0x20, 0x120],
                 "matrix_to_quaternion": 0x4B3830, "quaternion_position_to_matrix": 0x4B2680,
                 "cutscene_flag_verified": False,
-                 "scripted_camera_policy": "geometry/lens/cut checks; temporary hold and automatic reacquisition"},
+                  "scripted_camera_policy": "geometry/lens/cut checks; temporary hold and automatic reacquisition"},
+             "normal_fov_contract": {
+                 "view_lens_region": [0x08, 0x18], "projection_region": [0x120, 0x160],
+                 "native_camera_fov_offset": 0x108, "native_camera_fov_written": False,
+                 "units": "full vertical degrees in UI, radians in View",
+                 "range_degrees": [30, 120], "default_enabled": False,
+                 "eligibility": "active patch, exact Ninja, stable native camera, focus, not F9/movie/HL; same scripted-shot heuristic as orbit",
+                 "restoration": "App_render finally restores lens and derived projection before native tick"},
+             "native_mouse_attack_contract": {
+                 "poll": 0x4427A0, "input_owner": "App+0x2C", "keyboard_offset": 8,
+                 "binding_table_offset": 0x240, "action_count": 20, "banks": 2,
+                 "descriptor_bytes": 0x1C, "pair_stride": 0x38, "inverted_flag_bytes": 1,
+                 "keyboard_pressure_owner": 0x51C470, "keyboard_suppression_offset": 0x37CC,
+                 "held_pressure_read": 0x442FE7, "down_offset": 0, "press_offset": 0x100,
+                 "slash_action": 9, "spin_action": 7, "windows_input_synthesis": False,
+                 "release_to_rearm": True},
             "entity_render_contract": {
                 "owner_submit": 0x44A490, "node_submit": 0x449EB0,
                 "owner_arguments": ["owner", "model instance", "world matrix"],
@@ -455,7 +566,10 @@ def evidence(data):
                 "Movies render through a fixed 640x480 surface and originally scale X/Y independently to the backbuffer; the gated policy uses centered uniform fit.",
                 "The collision manager supports bounded 0x44-byte segment batches with point/normal/hit-count results; the SDK refuses non-Ninja or nonempty-queue calls.",
                 "Render uses View position/quaternion snapshots, not Camera.world alone; the orbit override updates both View endpoints and the CPU-culling camera inside the App_render_step scope.",
-                "All modified camera/View pose and derived-matrix regions are restored after the full render step, including early returns; FOV and script state are not overridden.",
+                 "All modified camera/View pose and derived-matrix regions are restored after the full render step, including early returns; native Camera FOV and script state are not overridden.",
+                 "The primary App render CALL tail-jumps through renderer_prepare into View_Render; later effect calls use the same View and must not recapture the installed orbit baseline.",
+                 "Optional normal-mode FOV replaces View lens fields only during eligible rendering, so projection/culling agree without contaminating native camera/lens-cut samples.",
+                 "Native actions 7/9 use held keyboard pressure; the mouse bridge adds native down/press bytes using current ungated bindings, never Windows input or forced attack states.",
                  "In-engine cutscene detection is a geometry/lens/cut heuristic, not a verified script flag; temporary holds automatically reacquire stable native framing.",
                  "The owner-aware renderer passes world and node inputs to an iterative queue copier; it does not advance scripts or animation and does not retain the input pointers.",
                 "The manager exposes an acknowledged transactional Apply/Restore path; offline evidence is not a live compatibility claim."]}
@@ -475,6 +589,7 @@ def main():
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
     value = evidence(EXE.read_bytes())
+    value["keyboard_archive"] = keyboard_archive_evidence(GENERAL.read_bytes())
     write_new(args.out, value)
     print(f"PASS static EthhhPatch evidence: {len(ANCHORS)} instruction anchors, {len(RANGES)} bounded slices, {len(EDGES)} render edges; {args.out}")
 

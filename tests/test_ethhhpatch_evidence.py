@@ -1,6 +1,7 @@
 """Offline reproducibility and refusal tests for static EthhhPatch evidence."""
 import importlib.util
 import json
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -17,6 +18,7 @@ class EvidenceTests(unittest.TestCase):
         cls.data = INSPECTOR.EXE.read_bytes()
         cls.image = INSPECTOR.PEImage(cls.data)
         cls.result = INSPECTOR.evidence(cls.data)
+        cls.archive = INSPECTOR.keyboard_archive_evidence(INSPECTOR.GENERAL.read_bytes())
 
     def test_static_anchors(self):
         self.assertEqual(len(self.result["checked_instruction_anchors"]), len(INSPECTOR.ANCHORS))
@@ -224,12 +226,69 @@ class EvidenceTests(unittest.TestCase):
         self.assertFalse(camera["cutscene_flag_verified"])
         runtime = (TOOL.parent.parent / "src/core/ethhhpatch_runtime.cpp").read_text(encoding="utf-8")
         self.assertIn("SafeWriteBytes(view + 0x20, pose, sizeof(pose))", runtime)
-        self.assertIn("__finally { RestoreRenderCamera(); g_entityFrameAlpha = 1; g_inGameRender = false; }", runtime)
+        app_render = runtime[runtime.index("void __fastcall AppRenderDetour"):runtime.index("} // namespace\n\nbool InstallHooks")]
+        cleanup = app_render[app_render.index("__finally"):]
+        self.assertIn("RestoreRenderCamera();", cleanup)
+        self.assertIn("FinishEntityFrame();", cleanup)
+        self.assertIn("g_entityFrameAlpha = 1;", cleanup)
+        self.assertIn("g_inGameRender = false;", cleanup)
+        self.assertLess(cleanup.index("RestoreRenderCamera();"), cleanup.index("g_inGameRender = false;"))
         self.assertIn("g_cameraBackup.Capture(camera, view, SafeReadBytes)", runtime)
         self.assertIn("g_cameraBackup.Restore(camera, view, SafeReadBytes, SafeWriteBytes)", runtime)
         hooks = (TOOL.parent.parent / "src/core/hooks.cpp").read_text(encoding="utf-8")
         tick = hooks[hooks.index("void __fastcall TickDetour"):hooks.index("HRESULT WINAPI EndSceneDetour")]
         self.assertLess(tick.index("RunTickCallbacks(tickIndex)"), tick.index("runtime::OnTickCompleted()"))
+
+    def test_primary_view_call_and_secondary_passes_are_distinct(self):
+        camera = self.result["camera_render_contract"]
+        self.assertEqual(camera["primary_return_va"], camera["primary_call"] + 5)
+        self.assertEqual(camera["prepare_tail_jump"], 0x449E2A)
+        self.assertEqual(camera["secondary_return_vas"], [0x44EC69, 0x44F576, 0x44FA5C, 0x450953])
+        rows = {i["va"]: i for s in self.result["static_slices"] for i in s["instructions"]}
+        self.assertEqual(rows[0x449E2A]["mnemonic"], "jmp")
+        for address in camera["secondary_return_vas"]:
+            self.assertEqual(rows[address - 5]["operands"], "0x43f290")
+        runtime = (TOOL.parent.parent / "src/core/ethhhpatch_runtime.cpp").read_text(encoding="utf-8")
+        self.assertIn("uintptr_t(_ReturnAddress())", runtime)
+        self.assertIn("if (primary) { ApplyRenderMouseLook(); ApplyNormalRenderFov(self); }", runtime)
+        self.assertIn("g_primaryViewPass.Reset();", runtime)
+        self.assertIn("!(g_cameraBackup.pending && g_cameraBackup.installed)", runtime)
+
+    def test_normal_fov_is_scoped_view_lens_not_native_camera(self):
+        lens = self.result["normal_fov_contract"]
+        self.assertEqual(lens["view_lens_region"], [0x08, 0x18])
+        self.assertEqual(lens["projection_region"], [0x120, 0x160])
+        self.assertFalse(lens["native_camera_fov_written"])
+        self.assertFalse(lens["default_enabled"])
+        runtime = (TOOL.parent.parent / "src/core/ethhhpatch_runtime.cpp").read_text(encoding="utf-8")
+        fov = runtime[runtime.index("void ApplyNormalRenderFov("):runtime.index("void SampleEntityPoses()")]
+        for guard in ("g_externalCameraOwned.load()", "g_orbit.state != OrbitState::Following",
+                      "input::OverlayOpen()", "g_movieUntilCounter.load()", "g_orbitHandle", "g_orbitView"):
+            self.assertIn(guard, fov)
+        self.assertNotIn("SetCameraFov", fov)
+        self.assertIn("g_lensBackup.Restore(view, SafeReadBytes, SafeWriteBytes)", runtime)
+
+    def test_embedded_control_maps_and_held_attack_semantics(self):
+        maps = self.archive["maps"]
+        keyboard = maps["KEYBOARD.CFM"]["rows"]
+        ps2 = maps["PS2.CFM"]["rows"]
+        self.assertEqual(keyboard[9], [0, 203, 0, 6, 0, 0, 0])
+        self.assertEqual(keyboard[7], [0, 205, 0, 6, 0, 0, 0])
+        self.assertEqual(ps2[29], [5, 3, 0, 6, 0, 0, 0])
+        self.assertEqual(ps2[27], [5, 1, 0, 6, 0, 0, 0])
+        self.assertFalse(self.archive["action_names_verified_in_engine"])
+        contract = self.result["native_mouse_attack_contract"]
+        self.assertEqual(contract["descriptor_bytes"], 28)
+        self.assertEqual(contract["inverted_flag_bytes"], 1)
+        self.assertEqual(contract["action_count"], 20)
+        self.assertEqual(contract["held_pressure_read"], 0x442FE7)
+        self.assertFalse(contract["windows_input_synthesis"])
+
+    def test_changed_control_archive_refused(self):
+        changed = bytearray(INSPECTOR.GENERAL.read_bytes())
+        changed[0x3800] ^= 1
+        with self.assertRaisesRegex(ValueError, "fingerprint"):
+            INSPECTOR.keyboard_archive_evidence(changed)
 
     def test_changed_executable_refused(self):
         changed = bytearray(self.data)
@@ -280,4 +339,6 @@ class EvidenceTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main(verbosity=2)
+    # Successful unittest progress is stdout, not native stderr ErrorRecords in
+    # Windows PowerShell's Stop-mode runner. Failures still exit nonzero.
+    unittest.main(testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2))

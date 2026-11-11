@@ -5,6 +5,7 @@
 #include "game.h"
 #include "hooks.h"
 #include "movement_input_policy.h"
+#include "mouse_attack_policy.h"
 
 namespace eth::input {
 
@@ -28,6 +29,12 @@ std::mutex g_movementMutex;
 MovementKeysLease g_movementLease;
 bool g_nativeMovementKeysOwned = false; // game-tick thread only
 std::atomic<bool> g_movementFilterFailed{false};
+std::atomic<bool> g_mouseAttacksEnabled{true};
+bool g_attackHookAttempted = false, g_attackHookReady = false;
+MouseAttackPolicy g_mouseAttacks;
+game::StratIdentity g_attackOwner;
+bool g_nativeTickActive = false;
+uintptr_t g_attackKeyboard = 0;
 
 bool Focused()
 {
@@ -50,11 +57,13 @@ void ApplyCaptureClip()
 
 void Init(HWND hwnd)
 {
+    g_mouseAttacksEnabled.store(Config::Get().GetBool("ethhhpatch", "mouse_attacks", true));
     SetWindow(hwnd);
 }
 
 void Shutdown()
 {
+    g_mouseAttacks.Reset();
     LeaseMovementKeys(0, false);
     EndNativeTick();
     SetCapture(false);
@@ -127,6 +136,7 @@ void OnRawInput(HWND, LPARAM lParam)
 void OnOverlayToggled(bool overlayOpen)
 {
     g_overlayOpen = overlayOpen;
+    g_mouseAttacks.Reset();
     PumpCapture();
     ConsumeMouseDelta();
     ConsumeMouseWheel();
@@ -144,6 +154,7 @@ void PumpKeys()
 
 void PumpCapture()
 {
+    if (!Focused()) g_mouseAttacks.Reset();
     bool want = g_captureRequested && !g_overlayOpen && Focused();
     if (want != g_capture) {
         g_capture = want;
@@ -161,6 +172,7 @@ void PumpCapture()
 
 void ResetTransient()
 {
+    g_mouseAttacks.Reset();
     std::lock_guard<std::mutex> lock(g_mouseMutex);
     g_mouseDX = 0.0f;
     g_mouseDY = 0.0f;
@@ -209,8 +221,36 @@ bool LeaseMovementKeys(uintptr_t player, bool enabled)
     return g_movementLease.Request(identity.addr, identity.pClass, identity.selfHandle);
 }
 
+namespace {
+void SampleAttackOwner()
+{
+    const auto previous = g_attackOwner;
+    g_attackOwner = {};
+    const float step = game::TimeStep();
+    if (!g_mouseAttacksEnabled.load() || !g_attackHookReady || !Focused() || g_overlayOpen ||
+        KeyDown(VK_F9) || !std::isfinite(step) || step <= 0 || step > 0.1f) {
+        g_mouseAttacks.Reset(); return;
+    }
+    auto& tracker = game::PlayerTracker::Get();
+    game::StratIdentity identity;
+    // Addr comes from the tracker's complete-list selection/manual pin. Recheck
+    // exact class/handle/live membership, not its allocating inspector snapshot.
+    if (tracker.Mode() != game::PlayerMode::Learning && game::ReadStratIdentity(tracker.Addr(), identity) &&
+        identity.role == game::StratRole::Ninja && identity.selfHandle) g_attackOwner = identity;
+    if (previous.addr != g_attackOwner.addr || previous.pClass != g_attackOwner.pClass ||
+        previous.selfHandle != g_attackOwner.selfHandle || !g_attackOwner.addr) g_mouseAttacks.Reset();
+}
+}
+
 void BeginNativeTick()
 {
+    g_nativeTickActive = true;
+    if (g_mouseAttacksEnabled.load() && !g_attackHookAttempted) {
+        g_attackHookAttempted = true;
+        g_attackHookReady = hooks::InstallMovementInputHook();
+    }
+    if (!Focused() || g_overlayOpen || !g_mouseAttacksEnabled.load()) g_mouseAttacks.Reset();
+    SampleAttackOwner(); // once per native tick, never per rendered frame
     g_nativeMovementKeysOwned = false;
     std::lock_guard<std::mutex> lock(g_movementMutex);
     if (!g_movementLease.Pending()) return; // inactive path does no identity read
@@ -223,19 +263,25 @@ void BeginNativeTick()
         identity.addr, identity.pClass, identity.selfHandle);
 }
 
-void EndNativeTick() { g_nativeMovementKeysOwned = false; }
+void EndNativeTick() { g_nativeMovementKeysOwned = false; g_nativeTickActive = false; }
 
 namespace {
 void FailMovementFilter(const char* reason, const void* keyboard)
 {
     if (!g_movementFilterFailed.exchange(true))
-        ETH_WARN("HL WASD filter disabled: %s (keyboard %p)", reason, keyboard);
+        ETH_WARN("Native keyboard bridge disabled: %s (keyboard %p)", reason, keyboard);
 }
 }
 
 void FilterNativeKeyboard(void* keyboard)
 {
-    if (!g_nativeMovementKeysOwned || !Focused() || g_overlayOpen || KeyDown(VK_CONTROL)) return;
+    const float step = game::TimeStep();
+    const bool attacks = g_mouseAttacksEnabled.load() && g_attackHookReady &&
+        g_nativeTickActive && g_attackOwner.addr && Focused() && !g_overlayOpen &&
+        !KeyDown(VK_F9) && std::isfinite(step) && step > 0 && step <= 0.1f;
+    const bool movement = g_nativeMovementKeysOwned && Focused() && !g_overlayOpen && !KeyDown(VK_CONTROL);
+    if (!attacks) g_mouseAttacks.Reset();
+    if ((!attacks && !movement) || g_movementFilterFailed.load()) return;
     uintptr_t app = 0, input = 0;
     if (!SafeRead(game::A(0x50FFA4), app) || !app || !SafeRead(app + 0x2c, input) ||
         !input || input > UINTPTR_MAX - 8 || (uintptr_t)keyboard != input + 8) {
@@ -257,7 +303,24 @@ void FilterNativeKeyboard(void* keyboard)
         FailMovementFilter("keyboard buffer is not a bounded writable region", keyboard); return;
     }
     bool raised = false;
-    __try { FilterMovementKeys((uint8_t*)keyboard, 512, true); }
+    AttackBindingTable table;
+    // Use the LIVE keyboard binding for these actions, including custom keys.
+    // Input+0x240 is the action-pair table, stride 2*0x1C (0x441D9C).
+    uintptr_t pressureKeyboard = 0;
+    uint32_t cls = 0, handle = 0;
+    uint8_t keyboardSuppressed = 1;
+    const bool bindings = attacks && game::PlayerTracker::Get().Addr() == g_attackOwner.addr &&
+        SafeRead(g_attackOwner.addr + game::off::StratClass, cls) && cls == g_attackOwner.pClass &&
+        SafeRead(g_attackOwner.addr + game::off::StratSelfHandle, handle) && handle == g_attackOwner.selfHandle &&
+        SafeRead(game::A(0x51C470), pressureKeyboard) && pressureKeyboard == addr &&
+        SafeRead(input + 0x37cc, keyboardSuppressed) && !keyboardSuppressed &&
+        SafeReadBytes(input + 0x240, table.data(), sizeof(table)) && AttackBindingsSupported(table);
+    if (bindings && g_attackKeyboard != addr) { g_mouseAttacks.Reset(); g_attackKeyboard = addr; }
+    __try {
+        FilterMovementKeys((uint8_t*)keyboard, 512, movement);
+        g_mouseAttacks.Apply((uint8_t*)keyboard, 512, table[kSlashAction * 2],
+            table[kSpinAction * 2], bindings, MouseDown(0), MouseDown(1));
+    }
     __except (EXCEPTION_EXECUTE_HANDLER) { raised = true; }
     if (raised) FailMovementFilter("keyboard buffer write raised an exception", keyboard);
 }
@@ -273,6 +336,9 @@ bool MouseDown(int button)
     static const int keys[] = { VK_LBUTTON, VK_RBUTTON, VK_MBUTTON, VK_XBUTTON1, VK_XBUTTON2 };
     return button >= 0 && button < 5 && KeyDown(keys[button]);
 }
+
+bool MouseAttacksEnabled() { return g_mouseAttacksEnabled.load(); }
+void SetMouseAttacksEnabled(bool enabled) { g_mouseAttacksEnabled.store(enabled); g_mouseAttacks.Reset(); }
 
 void GetMouseDelta(float& dx, float& dy)
 {

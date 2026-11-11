@@ -14,7 +14,7 @@ foreach ($file in @('EthhhSDK.dll','EthhhSDK.Managed.dll','mods\HalfLifeMovement
 }
 & $cmake -S $root -B $build -G 'Visual Studio 17 2022' -A Win32 -DETH_BUILD_TESTS=ON
 if ($LASTEXITCODE -ne 0) { throw 'Test configure failed.' }
-& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_movement_input_tests eth_sha256_tests --parallel
+& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_entity_performance_tests eth_movement_input_tests eth_mouse_attack_tests eth_ethhhpatch_lens_tests eth_sha256_tests --parallel
 if ($LASTEXITCODE -ne 0) { throw 'Native test shim build failed.' }
 Copy-Item (Join-Path $dist 'EthhhSDK.Managed.dll') $out -Force
 Copy-Item (Join-Path $dist 'mods\HalfLifeMovement\Mod.dll') $out -Force
@@ -59,6 +59,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Player learning regression failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Strat identity regression failed.' }
 & "$out\eth_movement_input_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Native movement input regression failed.' }
+& "$out\eth_mouse_attack_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Mouse attack hold/edge regression failed.' }
+& "$out\eth_ethhhpatch_lens_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Primary camera pass/FOV regression failed.' }
 & "$out\eth_sha256_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Native SHA-256 file hashing regression failed.' }
 & "$out\eth_ethhhpatch_policy_tests.exe"
@@ -71,9 +75,13 @@ if ($LASTEXITCODE -ne 0) { throw 'EthhhPatch camera regression failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'EthhhPatch interpolation regression failed.' }
 & "$out\eth_ethhhpatch_entity_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'EthhhPatch entity-animation regression failed.' }
+& "$out\eth_entity_performance_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Production entity reader safety/performance regression failed.' }
 & python "$root\tests\test_ethhhpatch_evidence.py"
 if ($LASTEXITCODE -ne 0) { throw 'Static EthhhPatch evidence regression failed.' }
 & python "$root\tests\test_hotpath_guards.py"
 if ($LASTEXITCODE -ne 0) { throw 'Hot-path performance guard regression failed.' }
 & python "$root\tests\check-abi.py" $root
 if ($LASTEXITCODE -ne 0) { throw 'Export ABI regression failed.' }
+Write-Output 'PASS complete offline regression suite (exit 0)'
+exit 0

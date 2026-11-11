@@ -11,6 +11,9 @@
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\dist\dinput8.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_entity_performance_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_camera_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
@@ -20,10 +23,16 @@
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_interpolation_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_lens_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_policy_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_projection_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_mouse_attack_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_movement_input_tests.exe</FullPath>

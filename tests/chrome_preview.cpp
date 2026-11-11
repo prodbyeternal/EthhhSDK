@@ -21,12 +21,13 @@ static void Hr(HRESULT result, const char* label) { Check(SUCCEEDED(result), lab
 int main(int argc, char** argv)
 {
     try {
-        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage patchTab]");
+        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage patchTab scrollBottom]");
         int width = argc > 2 ? atoi(argv[2]) : 1152, height = argc > 3 ? atoi(argv[3]) : 704;
         float scale = argc > 4 ? (float)atof(argv[4]) : 1.0f;
         bool stress = argc > 5 && atoi(argv[5]);
         bool patchPage = argc > 6 && atoi(argv[6]);
         int patchTab = argc > 7 ? atoi(argv[7]) : 0;
+        bool scrollBottom = argc > 8 && atoi(argv[8]);
         const char* tabs[] = {"Display", "Camera", "Animation", "Diagnostics"};
         Check(patchTab>=0 && patchTab<4,"preview tab index");
         const auto page = patchPage ? eth::ui::pages::Page::Patch : eth::ui::pages::Page::Mods;
@@ -127,6 +128,17 @@ int main(int argc, char** argv)
             for(int frame=0; frame<8; ++frame) drawFrame();
             ImGuiTabItem* selected=ImGui::TabBarFindTabByID(bar,bar->SelectedTabId);
             Check(selected && !strcmp(ImGui::TabBarGetTabName(bar,selected),tabs[patchTab]),"requested patch tab selected");
+            if (patchTab==1) {
+                // The longer camera/FOV/input page must remain reachable by
+                // scrolling. Exercise both ends without any Windows input.
+                for(int frame=0;frame<8;++frame) {
+                    ImGui::SetScrollY(patch,patch->ScrollMax.y); drawFrame();
+                }
+                Check(std::abs(patch->Scroll.y-patch->ScrollMax.y)<1,"camera page bottom reachable");
+                if (!scrollBottom) for(int frame=0;frame<8;++frame) {
+                    ImGui::SetScrollY(patch,0); drawFrame();
+                }
+            }
         }
         int cards=0;
         for(ImGuiWindow* w : ImGui::GetCurrentContext()->Windows) {

@@ -181,6 +181,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6972641C-583A-334F-8A04-98B7AA2F8EA6}</Project>
       <Name>dinput8</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_entity_performance_tests.vcxproj">
+      <Project>{454EE8AA-6359-388C-9264-25E073B8D1C9}</Project>
+      <Name>eth_entity_performance_tests</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_camera_tests.vcxproj">
       <Project>{F510FF59-D2F7-3E50-87FF-50164C21A7B0}</Project>
       <Name>eth_ethhhpatch_camera_tests</Name>
@@ -193,6 +197,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6382AC09-68C6-36AC-A859-C69DF0E7792F}</Project>
       <Name>eth_ethhhpatch_interpolation_tests</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_lens_tests.vcxproj">
+      <Project>{88393B84-2DB3-35DC-B1C7-75472AF65E34}</Project>
+      <Name>eth_ethhhpatch_lens_tests</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_policy_tests.vcxproj">
       <Project>{E005259A-5A28-318F-A185-8E8E6A59040F}</Project>
       <Name>eth_ethhhpatch_policy_tests</Name>
@@ -200,6 +208,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_projection_tests.vcxproj">
       <Project>{BFE1FD6A-5FDC-32B3-A7FF-6FFAEF042EBB}</Project>
       <Name>eth_ethhhpatch_projection_tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_mouse_attack_tests.vcxproj">
+      <Project>{C84D5B55-6A0C-3A8E-8716-4A143C303382}</Project>
+      <Name>eth_mouse_attack_tests</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_movement_input_tests.vcxproj">
       <Project>{7A3CBE79-DB32-3825-8D2A-D80837C15D3A}</Project>

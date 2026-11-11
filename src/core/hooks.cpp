@@ -77,9 +77,8 @@ void __fastcall TickDetour(void* self, void* /*edx*/, int tickIndex)
     input::PumpKeys();
     input::PumpCapture();
     input::BeginNativeTick();
-    if (g_tickOrig)
-        g_tickOrig(self, tickIndex);
-    input::EndNativeTick();
+    __try { if (g_tickOrig) g_tickOrig(self, tickIndex); }
+    __finally { input::EndNativeTick(); }
 
     patch::OnTick(game::TimeStep());
 
@@ -172,6 +171,7 @@ LRESULT CALLBACK WndProcDetour(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
     if (msg == WM_ACTIVATEAPP || msg == WM_KILLFOCUS)
         input::PumpCapture();
+    if (msg == WM_KILLFOCUS || (msg == WM_ACTIVATEAPP && !wp)) input::ResetTransient();
     if (msg == WM_INPUT) {
         input::OnRawInput(hwnd, lp);
     }
@@ -368,7 +368,7 @@ bool InstallMovementInputHook()
         MH_RemoveHook((void*)target); g_keyboardTickOrig = nullptr; return false;
     }
     g_keyboardTickHooked = true;
-    ETH_INFO("HL opt-in WASD filter installed at %p (one-tick exact-Ninja lease)", (void*)target);
+    ETH_INFO("Native keyboard bridge installed at %p (mouse attacks / opt-in one-tick HL WASD lease)", (void*)target);
     return true;
 }
 

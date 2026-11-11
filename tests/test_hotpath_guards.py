@@ -1,5 +1,6 @@
 """Source-level regression guards for pinned-player and inactive-patch hot paths."""
 from pathlib import Path
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,6 +16,8 @@ class HotPathGuards(unittest.TestCase):
         cls.util = (ROOT / "src/core/util.cpp").read_text(encoding="utf-8")
         cls.hl = (ROOT / "mods/HalfLifeMovement/src/HalfLifeMovementMod.cs").read_text(encoding="utf-8")
         cls.input = (ROOT / "src/core/input.cpp").read_text(encoding="utf-8")
+        cls.entity = (ROOT / "src/core/ethhhpatch_entity_interpolation.h").read_text(encoding="utf-8")
+        cls.reader = (ROOT / "src/core/ethhhpatch_entity_reader.h").read_text(encoding="utf-8")
 
     def test_identity_does_not_snapshot_every_strat(self):
         start = self.game.index("bool ReadStratIdentity(")
@@ -148,6 +151,62 @@ class HotPathGuards(unittest.TestCase):
         fraction = self.runtime[self.runtime.index("float CurrentRenderFraction()"):self.runtime.index("void SampleEntityPoses()")]
         self.assertIn("step <= 0 || input::OverlayOpen()", fraction)
 
+    def test_entity_hotpaths_use_phase_scoped_protected_copies(self):
+        sample = self.runtime[self.runtime.index("void SampleEntityPoses()"):self.runtime.index("bool ReadEntityRender(")]
+        self.assertNotIn("SnapshotStrats", sample)
+        self.assertNotIn("ReadStrat", sample)
+        self.assertNotIn("SafeReadBytes", sample)
+        self.assertIn("g_entityOwners.Collect", sample)
+        self.assertIn("g_entitySampleReads.Reset()", sample)
+        render = self.runtime[self.runtime.index("void __fastcall NodeSubmitDetour"):self.runtime.index("void __fastcall ViewRenderDetour")]
+        self.assertNotIn("SafeReadBytes", render)
+        self.assertNotIn("lock_guard", render)
+        self.assertNotIn("ETH_INFO", render)
+        self.assertIn("ReadEntityRender", render)
+        self.assertIn("__try { memcpy", self.reader)
+        self.assertIn("__except (EXCEPTION_EXECUTE_HANDLER)", self.reader)
+        self.assertIn("VirtualQuery", self.reader)
+        self.assertIn("BeginEntityFrame()", self.runtime)
+        self.assertIn("FinishEntityFrame()", self.runtime)
+        finish = self.runtime[self.runtime.index("void FinishEntityFrame()"):self.runtime.index("void __fastcall NodeSubmitDetour")]
+        self.assertIn("if (g_entityFrameAlpha < 1)", finish)
+
+    def test_entity_work_is_bounded_and_buffers_reused(self):
+        self.assertIn("kEntityWorkBudgetMilliseconds = 2", self.runtime)
+        self.assertIn("if (!g_entityRenderBudget.Available())", self.runtime)
+        self.assertIn("if (!withinBudget()) break", self.runtime)
+        self.assertIn("p.previousNodes.swap(p.nodes)", self.entity)
+        self.assertIn("std::array<Matrix,kMaxNodes> current_", self.entity)
+        mesh = self.entity[self.entity.index("bool MeshFits("):self.entity.index("struct Pose")]
+        self.assertNotIn("std::find", mesh)
+        self.assertIn("length++ == 512", mesh)
+        self.assertIn("counter-g_lastOrbitLogCounter >= g_counterFrequency", self.runtime)
+
+    def test_mouse_attacks_keep_native_owner_focus_and_tick_gates(self):
+        body = self.input[self.input.index("void FilterNativeKeyboard("):self.input.index("bool KeyPressed(")]
+        for guard in ("g_nativeTickActive", "g_attackOwner.addr", "Focused()", "!g_overlayOpen",
+                      "!KeyDown(VK_F9)", "pressureKeyboard == addr", "!keyboardSuppressed",
+                      "handle == g_attackOwner.selfHandle", "AttackBindingsSupported(table)"):
+            self.assertIn(guard, body)
+        self.assertNotIn("ReadStratIdentity", body)
+        self.assertNotIn("VirtualProtect", body)
+        self.assertNotIn("SendInput", self.input)
+        self.assertNotIn("keybd_event", self.input)
+        self.assertIn("input::ResetTransient();", self.hooks)
+        self.assertIn("__finally { input::EndNativeTick(); }", self.hooks)
+        sample = self.input[self.input.index("void SampleAttackOwner()"):self.input.index("void BeginNativeTick()")]
+        self.assertNotIn("tracker.Valid()", sample)
+        self.assertNotIn("SnapshotStrats", sample)
+        self.assertIn("identity.role == game::StratRole::Ninja", sample)
+
+    def test_fov_only_sampling_does_not_require_mouse_orbit(self):
+        sample = self.runtime[self.runtime.index("void SampleOrbitCamera()"):self.runtime.index("void ApplyRenderMouseLook()")]
+        self.assertIn("!g_mouseLookEnabled && !g_normalFovEnabled.load()", sample)
+        fov = self.runtime[self.runtime.index("void ApplyNormalRenderFov("):self.runtime.index("void SampleEntityPoses()")]
+        self.assertNotIn("g_mouseLookEnabled", fov)
+        self.assertNotIn("ReadStratIdentity", fov)
+        self.assertNotIn("SetCapture", fov)
+
 
 if __name__ == "__main__":
-    unittest.main(verbosity=2)
+    unittest.main(testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2))

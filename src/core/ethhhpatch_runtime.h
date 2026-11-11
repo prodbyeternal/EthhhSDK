@@ -2,6 +2,7 @@
 #include "precomp.h"
 #include "ethhhpatch_policy.h"
 #include "ethhhpatch_camera_policy.h"
+#include "ethhhpatch_lens_policy.h"
 
 namespace eth::patch::runtime {
 
@@ -41,17 +42,25 @@ struct OrbitTelemetry {
     OrbitState state = OrbitState::Waiting;
     float nativeDistance = 0, orbitDistance = 0, yawDegrees = 0, pitchDegrees = 0;
     uint64_t transitions = 0;
+    uint32_t renderGuardFailures = 0, renderGuardMask = 0;
 };
 OrbitTuning ReadOrbitTuning();
 void SetOrbitTuning(float sensitivity, bool invertY);
 OrbitTelemetry ReadOrbitTelemetry();
 void SetOrbitDistance(float distance);
 void ZoomOrbit(float notches);
+struct NormalFovTuning { bool enabled = false; float verticalDegrees = 60; };
+NormalFovTuning ReadNormalFovTuning();
+void SetNormalFovTuning(bool enabled, float verticalDegrees);
 
 struct EntityTelemetry {
     bool enabled = true;
     size_t sampled = 0, paired = 0;
     uint64_t interpolatedSubmissions = 0, nativeSubmissions = 0;
+    size_t owners = 0, sampleQueries = 0, renderQueries = 0;
+    double sampleMs = 0, renderMs = 0;
+    uint64_t sampleBudgetStops = 0, renderBudgetStops = 0;
+    bool listComplete = false;
 };
 EntityTelemetry ReadEntityTelemetry();
 void SetEntityInterpolationEnabled(bool enabled);
