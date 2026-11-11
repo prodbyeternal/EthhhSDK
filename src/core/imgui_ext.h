@@ -25,6 +25,11 @@ void  U32ToHex(ImU32 col, char out[7]);
 
 // ------------------------------------------------------------------ widgets
 bool ToggleSwitch(const char* id, bool* value, float widthScale = 1.0f);
+bool Checkbox(const char* label, bool* value);
+bool CheckboxFlags(const char* label, unsigned int* value, unsigned int flags);
+bool GlassSlider(const char* label, float* value, float low, float high, const char* format = "%.2f");
+bool SearchField(const char* id, char* value, size_t capacity, const char* hint);
+void SetManagerOpacity(float alpha);
 void SectionHeader(const char* title, const char* subtitle = nullptr);
 void Divider(float spacing = 8.0f);
 void Badge(const char* text, ImU32 color);

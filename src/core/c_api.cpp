@@ -201,14 +201,15 @@ ETH_CAPI(unsigned int, EthGame_PlayerAddr, (void)) { return (unsigned int)game::
 ETH_CAPI(int, EthGame_PlayerMode, (void))
 {
     auto m = game::PlayerTracker::Get().Mode();
-    return m == game::PlayerMode::Auto ? 0 : m == game::PlayerMode::Manual ? 1 : 2;
+    return int(m);
 }
 ETH_CAPI(void, EthGame_PlayerSetMode, (int mode))
 {
     auto& pt = game::PlayerTracker::Get();
     if (mode == 0) pt.SetMode(game::PlayerMode::Auto);
     else if (mode == 1) pt.SetMode(game::PlayerMode::Manual);
-    else pt.BeginLearning();
+    else if (mode == 2) pt.BeginLearning();
+    else if (mode == 3) pt.SetMode(game::PlayerMode::AutoPlus);
 }
 ETH_CAPI(void, EthGame_PlayerSelect, (unsigned int addr)) { game::PlayerTracker::Get().Select(addr); }
 ETH_CAPI(void, EthGame_PlayerLearn, (void)) { game::PlayerTracker::Get().BeginLearning(); }

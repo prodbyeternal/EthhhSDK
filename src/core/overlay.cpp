@@ -21,6 +21,9 @@
 
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx9.h"
+#include "liquid_glass.h"
+#include "ui_motion_policy.h"
+#include "ui_audio.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -45,6 +48,7 @@ int  g_renderErrors = 0;
 bool g_renderDisabled = false;
 bool g_loggedRenderException = false;
 int  g_focusFrames = 0;
+ui::motion::Transition g_menuTransition;
 
 // ---------------------------------------------------------------------------
 bool InitBackends(IDirect3DDevice9* device, HWND hwnd)
@@ -53,6 +57,7 @@ bool InitBackends(IDirect3DDevice9* device, HWND hwnd)
         return true;
 
     if (g_backendReady) {
+        ui::ShutdownGlass();
         ImGui_ImplDX9_Shutdown();
         ImGui_ImplWin32_Shutdown();
         g_backendReady = false;
@@ -87,6 +92,7 @@ bool InitBackends(IDirect3DDevice9* device, HWND hwnd)
 
     g_hwnd = hwnd;
     g_device = device;
+    ui::InitGlass(device);
     g_backendReady = true;
     ETH_INFO("overlay: ImGui backends ready (hwnd=%p device=%p scale %.2f)", hwnd, device, scale);
     return true;
@@ -139,10 +145,11 @@ void DrawManagerWindow()
     if (size.x < 520.0f * s) size.x = io.DisplaySize.x;
     if (size.y < 320.0f * s) size.y = io.DisplaySize.y;
 
+    const float alpha=g_menuTransition.Value();
     ImGui::SetNextWindowPos(ImVec2((io.DisplaySize.x - size.x) * 0.5f,
-                                   (io.DisplaySize.y - size.y) * 0.5f),
-                            ImGuiCond_Appearing);
-    ImGui::SetNextWindowSize(size, ImGuiCond_Appearing);
+                                   (io.DisplaySize.y - size.y) * 0.5f+(1-alpha)*16*s),ImGuiCond_Always);
+    ImGui::SetNextWindowSize(size, ImGuiCond_Always);
+    ui::SetManagerOpacity(alpha);
     if (g_focusFrames > 0) {
         ImGui::SetNextWindowFocus();
         --g_focusFrames;
@@ -152,14 +159,18 @@ void DrawManagerWindow()
     bool visible = ui::BeginChromeWindow("##ethhh_overlay", "EthhhSDK",
                                          "I-Ninja / In-game mod manager",
                                          &open, size,
-                                         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings);
+                                          ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings |
+                                          ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+                                          (!g_visible ? ImGuiWindowFlags_NoInputs : 0));
     if (!visible) {
         if (!open)
             SetVisible(false);
         return;
     }
 
+    ImGui::BeginDisabled(!g_visible);
     ui::pages::DrawManagerLayout(false);
+    ImGui::EndDisabled();
 
     ui::EndChromeWindow();
 
@@ -239,19 +250,21 @@ void RenderFrame(IDirect3DDevice9* device, bool moviePath)
     ImGui_ImplDX9_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+    ui::BeginGlassFrame();
 
     if (io.DisplaySize.x < 16.0f || io.DisplaySize.y < 16.0f) {
         ImGui::EndFrame();
         return;
     }
 
-    if (g_visible)
+    g_menuTransition.Advance(io.DeltaTime,Config::Get().GetBool("theme","reduce_motion",false));
+    if (g_menuTransition.Active())
         DrawManagerWindow();
 
-    ui::pages::DrawWatermark();
+    ui::pages::DrawStartupWatermark();
 
     ImGui::Render();
-    ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+    ui::RenderGlassDrawData(device,ImGui::GetDrawData());
 
     if (g_visible)
         SetCursor(LoadCursorA(nullptr, IDC_ARROW));
@@ -277,9 +290,11 @@ void OnDeviceReset(bool before, IDirect3DDevice9* device)
     if (!g_backendReady || device == nullptr)
         return;
     if (before) {
+        ui::InvalidateGlass();
         ImGui_ImplDX9_InvalidateDeviceObjects();
     } else {
         ImGui_ImplDX9_CreateDeviceObjects();
+        ui::RecreateGlass();
     }
 }
 
@@ -295,6 +310,8 @@ void SetVisible(bool visible)
         return;
 
     g_visible = visible;
+    g_menuTransition.Target(visible);
+    ui::PlayUiSound(ui::Sound::Click);
 
     if (visible) {
         g_focusFrames = 1;
@@ -348,6 +365,7 @@ void Shutdown()
         SetVisible(false);
 
     if (g_backendReady) {
+        ui::ShutdownGlass();
         ImGui_ImplDX9_Shutdown();
         ImGui_ImplWin32_Shutdown();
         g_backendReady = false;
@@ -356,6 +374,8 @@ void Shutdown()
     g_hwnd = nullptr;
     g_fontsLoaded = false;
     g_fontScale = 0.0f;
+    g_menuTransition.Snap(false);
+    ui::ShutdownUiAudio();
 }
 
 } // namespace eth::overlay

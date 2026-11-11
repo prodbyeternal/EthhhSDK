@@ -1,0 +1,19 @@
+# Generated builds and isolated test/preview outputs.
+/build/
+/.vs/
+*.user
+*.suo
+**/__pycache__/
+*.py[cod]
+
+# Local installation backups and runtime state: preserve on disk, not in Git.
+/_backup/
+/logs/
+/config/*.ini
+/imgui.ini
+
+# Legacy/local binary copies. Production artifacts stage in build/dist.
+/EthhhSDK.dll
+/EthhhSDK.Managed.dll
+/dinput8.dll
+/mods/HalfLifeMovement/Mod.dll

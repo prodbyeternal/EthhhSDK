@@ -97,6 +97,31 @@ foreach ($dir in @('EthhhSDK', 'EthhhSDK\mods', 'EthhhSDK\config', 'EthhhSDK\log
     if (-not (Test-Path $path)) { New-Item -ItemType Directory -Path $path -Force | Out-Null }
 }
 
+# Bundle attribution with the installed assemblies. Treat pre-existing notices
+# like other local files: back them up before replacement, never remove them.
+$noticeFiles = @()
+$notice = Join-Path $dist 'THIRD-PARTY-NOTICES.md'
+if (Test-Path $notice -PathType Leaf) { $noticeFiles += Get-Item $notice }
+$licenses = Join-Path $dist 'licenses'
+if (Test-Path $licenses -PathType Container) { $noticeFiles += Get-ChildItem $licenses -File -Recurse }
+$modLicense = Join-Path $dist 'mods\HalfLifeMovement\LICENSE'
+if (Test-Path $modLicense -PathType Leaf) { $noticeFiles += Get-Item $modLicense }
+$distRoot = [IO.Path]::GetFullPath($dist).TrimEnd('\') + '\'
+foreach ($file in $noticeFiles) {
+    if (-not $file.FullName.StartsWith($distRoot, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Notice outside staging root: $($file.FullName)"
+    }
+    $relative = $file.FullName.Substring($distRoot.Length)
+    $dst = Join-Path $GameDir "EthhhSDK\$relative"
+    New-Item -ItemType Directory -Path (Split-Path -Parent $dst) -Force | Out-Null
+    if (Test-Path $dst) {
+        $saved = Join-Path $backup $relative
+        New-Item -ItemType Directory -Path (Split-Path -Parent $saved) -Force | Out-Null
+        Copy-Item $dst $saved -Force
+    }
+    Copy-Item $file.FullName $dst -Force
+}
+
 if (Test-Path $backup) {
     Write-Host "backup: $backup" -ForegroundColor DarkGray
 }

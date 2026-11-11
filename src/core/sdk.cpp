@@ -10,6 +10,7 @@
 #include "util.h"
 #include "log.h"
 #include "config.h"
+#include "pestcontrol.h"
 #include "mods.h"
 #include "hooks.h"
 #include "launcher.h"
@@ -63,6 +64,7 @@ ETH_CAPI(void, EthhhSDK_EntryGate, (void))
     overlay::SetToggleKey(cfg.GetInt("core", "overlay_key", VK_F9));
 
     const bool safeMode = cfg.GetBool("core", "safe_mode", false);
+    patch::pest::SetEnabled(!safeMode && cfg.GetBool("ethhhpatch", "pestcontrol", false));
     if (safeMode)
         ETH_WARN("safe mode is enabled: hooks and mods will not be loaded");
 

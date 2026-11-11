@@ -102,6 +102,7 @@ internal static class ManagedInteropTests
             Check(Marshal.OffsetOf(typeof(CameraInfo),"World").ToInt32()==24,"camera world ABI offset");
             Check(Marshal.OffsetOf(typeof(StratInfo),"Class").ToInt32()==44,"strat class ABI offset");
             Check(Marshal.SizeOf(typeof(StratIdentity))==40,"additive identity size");
+            Test_Set(3,3);Check(Game.PlayerMode==3 && Game.PlayerPinned,"Auto+ mode/pin native-managed roundtrip");Test_Set(3,1);
             Check(Marshal.OffsetOf(typeof(StratIdentity),"Role").ToInt32()==32,"identity role ABI offset");
             Check(Game.GetStratClassName(0x1000)=="Ninja","caller-owned ASCII class name");
             Check(Game.GetStratClassName(0)=="","null class-name address");
@@ -132,6 +133,7 @@ internal static class ManagedInteropTests
             bool currentTuning=args.Length>1 && args[1]=="current-tuning";
             bool additive=args.Length>1 && args[1]=="additive";
             bool cameraOnly=args.Length>1 && args[1]=="camera-only";
+            bool autoPlus=args.Length>1 && args[1]=="autoplus";
             ModSettings.SetBool("replace_movement",!additive,"halflife_movement");
             ModSettings.SetBool("movement",!cameraOnly,"halflife_movement");
             bool autoHop=args.Length>1 && (args[1]=="autohop" || liveTuning || currentTuning);
@@ -173,6 +175,11 @@ internal static class ManagedInteropTests
                 Test_Set(19,role); Activate(); Standby("non-Ninja role "+role+" refused");
             }
             Test_Set(19,1); Test_Set(21,1); Activate(); Standby("unreadable identity refused"); Test_Set(21,0);
+            if(autoPlus) {
+                Test_Set(3,3);Test_Tick();Standby("Auto+ pin alone never activates HL");
+                Test_Set(4,0);Check(Game.PlayerReacquireExactNinja() && Game.PlayerMode==3,"Auto+ explicit reacquire retains public mode");
+                Test_Set(19,2);Activate();Standby("Auto+ attachment refused");Test_Set(19,1);
+            }
             Activate(); Check(Test_Get(18)==1,"activation requests capture"); Check(Test_Get(22)==1,"HL camera claims render ownership"); Check(Test_Get(33)>0,"camera callback");
             Check(Math.Abs(Test_Get(37)-(currentTuning?130:90))<.001,"FOV override");
             Check(Math.Abs(Test_Get(39)-Test_Get(15)-(currentTuning?101:69)*scale)<.001,"camera eye height converted to game units");

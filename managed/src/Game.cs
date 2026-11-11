@@ -57,7 +57,8 @@ namespace EthhhSDK
         // ----------------------------------------------------------------- strats
         public static uint PlayerAddr => Native.EthGame_PlayerAddr();
         public static bool PlayerValid => Native.EthGame_PlayerValid() != 0;
-        public static int PlayerMode => Native.EthGame_PlayerMode();   // 0=auto 1=manual 2=learning
+        public static int PlayerMode => Native.EthGame_PlayerMode();   // 0=auto 1=manual 2=learning 3=auto+
+        public static bool PlayerPinned => (PlayerMode == 1 || PlayerMode == 3) && PlayerValid;
         public static int PlayerCandidateCount => Native.EthGame_PlayerCandidateCount();
         public static int StratCount => Native.EthGame_StratCount();
 

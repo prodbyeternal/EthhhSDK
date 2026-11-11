@@ -42,8 +42,9 @@ be installed into the game directory.
 
 ## Half-Life adapter: important limits
 
-Exact class-name detection now reads `strat+0x1A8 -> class+0x04`; Auto accepts
-only a unique `Ninja`, not camera proximity. Pinning is still required for HL;
+Exact class-name detection reads `strat+0x1A8 -> class+0x04`. Default **Auto+**
+automatically pins a unique exact `Ninja`; it never activates HL. Plain Auto is
+detection-only, and Manual remains available. A valid pin is required for HL;
 attachments, camera/speech and unknown identities are rejected. The verified
 owner-handle path is exposed read-only in the Inspector, Lua and C#;
 see [the connection API and safety contract](docs/ninja-connection.md).
@@ -102,6 +103,11 @@ paces Presents to the target Hz. This staged build has not yet been installed or
 live-accepted; unsupported modes are refused rather than guessed.
 See [EthhhPatch development status](docs/ethhhpatch.md).
 
+**PestControl** is an optional, off-by-default EthhhPatch tab in both managers.
+It finds exact `Rat` strats and queues verified native deletion, independently of
+HL or display patches. See [PestControl's lifecycle and limits](docs/pestcontrol.md).
+This feature is staged and offline-tested, not yet live-accepted.
+
 Outside HL mode, the optional third-person mouse orbit updates the actual View
 pose every render and restores native camera/View bytes after the frame. It
 yields to movies, HL ownership and suspected scripted shots. After a suspected
@@ -118,5 +124,11 @@ native camera without restoring/reapplying the display patch.
   the parent folder. BunnymodXT is not used.
 
 Vendored dependency license files remain with their sources. Final Valve
-agreement text and consolidated attribution are pending; this is not a
-distribution-ready package. No affiliation with Namco or Argonaut Games.
+agreement text is copied verbatim to `mods/HalfLifeMovement/LICENSE` and bundled
+with [consolidated attribution](THIRD-PARTY-NOTICES.md) under `build/dist`.
+Valve applicability and the supplied sounds' rights still need review; this is
+not distribution approval. No affiliation with Namco, Argonaut, Valve or Apple.
+
+Generated builds, installation backups, local settings/logs and legacy DLL
+copies are ignored and no longer tracked. They remain on disk; historical Git
+blobs were not purged. See [repository cleanup](docs/repository-cleanup.md).

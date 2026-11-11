@@ -35,9 +35,13 @@ $cases = @(
     @('animation',1152,704,1,0,1,2),
     @('animation-narrow',900,640,1,0,1,2),
     @('animation-hidpi',1728,1056,1.5,0,1,2),
-    @('diagnostics',1152,704,1,1,1,3),
-    @('diagnostics-narrow',900,640,1,1,1,3),
-    @('diagnostics-hidpi',1728,1056,1.5,1,1,3)
+    @('pestcontrol',1152,704,1,0,1,3),
+    @('pestcontrol-narrow',900,640,1,0,1,3),
+    @('pestcontrol-small',640,480,1,0,1,3),
+    @('pestcontrol-hidpi',1728,1056,1.5,0,1,3),
+    @('diagnostics',1152,704,1,1,1,4),
+    @('diagnostics-narrow',900,640,1,1,1,4),
+    @('diagnostics-hidpi',1728,1056,1.5,1,1,4)
 )
 foreach ($case in $cases) {
     $tab = if ($case.Length -gt 6) { $case[6] } else { 0 }

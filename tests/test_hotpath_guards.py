@@ -27,14 +27,15 @@ class HotPathGuards(unittest.TestCase):
         self.assertIn("LiveAddressMatches", body)
         self.assertIn("ResolveOwnerHandle", body)
 
-    def test_manual_tracker_bypasses_candidate_refresh(self):
+    def test_pinned_tracker_bypasses_candidate_refresh(self):
         start = self.game.index("void PlayerTracker::Update()")
         end = self.game.index("uintptr_t PlayerTracker::Addr()", start)
         body = self.game[start:end]
-        manual = body.index("if (mode_ == PlayerMode::Manual)")
-        manual_return = body.index("Manual pinning never needs a full candidate snapshot", manual)
-        refresh = body.index("RefreshCandidates();", manual)
-        self.assertLess(manual_return, refresh)
+        pinned = body.index("if (PinnedMode(mode_)")
+        pinned_return = body.index("if (manualValid_ || mode_ == PlayerMode::Manual) return;", pinned)
+        refresh = body.index("RefreshCandidates();", pinned)
+        self.assertLess(pinned_return, refresh)
+        self.assertIn("if (updateTimer_ > 0.0f) return;", body[pinned:refresh])
         self.assertIn("return manual_ && manualValid_", self.game)
 
     def test_inactive_patch_has_no_culler_detour(self):
@@ -76,7 +77,8 @@ class HotPathGuards(unittest.TestCase):
 
     def test_reacquire_enforces_native_prior_pin_before_scanning(self):
         body = self.game[self.game.index("bool PlayerTracker::ReacquireExactNinja()"):self.game.index("void PlayerTracker::RefreshCandidates()")]
-        self.assertLess(body.index("pinConsent_.AllowsReacquire(mode_ == PlayerMode::Manual)"), body.index("SnapshotStrats("))
+        self.assertLess(body.index("pinConsent_.AllowsReacquire(PinnedMode(mode_))"), body.index("SnapshotStrats("))
+        self.assertIn("mode_=previousMode;", body)
         select = self.game[self.game.index("void PlayerTracker::Select("):self.game.index("void PlayerTracker::BeginLearning()")]
         self.assertIn("pinConsent_.Selected(complete && UniqueNinja(live) == addr)", select)
         for start, end in [("void PlayerTracker::Reset()", "void PlayerTracker::SetMode("),

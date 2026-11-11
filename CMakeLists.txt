@@ -57,6 +57,11 @@ add_library(imgui STATIC
 target_include_directories(imgui PUBLIC ${ETH_TP}/imgui ${ETH_TP}/imgui/backends)
 target_link_libraries(imgui PUBLIC d3d9.lib)
 
+# Only the template's non-docking library. Keep the SDK's existing ImGui ABI.
+add_library(liquid_glass STATIC ${ETH_TP}/liquid_glass/glass.cpp)
+target_include_directories(liquid_glass PUBLIC ${ETH_TP}/liquid_glass)
+target_link_libraries(liquid_glass PUBLIC imgui d3dcompiler.lib winmm.lib)
+
 # ------------------------------------------------------------------- lua ----
 file(GLOB LUA_SRC ${ETH_TP}/lua/[l-z]*.c)
 # lua.c / luac.c are standalone interpreters with their own main(); never link them.
@@ -83,10 +88,11 @@ target_include_directories(minhook PUBLIC ${ETH_TP}/minhook/include ${ETH_TP}/mi
 # ----------------------------------------------------------------- core -----
 file(GLOB ETH_CORE_SRC ${ETH_ROOT}/src/core/*.cpp)
 add_library(EthhhSDK SHARED ${ETH_CORE_SRC})
+target_sources(EthhhSDK PRIVATE ${ETH_ROOT}/src/core/liquid_fonts.rc)
 target_include_directories(EthhhSDK PRIVATE ${ETH_ROOT}/src/core ${ETH_TP}/lua)
 # NOTE: no mscoree.lib -- not installed with this SDK. clr_host.cpp binds
 # CorBindToRuntimeEx from mscoree.dll dynamically.
-target_link_libraries(EthhhSDK PRIVATE imgui lua54 minhook d3d9.lib dxguid.lib ole32.lib oleaut32.lib user32.lib gdi32.lib shell32.lib advapi32.lib winmm.lib bcrypt.lib shlwapi.lib)
+target_link_libraries(EthhhSDK PRIVATE liquid_glass imgui lua54 minhook d3d9.lib dxguid.lib ole32.lib oleaut32.lib user32.lib gdi32.lib shell32.lib advapi32.lib winmm.lib bcrypt.lib shlwapi.lib)
 set_target_properties(EthhhSDK PROPERTIES PREFIX "" OUTPUT_NAME "EthhhSDK")
 
 # Export .def generated from the sources so the C ABI stays undecorated.

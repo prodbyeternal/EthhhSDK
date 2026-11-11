@@ -1,0 +1,8 @@
+// Embed the template icon fonts: no external font-install paths or runtime IO.
+201 RCDATA "../third_party/liquid_glass/fa/fa-solid-900.ttf"
+202 RCDATA "../third_party/liquid_glass/fa/fa-brands-400.ttf"
+301 RCDATA "../../sounds to be used/general_ui_tab_switch_click.wav"
+302 RCDATA "../../sounds to be used/injection_ingame_show_done.wav"
+303 RCDATA "../../sounds to be used/start_game.wav"
+304 RCDATA "../../sounds to be used/toggle_off.wav"
+305 RCDATA "../../sounds to be used/toggle_on.wav"

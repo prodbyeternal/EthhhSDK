@@ -27,6 +27,11 @@ void DrawManagerLayout(bool launcherMode, bool* startGame = nullptr, bool* exitA
 
 // Always-on game watermark (drawn by the overlay).
 void DrawWatermark();
+void DrawStartupWatermark();
+void ResetStartupWatermark();
+#if defined(ETH_TESTING)
+void TestSetStartupSeconds(float seconds);
+#endif
 
 // Small status strip (used at the bottom of the launcher content area).
 void DrawStatusStrip();

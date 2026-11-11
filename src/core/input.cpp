@@ -199,8 +199,8 @@ bool LeaseMovementKeys(uintptr_t player, bool enabled)
     const char* refusal = nullptr;
     if (g_movementFilterFailed.load())
         refusal = "native keyboard filter failed earlier; restart required";
-    else if (tracker.Mode() != game::PlayerMode::Manual)
-        refusal = "player is not manually pinned";
+    else if (!tracker.Pinned())
+        refusal = "player is not pinned (Manual or Auto+)";
     else if (!tracker.Valid())
         refusal = "pinned player is no longer valid";
     else if (tracker.Addr() != player)
@@ -257,7 +257,7 @@ void BeginNativeTick()
     auto& tracker = game::PlayerTracker::Get();
     game::StratIdentity identity;
     const bool valid = tracker.Valid() && game::ReadStratIdentity(tracker.Addr(), identity);
-    g_nativeMovementKeysOwned = g_movementLease.Consume(tracker.Mode() == game::PlayerMode::Manual,
+    g_nativeMovementKeysOwned = g_movementLease.Consume(tracker.Pinned(),
         valid, valid && identity.role == game::StratRole::Ninja, Focused(), g_overlayOpen,
         KeyDown(VK_CONTROL) || KeyDown(VK_F2) || KeyDown(VK_F3), game::TimeStep(),
         identity.addr, identity.pClass, identity.selfHandle);

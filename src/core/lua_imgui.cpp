@@ -224,7 +224,7 @@ int i_checkbox(lua_State* L)
 {
     const char* label = luaL_checkstring(L, 1);
     bool v = lua_toboolean(L, 2) != 0;
-    bool changed = ImGui::Checkbox(label, &v);
+    bool changed = ui::Checkbox(label, &v);
     lua_pushboolean(L, v);
     lua_pushboolean(L, changed);
     return 2;
@@ -232,10 +232,12 @@ int i_checkbox(lua_State* L)
 int i_checkbox_flags(lua_State* L)
 {
     const char* label = luaL_checkstring(L, 1);
-    int v = (int)luaL_checkinteger(L, 2);
-    int flags = (int)luaL_checkinteger(L, 3);
-    bool changed = ImGui::CheckboxFlags(label, &v, flags);
-    lua_pushinteger(L, v);
+    unsigned int v = (unsigned int)luaL_checkinteger(L, 2);
+    unsigned int flags = (unsigned int)luaL_checkinteger(L, 3);
+    bool changed = ui::CheckboxFlags(label, &v, flags);
+    // Preserve the existing signed 32-bit Lua return contract (e.g. bit 31),
+    // while manipulating the mask as unsigned storage without aliasing casts.
+    lua_pushinteger(L, static_cast<int32_t>(v));
     lua_pushboolean(L, changed);
     return 2;
 }

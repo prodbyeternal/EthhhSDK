@@ -66,6 +66,9 @@ if (Test-Path $modsBuild) {
     if ($LASTEXITCODE -ne 0) { throw "Mod build failed ($LASTEXITCODE)." }
 }
 
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'tools\stage-notices.ps1')
+if ($LASTEXITCODE -ne 0) { throw "Notice staging failed ($LASTEXITCODE)." }
+
 if (-not (Test-Path $dist)) { throw "Build finished but $dist does not exist." }
 
 Write-Host ""

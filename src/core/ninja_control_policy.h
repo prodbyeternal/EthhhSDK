@@ -4,13 +4,13 @@
 
 namespace eth::game {
 
-// Session-local explicit selection consent, not an address or persisted setting.
+// Session-local unique exact-Ninja pin consent, not an address or persisted setting.
 // Losing a pin preserves consent; selecting another role or changing modes does not.
 class NinjaPinConsent {
 public:
     void Revoke() { authorized_ = false; }
     void Selected(bool uniqueExactNinja) { authorized_ = uniqueExactNinja; }
-    bool AllowsReacquire(bool manualMode) const { return authorized_ && manualMode; }
+    bool AllowsReacquire(bool pinnedMode) const { return authorized_ && pinnedMode; }
 private:
     bool authorized_ = false;
 };

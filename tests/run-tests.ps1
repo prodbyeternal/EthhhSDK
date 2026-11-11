@@ -14,8 +14,10 @@ foreach ($file in @('EthhhSDK.dll','EthhhSDK.Managed.dll','mods\HalfLifeMovement
 }
 & $cmake -S $root -B $build -G 'Visual Studio 17 2022' -A Win32 -DETH_BUILD_TESTS=ON
 if ($LASTEXITCODE -ne 0) { throw 'Test configure failed.' }
-& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_entity_performance_tests eth_movement_input_tests eth_mouse_attack_tests eth_ethhhpatch_lens_tests eth_sha256_tests eth_camera_relative_heading_tests --parallel
+& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_player_tracker_tests eth_ui_motion_tests eth_pestcontrol_tests eth_pestcontrol_runtime_tests eth_chrome_preview eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_entity_performance_tests eth_movement_input_tests eth_mouse_attack_tests eth_ethhhpatch_lens_tests eth_sha256_tests eth_camera_relative_heading_tests --parallel 6
 if ($LASTEXITCODE -ne 0) { throw 'Native test shim build failed.' }
+& powershell -NoProfile -ExecutionPolicy Bypass -File "$root\tools\stage-notices.ps1"
+if ($LASTEXITCODE -ne 0) { throw 'Attribution/license staging failed.' }
 Copy-Item (Join-Path $dist 'EthhhSDK.Managed.dll') $out -Force
 Copy-Item (Join-Path $dist 'mods\HalfLifeMovement\Mod.dll') $out -Force
 $refs = @('mscorlib.dll','System.dll','System.Core.dll') | ForEach-Object { '/reference:"' + (Join-Path "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319" $_) + '"' }
@@ -43,6 +45,8 @@ foreach ($scale in @('0.025','0.05','NaN')) {
     & "$out\ManagedInteropTests.exe" $scale
     if ($LASTEXITCODE -ne 0) { throw "Managed interop regression failed (scale $scale)." }
 }
+& "$out\ManagedInteropTests.exe" 0.025 autoplus
+if ($LASTEXITCODE -ne 0) { throw 'Managed Auto+ pin/explicit-HL regression failed.' }
 & "$out\ManagedInteropTests.exe" 0.025 autohop
 if ($LASTEXITCODE -ne 0) { throw 'Managed Auto-hop/jump regression failed.' }
 & "$out\ManagedInteropTests.exe" 0.025 live-tuning
@@ -55,6 +59,16 @@ foreach ($mode in @('additive','camera-only')) {
 }
 & "$out\eth_player_learning_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Player learning regression failed.' }
+& "$out\eth_player_tracker_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Production Auto+/Manual player tracker regression failed.' }
+& "$out\eth_ui_motion_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'UI motion/startup regression failed.' }
+& "$out\eth_pestcontrol_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'PestControl exact identity/lifetime regression failed.' }
+& "$out\eth_pestcontrol_runtime_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Production PestControl tick/cdecl/telemetry regression failed.' }
+& "$build\tests\preview\eth_chrome_preview.exe" --cpu
+if ($LASTEXITCODE -ne 0) { throw 'Production CPU UI/layout/audio/binding regression failed.' }
 & "$out\eth_strat_identity_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Strat identity regression failed.' }
 & "$out\eth_movement_input_tests.exe"
@@ -81,8 +95,12 @@ if ($LASTEXITCODE -ne 0) { throw 'EthhhPatch entity-animation regression failed.
 if ($LASTEXITCODE -ne 0) { throw 'Production entity reader safety/performance regression failed.' }
 & python "$root\tests\test_ethhhpatch_evidence.py"
 if ($LASTEXITCODE -ne 0) { throw 'Static EthhhPatch evidence regression failed.' }
+& python "$root\tests\test_pestcontrol_evidence.py"
+if ($LASTEXITCODE -ne 0) { throw 'Static PestControl lifecycle/integration regression failed.' }
 & python "$root\tests\test_hotpath_guards.py"
 if ($LASTEXITCODE -ne 0) { throw 'Hot-path performance guard regression failed.' }
+& python "$root\tests\test_notice_packaging.py"
+if ($LASTEXITCODE -ne 0) { throw 'Notice integrity/packaging regression failed.' }
 & python "$root\tests\check-abi.py" $root
 if ($LASTEXITCODE -ne 0) { throw 'Export ABI regression failed.' }
 Write-Output 'PASS complete offline regression suite (exit 0)'

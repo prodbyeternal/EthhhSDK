@@ -10,6 +10,11 @@
 #include "hooks.h"
 #include "ethhhpatch.h"
 #include "ethhhpatch_runtime.h"
+#include "pestcontrol.h"
+#include "liquid_glass.h"
+#include "load_island_policy.h"
+#include "ui_audio.h"
+#include "ui_motion_policy.h"
 
 #include <cfloat>
 #include <cctype>
@@ -56,9 +61,6 @@ ImU32 StatusColor(const mods::ModInfo& m)
 
 void PageTitle(const char* title, const char* subtitle)
 {
-    ImGui::PushFont(FontSmall());
-    ImGui::TextColored(ImGui::ColorConvertU32ToFloat4(ui::Accent()), "WORKSPACE  /  I-NINJA");
-    ImGui::PopFont();
     ImGui::PushFont(FontTitle());
     ImGui::TextUnformatted(title);
     ImGui::PopFont();
@@ -70,19 +72,26 @@ void PageTitle(const char* title, const char* subtitle)
     ImGui::Dummy(ImVec2(0, 8 * ui::Scale()));
 }
 
+void BulletWrapped(const char* text)
+{
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::TextWrapped("%s", text);
+}
+
 void Metric(const char* label, const char* value, const char* hint)
 {
     ImGui::PushID(label);
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(24,32,34,255));
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(0,0,0,0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(14*ui::Scale(),12*ui::Scale()));
-    ImGui::SetNextWindowSizeConstraints(ImVec2(0,89*ui::Scale()),ImVec2(FLT_MAX,FLT_MAX));
-    ImGui::BeginChild("##metric", ImVec2(0,0), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysUseWindowPadding |
+    ImGui::SetNextWindowSizeConstraints(ImVec2(0,72*ui::Scale()),ImVec2(FLT_MAX,FLT_MAX));
+    ImGui::BeginChild("##metric", ImVec2(0,0), ImGuiChildFlags_AlwaysUseWindowPadding |
         ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
         ImGuiWindowFlags_NoScrollbar);
     ImGui::PushTextWrapPos(0);
     ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s", label); ImGui::PopFont();
     ImGui::PushFont(FontBold()); ImGui::TextUnformatted(value); ImGui::PopFont();
-    ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s",hint); ImGui::PopFont();
+    ImGui::PushFont(FontSmall()); ImGui::TextWrapped("%s",hint); ImGui::PopFont();
     ImGui::PopTextWrapPos();
     ImGui::EndChild(); ImGui::PopStyleVar(); ImGui::PopStyleColor(); ImGui::PopID();
 }
@@ -101,21 +110,22 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
 {
     ImGui::PushID(m.id.c_str());
     const float s = ui::Scale();
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(23, 30, 32, 255));
-    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f * s);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(18.0f * s, 16.0f * s));
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(0,0,0,0));
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 0);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f * s, 18.0f * s));
     // Content-sized cards: long descriptions and loader errors stay readable.
-    if (ImGui::BeginChild("##card", ImVec2(0, 0), ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
+    if (ImGui::BeginChild("##card", ImVec2(0, 0), ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
                           ImGuiWindowFlags_NoScrollbar)) {
+        const ImVec2 icon=ImGui::GetCursorScreenPos();
+        auto* draw=ImGui::GetWindowDrawList();
+        draw->AddRectFilled(icon,ImVec2(icon.x+38*s,icon.y+38*s),ui::WithAlpha(TypeBadgeColor(m),.16f),10*s);
+        Glass::DrawIcon(draw,m.IsCSharp() ? Glass::Icon::Gamepad : Glass::Icon::Sliders,ImVec2(icon.x+19*s,icon.y+19*s),19,TypeBadgeColor(m));
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX()+52*s);
         if (ImGui::BeginTable("##layout", 2, ImGuiTableFlags_SizingStretchProp)) {
             ImGui::TableSetupColumn("Details", ImGuiTableColumnFlags_WidthStretch);
-            ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthFixed, 100.0f * s);
+            ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthFixed, 62.0f * s);
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::PushFont(FontSmall());
-            Badge(TypeBadge(m),TypeBadgeColor(m));
-            ImGui::SameLine(); ImGui::TextDisabled("%s", m.id.c_str());
-            ImGui::PopFont();
             ImGui::PushFont(FontBold());
             ImGui::TextWrapped("%s", m.name.c_str());
             ImGui::PopFont();
@@ -140,7 +150,7 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
                 mods::ModManager::Get().SetEnabled(m.id, enabled);
             if (ImGui::IsItemHovered()) ImGui::SetTooltip("%s %s", enabled ? "Disable" : "Enable", m.name.c_str());
             ImGui::PushFont(FontSmall());
-            ImGui::TextDisabled(enabled ? "ON NEXT START" : "NOT SELECTED");
+            ImGui::TextDisabled(enabled ? "Enabled" : "Off");
             ImGui::PopFont();
             if (!launcherMode && m.IsLua() && ImGui::SmallButton("Reload"))
                 mods::ModManager::Get().ReloadLua(m.id);
@@ -158,27 +168,22 @@ void DrawModsPage(bool launcherMode)
     // Scroll the complete library, not just a tiny card viewport below fixed
     // metrics. Tall error cards stay reachable on small displays/high DPI.
     ImGui::BeginChild("##modlist", ImVec2(0, 0), false);
-    PageTitle("Mod library", launcherMode ? "Build your loadout. Changes take effect when you start playing." :
-              "Manage this session. C# mods first enabled in-game need a restart.");
+    ImGui::PushTextWrapPos(0);
+    PageTitle("Library", launcherMode ? "Your game. A little more possibility." :
+              "Everything you need, right where you play.");
 
     auto& mgr = mods::ModManager::Get();
     auto& list = mgr.List();
 
     const float s = ui::Scale();
-    if (ImGui::BeginTable("##library_metrics",3,ImGuiTableFlags_SizingStretchSame)) {
-        ImGui::TableNextRow(); ImGui::TableNextColumn();
-        Metric("INSTALLED",Format("%zu mods",list.size()).c_str(),"Lua + managed C#");
-        ImGui::TableNextColumn(); Metric("SELECTED",Format("%zu enabled",mgr.CountEnabled()).c_str(),"Your current loadout");
-        ImGui::TableNextColumn(); Metric("RUNTIME",launcherMode ? "Pre-game" : "In session",launcherMode ? "Ready when you are" : "F9 to return to play");
-        ImGui::EndTable();
-    }
+    ImGui::PushFont(FontSmall());ImGui::TextDisabled("%zu extensions  /  %zu enabled",list.size(),mgr.CountEnabled());ImGui::PopFont();
     ImGui::Dummy(ImVec2(0,4*s));
     if (ImGui::BeginTable("##mod_toolbar", 2, ImGuiTableFlags_SizingStretchProp)) {
         ImGui::TableSetupColumn("Search", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthFixed, (launcherMode ? 216.0f : 132.0f) * s);
         ImGui::TableNextRow(); ImGui::TableNextColumn();
         ImGui::SetNextItemWidth(-FLT_MIN);
-        ImGui::InputTextWithHint("##searchmods", "Search mods...", g_modFilter, sizeof(g_modFilter));
+        ui::SearchField("##library_search",g_modFilter,sizeof(g_modFilter),"Search your library");
         ImGui::TableNextColumn();
         if (ui::GhostButton("Open folder", ImVec2(126.0f * s, 0))) mgr.OpenModsFolder();
         if (launcherMode) {
@@ -202,6 +207,7 @@ void DrawModsPage(bool launcherMode)
         ImGui::TextUnformatted(GetModsDir().c_str());
         if (ui::AccentButton("Open mods folder", ImVec2(190 * ui::Scale(), 0)))
             mgr.OpenModsFolder();
+        ImGui::PopTextWrapPos();
         ImGui::EndChild();
         return;
     }
@@ -213,9 +219,10 @@ void DrawModsPage(bool launcherMode)
             continue;
         ++shown;
         DrawModCard(m, launcherMode);
-        ImGui::Dummy(ImVec2(0, 2 * s));
+        if(shown<list.size()) ImGui::Separator();
     }
     if (!shown) ImGui::TextDisabled("No mods match this search.");
+    ImGui::PopTextWrapPos();
     ImGui::EndChild();
 }
 
@@ -224,8 +231,10 @@ void DrawInterfacesPage()
     PageTitle("Interfaces", "Live mod interfaces. F9 closes the overlay.");
     auto& mgr = mods::ModManager::Get();
     if (mgr.CountLoaded() == 0) {
+        ImGui::PushTextWrapPos(0);
         ImGui::TextDisabled("No mod interfaces are active.");
         ImGui::TextDisabled("Enable a Lua or C# mod on the Mods page, then restart the game.");
+        ImGui::PopTextWrapPos();
         return;
     }
     ImGui::BeginChild("##interfaces", ImVec2(0, 0), false);
@@ -241,14 +250,52 @@ void DrawSettingsPage()
     bool changed = false;
 
     ImGui::BeginChild("##settings2", ImVec2(0, 0), false);
+    ImGui::PushTextWrapPos(0);
+
+    SectionHeader("LIQUID GLASS", "Global appearance for both managers and mod interfaces. Changes apply immediately.");
+    bool themeChanged=false;
+    int appearance=std::clamp(cfg.GetInt("theme","appearance",0),0,1);
+    const char* appearances[]={"Dark glass","Light glass"};
+    ImGui::SetNextItemWidth(std::min(240*ui::Scale(),ImGui::GetContentRegionAvail().x));
+    if (Glass::Dropdown("Appearance",appearances,2,&appearance)) { cfg.SetInt("theme","appearance",appearance); themeChanged=true; }
+    float color[3]; const ImVec4 accent=ImGui::ColorConvertU32ToFloat4(ui::Accent()); color[0]=accent.x;color[1]=accent.y;color[2]=accent.z;
+    if (ImGui::ColorEdit3("Accent",color,ImGuiColorEditFlags_NoInputs)) {
+        char hex[7]; ui::U32ToHex(ImGui::ColorConvertFloat4ToU32(ImVec4(color[0],color[1],color[2],1)),hex);
+        cfg.SetString("core","accent",hex); ui::SetAccent(ui::HexToU32(hex)); themeChanged=true;
+    }
+    auto toggleTheme=[&](const char* label,const char* key,bool fallback) {
+        bool value=cfg.GetBool("theme",key,fallback);
+        if (ui::ToggleSwitch(key,&value)) {cfg.SetBool("theme",key,value);themeChanged=true;}
+        ImGui::SameLine(); ImGui::TextWrapped("%s",label);
+    };
+    toggleTheme("High-contrast text","high_contrast",true);
+    toggleTheme("Reduce motion","reduce_motion",false);
+    toggleTheme("Interface sounds","sounds",true);
+    toggleTheme("Adaptive tint over bright scenes","adaptive_tint",false);
+    auto sliderTheme=[&](const char* label,const char* key,float fallback,float min,float max) {
+        float value=cfg.GetFloat("theme",key,fallback);
+        ImGui::SetNextItemWidth(std::max(100.0f,ImGui::GetContentRegionAvail().x*.65f));
+        if (ui::GlassSlider(label,&value,min,max,"%.2f")) {cfg.SetFloat("theme",key,value);themeChanged=true;}
+    };
+    sliderTheme("Frost / blur","blur",1,0,1);
+    sliderTheme("Tint opacity / readability","opacity",.306f,0,.95f);
+    sliderTheme("Saturation","saturation",1.35f,0,3);
+    sliderTheme("Refraction","refraction",24.49f,0,40);
+    sliderTheme("Chromatic fringe","chroma",30,0,40);
+    sliderTheme("Edge lighting","edge",.485f,0,2);
+    sliderTheme("Shadow","shadow",.046f,0,.8f);
+    sliderTheme("Liquid flow","flow",16,0,24);
+    sliderTheme("Backdrop refresh Hz","blur_hz",10,1,60);
+    if (themeChanged) {ui::ApplyTheme(); changed=true;}
+    Divider();
 
     SectionHeader("OVERLAY", "How the in-game menu behaves");
     Badge("ETHHHSDK",ui::Accent()); ImGui::SameLine();
-    ImGui::TextUnformatted("Watermark is always visible during gameplay");
+    ImGui::TextWrapped("Load-success island transitions into the gameplay watermark");
 
     bool pause = cfg.GetBool("core", "pause_on_overlay", true);
     if (ui::ToggleSwitch("##pause", &pause)) { cfg.SetBool("core", "pause_on_overlay", pause); changed = true; }
-    ImGui::SameLine(); ImGui::TextUnformatted("Pause game while the overlay is open");
+    ImGui::SameLine(); ImGui::TextWrapped("Pause game while the overlay is open");
 
     static const char* keys[] = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12" };
     int keyIdx = overlay::ToggleKey() - VK_F1;
@@ -294,24 +341,26 @@ void DrawSettingsPage()
     uint16_t current = game::DebugFlags();
     for (int i = 0; i < (int)(sizeof(flags) / sizeof(flags[0])); ++i) {
         bool on = (current & flags[i].bit) != 0;
-        if (ImGui::Checkbox(flags[i].name, &on)) {
+        if (ui::Checkbox(flags[i].name, &on)) {
             game::ToggleDebugFlag(flags[i].bit, on);
             changed = true;
         }
-        if (i % 3 != 2) ImGui::SameLine(0, 26 * ui::Scale());
-        else ImGui::Dummy(ImVec2(0, 2 * ui::Scale()));
+        if (i + 1 < (int)(sizeof(flags) / sizeof(flags[0]))) {
+            const float required = ImGui::CalcTextSize(flags[i + 1].name).x + 58 * ui::Scale();
+            const float remaining = ImGui::GetContentRegionAvail().x - (ImGui::GetItemRectMax().x - ImGui::GetCursorScreenPos().x);
+            if (remaining >= required) ImGui::SameLine(0, 26 * ui::Scale());
+        }
     }
 
     Divider();
 
     SectionHeader("PLAYER DETECTION", "Exact class Ninja is preferred; pin it before experimental HL activation.");
     int mode = (int)game::PlayerTracker::Get().Mode();
-    const char* modes[] = { "Auto (nearest to camera)", "Manual", "Learning" };
+    const char* modes[] = { "Auto (unique exact Ninja)", "Manual", "Learning", "Auto+ (detect and pin)" };
     ImGui::SetNextItemWidth(240 * ui::Scale());
-    if (ImGui::Combo("Mode", &mode, modes, 3)) {
+    if (ImGui::Combo("Mode", &mode, modes, 4)) {
         game::PlayerTracker::Get().SetMode((game::PlayerMode)mode);
     }
-    ImGui::SameLine();
     if (ui::GhostButton("Learn candidates (idle / move / stop)", ImVec2(0, 0))) {
         game::PlayerTracker::Get().BeginLearning();
     }
@@ -325,11 +374,11 @@ void DrawSettingsPage()
     SectionHeader("ADVANCED", nullptr);
     bool verbose = cfg.GetBool("core", "verbose", false);
     if (ui::ToggleSwitch("##verbose", &verbose)) { cfg.SetBool("core", "verbose", verbose); changed = true; }
-    ImGui::SameLine(); ImGui::TextUnformatted("Verbose debug logging");
+    ImGui::SameLine(); ImGui::TextWrapped("Verbose debug logging");
 
     bool blockInput = cfg.GetBool("core", "block_game_input", true);
     if (ui::ToggleSwitch("##blockinput", &blockInput)) { cfg.SetBool("core", "block_game_input", blockInput); changed = true; }
-    ImGui::SameLine(); ImGui::TextUnformatted("Swallow game window input while overlay is open");
+    ImGui::SameLine(); ImGui::TextWrapped("Swallow game window input while overlay is open");
 
     ImGui::Dummy(ImVec2(0, 8 * ui::Scale()));
     float fontScale = cfg.GetFloat("core", "font_scale", 1.0f);
@@ -347,6 +396,7 @@ void DrawSettingsPage()
         overlay::SetToggleKey(cfg.GetInt("core", "overlay_key", VK_F9));
     }
 
+    ImGui::PopTextWrapPos();
     ImGui::EndChild();
 
     if (changed)
@@ -361,7 +411,7 @@ void DrawConsolePage()
     ImGui::SetNextItemWidth(140 * ui::Scale());
     ImGui::Combo("Filter", &g_logFilter, filters, 5);
     ImGui::SameLine();
-    ImGui::Checkbox("Auto-scroll", &g_logAutoScroll);
+    ui::Checkbox("Auto-scroll", &g_logAutoScroll);
     ImGui::SameLine();
     if (ui::GhostButton("Clear", ImVec2(80 * ui::Scale(), 0))) {
         LogClear();
@@ -370,6 +420,7 @@ void DrawConsolePage()
     ImGui::TextDisabled("%zu lines", LogSnapshot().size());
 
     ImGui::BeginChild("##console", ImVec2(0, 0), true);
+    ImGui::PushTextWrapPos(0);
     auto lines = LogSnapshot();
     for (const auto& l : lines) {
         if (g_logFilter == 1 && l.level != LogLevel::Info) continue;
@@ -382,6 +433,7 @@ void DrawConsolePage()
     }
     if (g_logAutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY() - 2.0f)
         ImGui::SetScrollHereY(1.0f);
+    ImGui::PopTextWrapPos();
     ImGui::EndChild();
 }
 
@@ -420,9 +472,9 @@ void DrawPlayerInspector()
 {
     auto& pt = game::PlayerTracker::Get();
     int mode = (int)pt.Mode();
-    const char* modes[] = { "Auto", "Manual", "Learning" };
+    const char* modes[] = { "Auto", "Manual", "Learning", "Auto+" };
     ImGui::SetNextItemWidth(160 * ui::Scale());
-    if (ImGui::Combo("##playermode", &mode, modes, 3))
+    if (ImGui::Combo("##playermode", &mode, modes, 4))
         pt.SetMode((game::PlayerMode)mode);
 
     ImGui::SameLine();
@@ -438,7 +490,7 @@ void DrawPlayerInspector()
     auto* hl = mods::ModManager::Get().Find("halflife_movement");
     const bool hlActive = hl && hl->enabled && hl->status.rfind("active", 0) == 0;
     game::StratView selected;
-    if (pt.Mode() == game::PlayerMode::Manual && pt.Valid() && game::ReadStrat(pt.Addr(), selected)) {
+    if (pt.Pinned() && pt.Valid() && game::ReadStrat(pt.Addr(), selected)) {
         game::StratIdentity identity;
         if (game::ReadStratIdentity(selected.addr, identity)) {
             ImGui::Text("%s  |  self handle %08X  |  class %08X", selected.className, identity.selfHandle, identity.pClass);
@@ -457,7 +509,7 @@ void DrawPlayerInspector()
                 if (!game::HasKnownOwnerField(c.strat.className)) continue;
                 game::StratIdentity linked;
                 if (game::ReadStratIdentity(c.strat.addr, linked) && linked.ownerAddr == selected.addr)
-                    ImGui::BulletText("%s %08X follows this owner handle", c.strat.className, (unsigned)c.strat.addr);
+                    BulletWrapped(Format("%s %08X follows this owner handle", c.strat.className, (unsigned)c.strat.addr).c_str());
             }
         }
         const bool exactNinja = game::ClassRole(selected.className) == game::StratRole::Ninja;
@@ -477,7 +529,7 @@ void DrawPlayerInspector()
         if (!exactNinja) ImGui::TextDisabled("Only exact Ninja can use the root/body probe or activate HL.");
     }
     game::StratView probed;
-    if (g_probeAddr && GetTickCount64()-g_probeTime < 30000 && pt.Mode() == game::PlayerMode::Manual &&
+    if (g_probeAddr && GetTickCount64()-g_probeTime < 30000 && pt.Pinned() &&
         pt.Valid() && game::ReadStrat(g_probeAddr,probed) &&
         probed.pClass == g_probeClass && probed.selfHandle == g_probeHandle && pt.Addr() == g_probeAddr &&
         game::ClassRole(probed.className) == game::StratRole::Ninja) {
@@ -717,10 +769,12 @@ void DrawAboutPage()
     PageTitle("About", "I-Ninja modding API and SDK.");
 
     ImGui::BeginChild("##about", ImVec2(0, 0), false);
+    ImGui::PushTextWrapPos(0);
     ImVec2 pos = ImGui::GetCursorScreenPos();
-    DrawLogo(pos, 54.0f * ui::Scale());
+    ImGui::GetWindowDrawList()->AddRectFilled(pos,ImVec2(pos.x+54*ui::Scale(),pos.y+54*ui::Scale()),ui::AccentDim(.16f),15*ui::Scale());
+    Glass::DrawIcon(ImGui::GetWindowDrawList(),Glass::Icon::Spark,ImVec2(pos.x+27*ui::Scale(),pos.y+27*ui::Scale()),27,ui::Accent());
     ImGui::Dummy(ImVec2(66.0f * ui::Scale(), 54.0f * ui::Scale()));
-    ImGui::SameLine();
+    if (ImGui::GetContentRegionAvail().x >= 420 * ui::Scale()) ImGui::SameLine();
     ImGui::BeginGroup();
     ImGui::PushFont(FontTitle());
     ImGui::TextUnformatted("EthhhSDK");
@@ -735,32 +789,28 @@ void DrawAboutPage()
     ImGui::Dummy(ImVec2(0, 8 * ui::Scale()));
 
     SectionHeader("BUILD", nullptr);
-    ImGui::TextDisabled("Game directory");
-    ImGui::SameLine(180 * ui::Scale());
-    ImGui::TextUnformatted(GetGameDir().c_str());
-    ImGui::TextDisabled("Mods directory");
-    ImGui::SameLine(180 * ui::Scale());
-    ImGui::TextUnformatted(GetModsDir().c_str());
-    ImGui::TextDisabled("Injection");
-    ImGui::SameLine(180 * ui::Scale());
-    ImGui::TextUnformatted("dinput8.dll proxy -> EthhhSDK.dll entry gate");
-    ImGui::TextDisabled("Overlay key");
-    ImGui::SameLine(180 * ui::Scale());
-    ImGui::TextUnformatted(input::KeyName(overlay::ToggleKey()));
+    auto detail=[](const char* label,const std::string& value) {
+        ImGui::PushFont(FontSmall());ImGui::TextDisabled("%s",label);ImGui::PopFont();
+        ImGui::TextWrapped("%s",value.c_str());ImGui::Dummy(ImVec2(0,3*ui::Scale()));
+    };
+    detail("Game directory",GetGameDir());detail("Mods directory",GetModsDir());
+    detail("Injection","dinput8.dll proxy -> EthhhSDK.dll entry gate");
+    detail("Overlay key",input::KeyName(overlay::ToggleKey()));
 
     Divider();
     SectionHeader("CREDITS", nullptr);
-    ImGui::BulletText("Dear ImGui by Omar Cornut and contributors (MIT).");
-    ImGui::BulletText("MinHook by Tsuda Kageyu (BSD 2-Clause).");
-    ImGui::BulletText("Lua 5.4 by Lua.org, PUC-Rio (MIT).");
-    ImGui::BulletText("Half-Life movement reference: Valve HLSDK (half-life-steam_legacy).");
-    ImGui::TextDisabled("Valve HLSDK agreement text is pending; this is a local experimental build.");
+    BulletWrapped("Dear ImGui by Omar Cornut and contributors (MIT).");
+    BulletWrapped("MinHook by Tsuda Kageyu (BSD 2-Clause).");
+    BulletWrapped("Lua 5.4 by Lua.org, PUC-Rio (MIT).");
+    BulletWrapped("Liquid Glass template: liquidDX11 (MIT). Fonts/icons: Inter and Font Awesome.");
+    BulletWrapped("Half-Life movement reference: Valve HLSDK (halflife-steam_legacy).");
+    ImGui::TextDisabled("Full notices are bundled. Valve/audio distribution rights still need review.");
 
     Divider();
     ImGui::TextDisabled("This SDK is a fan project and is not affiliated with Namco / Argonaut Games.");
     ImGui::TextDisabled("I-Ninja (c) 2003 Namco Hometek Inc. / Argonaut Games plc.");
 
-    ImGui::EndChild();
+    ImGui::PopTextWrapPos();ImGui::EndChild();
 }
 
 void DrawPatchPage(bool launcherMode)
@@ -793,38 +843,53 @@ void DrawPatchPage(bool launcherMode)
         ImGui::EndTable();
     }
     if (!apply.detail.empty()) ImGui::TextWrapped("%s",apply.detail.c_str());
+    const bool compact=ImGui::GetContentRegionAvail().x<420*ui::Scale();
+    const auto checkbox=[compact](const char* label,bool* value) {
+        if (!compact) return ui::Checkbox(label,value);
+        ImGui::PushID(label);
+        bool changed=ui::Checkbox("##value",value);
+        ImGui::SameLine(); ImGui::TextWrapped("%s",label);
+        if (ImGui::IsItemClicked()) { *value=!*value; changed=true; }
+        ImGui::PopID(); return changed;
+    };
     if (ImGui::BeginTabBar("##patch_tabs")) {
         if (ImGui::BeginTabItem("Display")) {
             SectionHeader("BUILD A DISPLAY PLAN","Saving is harmless. Apply changes the display only after an explicit acknowledgement.");
             if (ImGui::Button("1080p")) plan.width=1920,plan.height=1080;
             ImGui::SameLine(); if (ImGui::Button("4K")) plan.width=3840,plan.height=2160;
-            ImGui::SameLine(); if (ImGui::Button("Monitor size") && monitor.width && monitor.height) plan.width=monitor.width,plan.height=monitor.height;
-            ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Width",&plan.width);
-            ImGui::SameLine(); ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Height",&plan.height);
-            ImGui::SetNextItemWidth(180*ui::Scale()); ImGui::InputInt("Render Hz (0 = monitor)",&plan.renderHz);
-            ImGui::Checkbox("Windowed target",&plan.windowed);
+            if (!compact) ImGui::SameLine(); if (ImGui::Button("Monitor size") && monitor.width && monitor.height) plan.width=monitor.width,plan.height=monitor.height;
+            if (compact) {
+                ImGui::TextUnformatted("Width"); ImGui::SetNextItemWidth(-FLT_MIN); ImGui::InputInt("##width",&plan.width);
+                ImGui::TextUnformatted("Height"); ImGui::SetNextItemWidth(-FLT_MIN); ImGui::InputInt("##height",&plan.height);
+                ImGui::TextWrapped("Render Hz (0 = monitor)"); ImGui::SetNextItemWidth(-FLT_MIN); ImGui::InputInt("##render_hz",&plan.renderHz);
+            } else {
+                ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Width",&plan.width);
+                ImGui::SameLine(); ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Height",&plan.height);
+                ImGui::SetNextItemWidth(180*ui::Scale()); ImGui::InputInt("Render Hz (0 = monitor)",&plan.renderHz);
+            }
+            checkbox("Windowed target",&plan.windowed);
             if (monitor.hz) ImGui::TextWrapped("OS monitor: %dx%d @ %d Hz. This is not measured game FPS.",monitor.width,monitor.height,monitor.hz);
             else ImGui::TextWrapped("Monitor refresh unknown. No assumed fallback.");
             const bool valid=patch::ValidPlan(plan);
             if (valid) ImGui::TextWrapped("Target aspect %.4f. Simulation remains fixed at 60 Hz.",patch::Aspect(plan.width,plan.height));
             else ImGui::TextWrapped("Invalid plan: width 640..7680, height 480..4320, render Hz 0 or 30..360.");
             ImGui::BeginDisabled(!valid);
-            if (ui::GhostButton("Save future plan (not applied)")) message=patch::SavePlan(plan) ? "Plan saved. No runtime display change." : "Plan could not be saved.";
+            if (ui::GhostButton(compact ? "Save future plan" : "Save future plan (not applied)")) message=patch::SavePlan(plan) ? "Plan saved. No runtime display change." : "Plan could not be saved.";
             ImGui::EndDisabled();
             Divider(4);
             static bool acknowledgeExperimental=false;
-            ImGui::Checkbox("I understand this display patch is experimental",&acknowledgeExperimental);
+            checkbox("I understand this display patch is experimental",&acknowledgeExperimental);
             const bool pending=apply.state==patch::runtime::ApplyState::Applying || apply.state==patch::runtime::ApplyState::RollingBack;
             ImGui::BeginDisabled(launcherMode || !valid || !acknowledgeExperimental || pending || apply.state==patch::runtime::ApplyState::Active);
-            if (ui::AccentButton("Apply experimental patch")) {
+            if (ui::AccentButton(compact ? "Apply patch" : "Apply experimental patch")) {
                 std::string error;
                 if (!patch::SavePlan(plan)) message="Plan save failed; display was not changed.";
                 else if (patch::runtime::RequestDisplayPlan(plan, monitor.hz, error)) message="Waiting for exact Reset verification.";
                 else message="Apply refused: "+error;
             }
             ImGui::EndDisabled();
-            ImGui::SameLine(); ImGui::BeginDisabled(launcherMode || apply.state!=patch::runtime::ApplyState::Active);
-            if (ui::GhostButton("Restore previous display")) {
+            if (!compact) ImGui::SameLine(); ImGui::BeginDisabled(launcherMode || apply.state!=patch::runtime::ApplyState::Active);
+            if (ui::GhostButton(compact ? "Restore display" : "Restore previous display")) {
                 std::string error; message=patch::runtime::RequestRestore(error) ? "Restore requested." : "Restore refused: "+error;
             }
             ImGui::EndDisabled();
@@ -832,15 +897,6 @@ void DrawPatchPage(bool launcherMode)
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Camera")) {
-            const bool compact=ImGui::GetContentRegionAvail().x<420*ui::Scale();
-            const auto checkbox=[compact](const char* label,bool* value) {
-                if (!compact) return ImGui::Checkbox(label,value);
-                ImGui::PushID(label);
-                bool changed=ImGui::Checkbox("##value",value);
-                ImGui::SameLine(); ImGui::TextWrapped("%s",label);
-                if (ImGui::IsItemClicked()) { *value=!*value; changed=true; }
-                ImGui::PopID(); return changed;
-            };
             const auto slider=[compact](const char* label,float* value,float low,float high,const char* format) {
                 if (!compact) { ImGui::SetNextItemWidth(210*ui::Scale()); return ImGui::SliderFloat(label,value,low,high,format); }
                 ImGui::TextUnformatted(label); ImGui::PushID(label); ImGui::SetNextItemWidth(-FLT_MIN);
@@ -890,7 +946,7 @@ void DrawPatchPage(bool launcherMode)
             if (slider("Orbit distance",&distance,2.5f,15,"%.1f units")) patch::runtime::SetOrbitDistance(distance);
             ImGui::EndDisabled();
             ImGui::BeginDisabled(launcherMode || !patch::runtime::Active() || !plan.mouseLook);
-            if (ui::GhostButton("Resume orbit after scripted camera")) patch::runtime::ResumeOrbit();
+            if (ui::GhostButton(compact ? "Resume orbit" : "Resume orbit after scripted camera")) patch::runtime::ResumeOrbit();
             ImGui::EndDisabled();
             ImGui::TextWrapped("Camera cuts and off-target pans yield to native framing with a temporary hold. Stable gameplay reacquires automatically. HL and movies always have priority.");
             ImGui::TextWrapped("Native movement follows the displayed orbit (%llu routed headings, %llu guarded refusals). Ctrl keeps native traversal priority, including a 30-tick release grace. No speed or player-pose override.",
@@ -904,7 +960,7 @@ void DrawPatchPage(bool launcherMode)
             if (ui::ToggleSwitch("##entity_interpolation",&enabled)) {
                 cfg.SetBool("ethhhpatch","entity_interpolation",enabled); cfg.Save(); patch::runtime::SetEntityInterpolationEnabled(enabled);
             }
-            ImGui::SameLine(); ImGui::TextUnformatted("Render-only entity animation blending");
+            ImGui::SameLine(); ImGui::TextWrapped("Render-only entity animation blending");
             const auto animation=patch::runtime::ReadEntityTelemetry();
             Divider(4);
             ImGui::TextWrapped("%zu entities sampled / %zu continuous pose pairs",animation.sampled,animation.paired);
@@ -916,10 +972,33 @@ void DrawPatchPage(bool launcherMode)
             ImGui::TextWrapped("2 ms soft work budgets: %llu sampling stops / %llu render stops. Remaining entities keep native rendering.",
                 (unsigned long long)animation.sampleBudgetStops,(unsigned long long)animation.renderBudgetStops);
             ImGui::TextWrapped("Requires the active high-refresh display patch. Native scripts, collision and animation still run only at the game's fixed tick rate.");
-            ImGui::BulletText("Quaternion rotation blending preserves bone scale and reflection.");
-            ImGui::BulletText("SDK-owned matrices are passed only to the renderer. Native bone and root memory is never overwritten.");
-            ImGui::BulletText("New entities, teleports, changed owners, unsupported matrices and invalid bounds use native poses.");
+            BulletWrapped("Quaternion rotation blending preserves bone scale and reflection.");
+            BulletWrapped("SDK-owned matrices are passed only to the renderer. Native bone and root memory is never overwritten.");
+            BulletWrapped("New entities, teleports, changed owners, unsupported matrices and invalid bounds use native poses.");
             ImGui::TextWrapped("Current scope is the verified owner-aware mesh renderer. Custom deformers, particles and other unverified animation paths are not claimed as interpolated.");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("PestControl")) {
+            SectionHeader("PESTCONTROL", "Find exact Rat strats and remove them through the game's native lifecycle.");
+            bool enabled = cfg.GetBool("ethhhpatch", "pestcontrol", false);
+            if (ui::ToggleSwitch("##pestcontrol", &enabled)) {
+                cfg.SetBool("ethhhpatch", "pestcontrol", enabled); cfg.Save();
+                patch::pest::SetEnabled(enabled);
+            }
+            ImGui::SameLine(); ImGui::TextUnformatted(enabled ? "Enabled" : "Off");
+            ImGui::TextWrapped("Searches four times per simulation second. Only the exact Rat class is targeted; Ninja, attachments and similarly named classes are untouched.");
+            ImGui::TextWrapped("Deletion is permanent for the current spawn. Turning this off stops future requests; it does not restore removed Rats. No death effects or rewards are synthesized by the SDK.");
+            const auto pests = patch::pest::ReadStatus();
+            Divider(4);
+            if (launcherMode) ImGui::TextWrapped("Saved for your next game session. No entities exist in the pre-game manager.");
+            else if (pests.faulted) ImGui::TextWrapped("Native request guard failed. PestControl is blocked for this run.");
+            else if (pests.enabled && !pests.verified) ImGui::TextWrapped("Unsupported executable or deletion lifecycle. Nothing will be deleted.");
+            else ImGui::TextWrapped("%llu native requests / %llu verified removals / %zu pending teardown",
+                (unsigned long long)pests.requested, (unsigned long long)pests.removed, pests.pending);
+            ImGui::TextWrapped("Last search: %zu Rats / %zu strats, %s, %.3f ms. %llu budget stops / %llu identity refusals.",
+                pests.detected, pests.visited, pests.listComplete ? "complete" : "not sampled/incomplete", pests.searchMs,
+                (unsigned long long)pests.budgetStops, (unsigned long long)pests.refused);
+            ImGui::TextWrapped("Independent of Auto+, HL and display/animation patches. Native teardown occurs on a following fixed simulation tick; no manual freeing or list unlinking.");
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Diagnostics")) {
@@ -953,9 +1032,8 @@ void DrawPatchPage(bool launcherMode)
 // ---------------------------------------------------------------------------
 void DrawStatusStrip()
 {
-    ImGui::Separator();
     ImGui::PushFont(FontSmall());
-    ImGui::TextDisabled("SDK %s  /  ImGui %s", kVersion, ImGui::GetVersion());
+    ImGui::TextDisabled("EthhhSDK %s", kVersion);
     std::string right = Format("%zu mods selected", mods::ModManager::Get().CountEnabled());
     float x = ImGui::GetWindowWidth() - ImGui::CalcTextSize(right.c_str()).x - 10.0f * ui::Scale();
     if (x > ImGui::GetCursorPosX() + 260.0f * ui::Scale()) {
@@ -980,15 +1058,12 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
             g_page = (Page)last;
     }
 
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(19,26,28,255));
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(0,0,0,0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(16*ui::Scale(),20*ui::Scale()));
-    ImGui::BeginChild("##sidebar", ImVec2(width, 0), ImGuiChildFlags_AlwaysUseWindowPadding);
+    ImGui::BeginChild("##sidebar", ImVec2(width, 0), ImGuiChildFlags_AlwaysUseWindowPadding,ImGuiWindowFlags_NoScrollbar);
     ImGui::PopStyleVar(); ImGui::PopStyleColor();
-
-    ImGui::PushFont(FontSmall());
-    ImGui::TextDisabled(launcherMode ? "YOUR WORKSPACE" : "SESSION TOOLS");
-    ImGui::PopFont();
-    ImGui::Dummy(ImVec2(0, 6 * ui::Scale()));
+    const float s=ui::Scale(),bottomH=(launcherMode ? 150.0f : 74.0f)*s;
+    ImGui::BeginChild("##destinations",ImVec2(0,-bottomH),false);
 
     struct Item { Page page; const char* label; const char* hint; };
     Item items[] = {
@@ -1000,38 +1075,58 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
         { Page::Settings, "Preferences", "06" },
         { Page::About, "About", "07" },
     };
-    for (const auto& it : items) {
+    const Glass::Icon itemIcons[]={Glass::Icon::Cube,Glass::Icon::LayerGroup,Glass::Icon::Gamepad,Glass::Icon::Crosshairs,
+        Glass::Icon::Terminal,Glass::Icon::Palette,Glass::Icon::InfoCircle};
+    const char* shortLabels[]={"Mods","Live UI","Patch","Inspect","Console","Theme","About"};
+    Glass::Icon icons[7]; const char* labels[7]; Page pages[7]; int count=0,current=-1;
+    for (int index=0;index<7;++index) {
+        const auto& it=items[index];
         if (launcherMode && (it.page == Page::Interfaces || it.page == Page::Inspector))
             continue;
-        if (NavItem(it.label, it.label, g_page == it.page, it.hint[0] ? it.hint : nullptr)) {
-            g_page = it.page;
-            cfg.SetInt("launcher", "last_page", (int)it.page);
-        }
+        icons[count]=itemIcons[index]; labels[count]=width<215*ui::Scale() ? shortLabels[index] : it.label;
+        pages[count]=it.page; if(g_page==it.page) current=count; ++count;
+    }
+    const float rowH=42*s;const bool iconOnly=width<140*s;
+    const ImVec2 origin=ImGui::GetCursorScreenPos();auto* dl=ImGui::GetWindowDrawList();
+    const ImGuiID selectionId=ImGui::GetID("##selection");
+    auto& selection=Glass::g->springs().Get(selectionId,200,Glass::SpringStyle::CriticalFast,float(std::max(current,0)));
+    selection.target=float(std::max(current,0));selection.Tick(ImGui::GetIO().DeltaTime);
+    const float navWidth=ImGui::GetContentRegionAvail().x;
+    if(current>=0) dl->AddRectFilled(ImVec2(origin.x,origin.y+rowH*selection.x),
+        ImVec2(origin.x+navWidth,origin.y+rowH*(selection.x+1)-4*s),ui::AccentDim(.18f),12*s);
+    int chosen=current;
+    for(int i=0;i<count;++i) {
+        ImGui::PushID(i);const ImVec2 p=ImGui::GetCursorScreenPos();
+        if(ImGui::InvisibleButton("##destination",ImVec2(navWidth,rowH-4*s),ImGuiButtonFlags_EnableNav)) {chosen=i;PlayUiSound(Sound::Click);}
+        if(ImGui::IsItemHovered() && i!=current) dl->AddRectFilled(p,ImVec2(p.x+navWidth,p.y+rowH-4*s),ui::WithAlpha(ThemeInk(),.05f),12*s);
+        const ImU32 ink=i==current ? ui::Accent() : ThemeSoftInk();
+        Glass::DrawIcon(dl,icons[i],ImVec2(p.x+(iconOnly ? navWidth*.5f : 19*s),p.y+(rowH-4*s)*.5f),17,ink);
+        if(!iconOnly) dl->AddText(ImVec2(p.x+38*s,p.y+(rowH-4*s-ImGui::GetFontSize())*.5f),i==current ? ThemeInk() : ThemeSoftInk(),labels[i]);
+        else if(ImGui::IsItemHovered()) ImGui::SetTooltip("%s",labels[i]);
+        ImGui::Dummy(ImVec2(0,0));ImGui::SetCursorScreenPos(ImVec2(origin.x,origin.y+(i+1)*rowH));
+        ImGui::PopID();
+    }
+    if(chosen>=0 && chosen<count && chosen!=current) {
+        g_page=pages[chosen]; cfg.SetInt("launcher","last_page",int(g_page));
     }
 
-    // spacer to bottom
-    float bottomH = launcherMode ? 150.0f * ui::Scale() : 70.0f * ui::Scale();
-    float y = ImGui::GetWindowHeight() - bottomH;
-    if (y > ImGui::GetCursorPosY())
-        ImGui::SetCursorPosY(y);
+    ImGui::EndChild();
+    ImGui::SetCursorPosY(ImGui::GetWindowHeight()-bottomH);
 
     if (launcherMode) {
         if (ui::AccentButton("Start game", ImVec2(-FLT_MIN, 42 * ui::Scale()))) {
             if (startGame) *startGame = true;
         }
-        ImGui::Dummy(ImVec2(0, 4 * ui::Scale()));
         if (ui::GhostButton("Exit", ImVec2(-FLT_MIN, 32 * ui::Scale()))) {
             if (exitApp) *exitApp = true;
         }
-        ImGui::Dummy(ImVec2(0, 2 * ui::Scale()));
         ImGui::PushFont(FontSmall());
-        ImGui::TextDisabled("ENTER  start  /  ESC  exit");
+        if(!iconOnly) ImGui::TextWrapped("Enter to play");
         ImGui::PopFont();
     } else {
-        ImGui::Separator();
         ImGui::PushFont(FontSmall());
-        ImGui::TextDisabled("%s closes the manager", input::KeyName(overlay::ToggleKey()));
-        ImGui::TextDisabled("Lua + C# mod platform");
+        ImGui::TextWrapped("%s",input::KeyName(overlay::ToggleKey()));
+        if(!iconOnly) ImGui::TextWrapped("Back to your game");
         ImGui::PopFont();
     }
 
@@ -1058,79 +1153,17 @@ void DrawContent(const ImVec2& avail, bool launcherMode, Page page)
 
 void DrawManagerLayout(bool launcherMode, bool* startGame, bool* exitApp)
 {
-    const float s=ui::Scale(), footer=38*s;
+    const float s=ui::Scale();
     const ImVec2 avail=ImGui::GetContentRegionAvail();
-    const float width=(std::min)(220*s,avail.x*.30f);
-    ImGui::BeginChild("##workspace",ImVec2(0,(std::max)(1.0f,avail.y-footer-ImGui::GetStyle().ItemSpacing.y)),false,ImGuiWindowFlags_NoScrollbar);
+    const float width=avail.x<760*s ? 86*s : std::min(210*s,avail.x*.24f);
+    ImGui::BeginChild("##workspace",ImVec2(0,0),false,ImGuiWindowFlags_NoScrollbar);
     DrawSidebar(width,launcherMode,startGame,exitApp);
     ImGui::SameLine(0,0);
     DrawContent(ImGui::GetContentRegionAvail(),launcherMode,CurrentPage());
     ImGui::EndChild();
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(20*s,7*s));
-    ImGui::BeginChild("##status",ImVec2(0,footer),ImGuiChildFlags_AlwaysUseWindowPadding,ImGuiWindowFlags_NoScrollbar);
-    DrawStatusStrip(); ImGui::EndChild(); ImGui::PopStyleVar();
 }
 
 // ---------------------------------------------------------------------------
-void DrawWatermark()
-{
-    auto& cfg = Config::Get();
-    ImGuiIO& io = ImGui::GetIO();
-    int detail = std::clamp(cfg.GetInt("core", "watermark_detail", 1),0,2);
-    int pos = std::clamp(cfg.GetInt("core", "watermark_pos", 0),0,3);
-    float margin = 12.0f * ui::Scale();
-
-    ImGui::SetNextWindowBgAlpha(0.88f);
-    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs |
-                             ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
-                             ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav |
-                             ImGuiWindowFlags_NoMove;
-    ImVec2 size(0, 0);
-    ImGui::SetNextWindowPos(ImVec2(pos == 0 || pos == 2 ? margin : io.DisplaySize.x - margin,
-                                   pos < 2 ? margin : io.DisplaySize.y - margin),
-                            ImGuiCond_Always, ImVec2(pos == 0 || pos == 2 ? 0.0f : 1.0f,
-                                                     pos < 2 ? 0.0f : 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(17,25,27,255));
-    ImGui::PushStyleColor(ImGuiCol_Border, ui::AccentDim(.3f));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10.0f * ui::Scale(), 7.0f * ui::Scale()));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 7.0f * ui::Scale());
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
-    ImGui::Begin("##ethhh_watermark", nullptr, flags);
-
-    ImGui::PushFont(FontBold());
-    ImGui::TextColored(ImGui::ColorConvertU32ToFloat4(ui::Accent()), "%s", kWatermark);
-    ImGui::PopFont();
-    ImGui::SameLine();
-    ImGui::PushFont(FontSmall());
-    ImGui::TextDisabled("/  I-NINJA");
-
-    if (detail >= 1) {
-        const auto rates = patch::ReadStatus();
-        if (rates.sampled) ImGui::TextDisabled("%.0f game FPS  /  %.0f sim Hz", rates.gamePresentsPerSecond, rates.activeTicksPerSecond);
-        else ImGui::TextDisabled("F9 workspace  /  fixed-tick engine");
-    }
-    if (detail >= 2) {
-        game::CameraView cam;
-        if (game::ReadCamera(cam)) {
-            ImGui::TextDisabled("cam %.1f %.1f %.1f", cam.x, cam.y, cam.z);
-            ImGui::TextDisabled("fov %.1f deg", cam.fov * 180.0f / 3.14159265358979f);
-        } else {
-            ImGui::TextDisabled("cam: waiting for level");
-        }
-        uintptr_t player = game::PlayerTracker::Get().Addr();
-        ImGui::TextDisabled("player %s   mods %zu/%zu",
-                            player ? Format("%08X", (unsigned)player).c_str() : "auto",
-                            mods::ModManager::Get().CountLoaded(),
-                            mods::ModManager::Get().CountEnabled());
-        ImGui::TextDisabled("hooks tick:%d d3d:%d wnd:%d  %s",
-                            hooks::TickHooked(), hooks::D3DHooked(), hooks::WndProcHooked(),
-                            overlay::IsVisible() ? "menu open" : "F9 menu");
-    }
-    ImGui::PopFont();
-
-    ImGui::End();
-    ImGui::PopStyleVar(3);
-    ImGui::PopStyleColor(2);
-}
+#include "ui_watermark.inc"
 
 } // namespace eth::ui::pages

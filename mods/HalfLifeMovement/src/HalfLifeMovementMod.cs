@@ -249,7 +249,7 @@ namespace HalfLifeMovement
                 ModLog.Warn("enable movement and/or camera first");
                 return;
             }
-            if (Game.PlayerMode != 1 || !Game.PlayerValid)
+            if (!Game.PlayerPinned)
             {
                 ModLog.Warn("select/pin the ninja strat in the Trainer or Player tracking before activating");
                 return;
@@ -438,7 +438,7 @@ namespace HalfLifeMovement
             _failTicks = 0;
 
             uint addr = Game.PlayerAddr;
-            if(Game.PlayerMode!=1||!Game.PlayerValid||addr==0||!Game.TryReadPlayer(out StratInfo currentStrat))
+            if(!Game.PlayerPinned||addr==0||!Game.TryReadPlayer(out StratInfo currentStrat))
             {
                 if(++_reacquireTicks%30==0 && Game.PlayerReacquireExactNinja() && ResyncToPlayer()) { ModLog.Info("exact Ninja reacquired after death/respawn");return; }
                 if(_reacquireTicks>=180){ModLog.Warn("exact Ninja was not uniquely reacquired; stopped");Deactivate();}
@@ -1033,7 +1033,7 @@ namespace HalfLifeMovement
             int mode = Game.PlayerMode;
             string modeText = mode == 0 ? "auto" : mode == 1 ? "manual" : "learning";
             ImGui.TextDisabled("tracker mode: " + modeText + "   candidates: " + Game.PlayerCandidateCount);
-            ImGui.Text("Class: " + (Game.PlayerValid && Game.PlayerMode == 1 ? "Ninja (pinned/validated)" : "<not validated>"));
+            ImGui.Text("Class: " + (Game.PlayerPinned ? "Ninja (pinned/validated)" : "<not validated>"));
             ImGui.PushTextWrapPos();
             ImGui.Text("Attachments, camera, speech and unknown identities are refused. Exact identity does not yet verify collision or whole-body synchronization.");
             ImGui.PopTextWrapPos();

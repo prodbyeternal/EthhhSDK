@@ -1,5 +1,9 @@
 # EthhhPatch — display, camera-relative movement/FOV, mouse attacks and animation interpolation
 
+Optional [PestControl](pestcontrol.md) now has its own tab in both managers.
+It targets exact Rat strats via the verified native deferred-deletion request,
+independently of HL and display patches. Off by default; live acceptance pending.
+
 ## Current behavior
 
 The pre-game and F9 managers include an **EthhhPatch** page for 1080p, 4K or

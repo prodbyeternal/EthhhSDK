@@ -20,6 +20,9 @@
 
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx9.h"
+#include "liquid_glass.h"
+#include "ui_audio.h"
+#include "ui_motion_policy.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -37,6 +40,7 @@ float g_scale = 1.0f;
 
 void RequestStart()
 {
+    ui::PlayUiSound(ui::Sound::Start);
     g_started = true;
     g_running = false;
 }
@@ -79,12 +83,12 @@ LRESULT CALLBACK LauncherWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     return DefWindowProcA(hwnd, msg, wp, lp);
 }
 
-bool CreateDevice(IDirect3D9* d3d, HWND hwnd, int width, int height, IDirect3DDevice9** outDevice)
+bool CreateDevice(IDirect3D9* d3d, HWND hwnd, int width, int height, IDirect3DDevice9** outDevice, D3DPRESENT_PARAMETERS& pp)
 {
-    D3DPRESENT_PARAMETERS pp = {};
+    pp = {};
     pp.Windowed = TRUE;
     pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    pp.BackBufferFormat = D3DFMT_UNKNOWN;
+    pp.BackBufferFormat = D3DFMT_A8R8G8B8;
     pp.BackBufferWidth = (UINT)width;
     pp.BackBufferHeight = (UINT)height;
     pp.BackBufferCount = 1;
@@ -137,9 +141,11 @@ int Run()
         return 1;   // fall through into the game
     }
 
-    int width = 1152, height = 704;
     int screenW = GetSystemMetrics(SM_CXSCREEN);
     int screenH = GetSystemMetrics(SM_CYSCREEN);
+    const float desktopScale=GetDpiScale(nullptr);
+    int width=std::min(int(1152*desktopScale),std::max(320,screenW-40));
+    int height=std::min(int(704*desktopScale),std::max(240,screenH-40));
     int posX = (screenW - width) / 2;
     int posY = (screenH - height) / 2;
 
@@ -158,7 +164,8 @@ int Run()
     }
 
     IDirect3DDevice9* device = nullptr;
-    if (!CreateDevice(d3d, g_hwnd, width, height, &device)) {
+    D3DPRESENT_PARAMETERS pp{};
+    if (!CreateDevice(d3d, g_hwnd, width, height, &device, pp)) {
         ETH_ERROR("launcher: CreateDevice failed, skipping the launcher");
         d3d->Release();
         DestroyWindow(g_hwnd);
@@ -173,7 +180,11 @@ int Run()
     ImGui::GetIO().IniFilename = nullptr;
 
     ImGui_ImplWin32_Init(g_hwnd);
+    ImGui_ImplWin32_EnableAlphaCompositing(g_hwnd);
     ImGui_ImplDX9_Init(device);
+    ui::InitGlass(device);
+    Glass::g->SetTransparentTarget(true);
+    ui::motion::Transition appearance;appearance.Target(true);
 
     ShowWindow(g_hwnd, SW_SHOW);
     UpdateWindow(g_hwnd);
@@ -190,12 +201,23 @@ int Run()
         }
         if (!g_running) break;
         if (!IsWindow(g_hwnd)) break;
+        const HRESULT cooperative=device->TestCooperativeLevel();
+        if(cooperative==D3DERR_DEVICELOST) {Sleep(30);continue;}
+        if(cooperative==D3DERR_DEVICENOTRESET) {
+            ui::InvalidateGlass(); ImGui_ImplDX9_InvalidateDeviceObjects();
+            if(FAILED(device->Reset(&pp))) {Sleep(30);continue;}
+            ImGui_ImplDX9_CreateDeviceObjects();ui::RecreateGlass();
+        } else if(FAILED(cooperative)) {Sleep(30);continue;}
+        if(IsIconic(g_hwnd)) {Sleep(30);continue;}
 
         ImGui_ImplDX9_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+        ui::BeginGlassFrame();
 
         ImGuiIO& io = ImGui::GetIO();
+        appearance.Advance(io.DeltaTime,Config::Get().GetBool("theme","reduce_motion",false));
+        ui::SetManagerOpacity(appearance.Value());
         bool open = true;
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
         ImVec2 size(io.DisplaySize.x, io.DisplaySize.y);
@@ -237,15 +259,17 @@ int Run()
 
         ImGui::Render();
 
-        device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(7, 8, 12), 1.0f, 0);
-        device->BeginScene();
-        ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-        device->EndScene();
-        device->Present(nullptr, nullptr, nullptr, nullptr);
+        if(SUCCEEDED(device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0)) &&
+           SUCCEEDED(device->BeginScene())) {
+            ui::RenderGlassDrawData(device,ImGui::GetDrawData());
+            device->EndScene();
+            device->Present(nullptr, nullptr, nullptr, nullptr);
+        } else Sleep(30);
     }
 
     ETH_INFO("launcher: %s", g_started ? "start requested" : "exit requested");
 
+    ui::ShutdownGlass();
     ImGui_ImplDX9_Shutdown();
     ImGui_ImplWin32_Shutdown();
 

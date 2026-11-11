@@ -7,6 +7,7 @@
 #include <map>
 #include <cmath>
 #include "../src/core/movement_input_policy.h"
+#include "../src/core/player_mode_policy.h"
 
 namespace {
 struct Camera { uint32_t addr; float x,y,z,fov,param; float world[16],view[16]; };
@@ -86,7 +87,7 @@ ETH_CAPI(float, Test_Get, (int index)) {
     }
 }
 ETH_CAPI(void, Test_Tick, (void)) {
-    movementMasked = movementLease.Consume(state[3]==1, state[4]!=0 && state[21]==0,
+    movementMasked = movementLease.Consume(eth::game::PinnedMode(eth::game::PlayerMode(int(state[3]))), state[4]!=0 && state[21]==0,
         state[19]==1, state[5]!=0, state[1]!=0, state[27]!=0 || state[8]!=0 || state[9]!=0, state[6],
         (uint32_t)state[11], (uint32_t)state[12], (uint32_t)state[20]);
     if (!movementMasked && (state[10] || state[28] || state[29] || state[30])) {
@@ -119,7 +120,7 @@ ETH_CAPI(int, EthGame_IsReady, (void)) { return state[2] != 0; }
 ETH_CAPI(uint32_t, EthGame_PlayerAddr, (void)) { return (uint32_t)state[11]; }
 ETH_CAPI(int, EthGame_PlayerMode, (void)) { return (int)state[3]; }
 ETH_CAPI(int, EthGame_PlayerValid, (void)) { return state[4] != 0; }
-ETH_CAPI(int, EthGame_PlayerReacquireExactNinja, (void)) { if(state[3]!=1||state[26]==0||state[25]==0||state[19]!=1)return 0;state[4]=1;return 1; }
+ETH_CAPI(int, EthGame_PlayerReacquireExactNinja, (void)) { if(!eth::game::PinnedMode(eth::game::PlayerMode(int(state[3])))||state[26]==0||state[25]==0||state[19]!=1)return 0;state[4]=1;return 1; }
 ETH_CAPI(int, EthGame_ReadStrat, (uint32_t addr, Strat* out)) {
     if (!state[4] || addr != (uint32_t)state[11]) return 0;
     memset(out, 0, sizeof(*out)); out->addr=addr; out->cls=(uint32_t)state[12]; out->valid=1;
@@ -189,7 +190,7 @@ ETH_CAPI(int, EthInput_KeyDown, (int vk)) {
 ETH_CAPI(int, EthInput_LeaseMovementKeys, (uint32_t addr, int enabled)) {
     movementLease.Reset();
     if(!enabled) return 1;
-    if(state[3]!=1 || !state[4] || state[21] || state[19]!=1 || addr!=(uint32_t)state[11]) return 0;
+    if(!eth::game::PinnedMode(eth::game::PlayerMode(int(state[3]))) || !state[4] || state[21] || state[19]!=1 || addr!=(uint32_t)state[11]) return 0;
     return movementLease.Request(addr,(uint32_t)state[12],(uint32_t)state[20]) ? 1 : 0;
 }
 ETH_CAPI(void, EthInput_GetMouseDelta, (float* x, float* y)) { *x=mouseX; *y=mouseY; }

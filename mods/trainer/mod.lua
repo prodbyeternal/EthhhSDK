@@ -221,6 +221,8 @@ hook.add("gui", function()
         end
         if game.player_detection_info then ui.text(game.player_detection_info()) end
 
+        if ui.button("Auto+") then game.set_player_mode("auto+") end
+        ui.same_line()
         if ui.button("Auto") then game.set_player_mode("auto") end
         ui.same_line()
         if ui.button("Learn candidates (idle / move / stop)") then game.learn_player() end

@@ -8,6 +8,9 @@
 #include "ethhhpatch.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_internal.h"
+#include "liquid_glass.h"
+#include "load_island_policy.h"
+#include "ui_audio.h"
 #include <gdiplus.h>
 #include <stdexcept>
 extern "C" {
@@ -16,21 +19,35 @@ extern "C" {
 }
 
 static void Check(bool ok, const char* label) { if (!ok) throw std::runtime_error(label); }
-static void Hr(HRESULT result, const char* label) { Check(SUCCEEDED(result), label); }
+static void Hr(HRESULT result, const char* label) { if(FAILED(result)) fprintf(stderr,"%s HRESULT 0x%08lX\n",label,(unsigned long)result);Check(SUCCEEDED(result), label); }
+#include "glass_device_checks.inc"
+#include "ui_cpu_checks.inc"
 
 int main(int argc, char** argv)
 {
     try {
-        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage patchTab scrollBottom]");
+        if(argc>1 && !strcmp(argv[1],"--cpu")) return RunCpuUiChecks();
+        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage patchTab scrollBottom page launcher light fallback startupSeconds]");
         int width = argc > 2 ? atoi(argv[2]) : 1152, height = argc > 3 ? atoi(argv[3]) : 704;
         float scale = argc > 4 ? (float)atof(argv[4]) : 1.0f;
         bool stress = argc > 5 && atoi(argv[5]);
         bool patchPage = argc > 6 && atoi(argv[6]);
         int patchTab = argc > 7 ? atoi(argv[7]) : 0;
         bool scrollBottom = argc > 8 && atoi(argv[8]);
-        const char* tabs[] = {"Display", "Camera", "Animation", "Diagnostics"};
-        Check(patchTab>=0 && patchTab<4,"preview tab index");
-        const auto page = patchPage ? eth::ui::pages::Page::Patch : eth::ui::pages::Page::Mods;
+        const char* tabs[] = {"Display", "Camera", "Animation", "PestControl", "Diagnostics"};
+        Check(patchTab>=0 && patchTab<5,"preview tab index");
+        const auto page = argc>9 ? (eth::ui::pages::Page)atoi(argv[9]) :
+            (patchPage ? eth::ui::pages::Page::Patch : eth::ui::pages::Page::Mods);
+        Check(int(page)>=0 && page<eth::ui::pages::Page::Count,"preview page");
+        patchPage=page==eth::ui::pages::Page::Patch;
+        const bool modsPage=page==eth::ui::pages::Page::Mods;
+        const bool launcherMode=argc<=10 || atoi(argv[10])!=0;
+        const bool light=argc>11 && atoi(argv[11]);
+        const bool fallback=argc>12 && atoi(argv[12]);
+        const float startupSeconds=argc>13 ? float(atof(argv[13])) : -1;
+        const bool islandOnly=startupSeconds>=0;
+        const bool transparent=argc>14 && atoi(argv[14]);
+        const float managerOpacity=argc>15 ? float(atof(argv[15])) : 1;
         Check(width >= 640 && height >= 480 && width <= 4096 && height <= 2160, "preview dimensions");
         // Parse the actual trainer with vendored Lua 5.4; do not execute it or
         // register callbacks/read settings. The source path is a build define.
@@ -50,8 +67,10 @@ int main(int argc, char** argv)
         pp.BackBufferFormat=D3DFMT_A8R8G8B8; pp.PresentationInterval=D3DPRESENT_INTERVAL_IMMEDIATE;
         IDirect3DDevice9* device = nullptr;
         HRESULT createDevice=d3d->CreateDevice(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,hwnd,D3DCREATE_SOFTWARE_VERTEXPROCESSING,&pp,&device);
-        if(FAILED(createDevice))
+        if(FAILED(createDevice)) {
+            fprintf(stderr,"preview HAL HRESULT 0x%08lX\n",(unsigned long)createDevice);
             createDevice=d3d->CreateDevice(D3DADAPTER_DEFAULT,D3DDEVTYPE_REF,hwnd,D3DCREATE_SOFTWARE_VERTEXPROCESSING,&pp,&device);
+        }
         Hr(createDevice,"preview device");
         IDirect3DSurface9* target=nullptr; IDirect3DSurface9* readable=nullptr;
         Hr(device->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,0,FALSE,&target,nullptr),"render target");
@@ -60,8 +79,9 @@ int main(int argc, char** argv)
 
         eth::Config::Get().SetDefaults(); // in-memory only; no user settings loaded
         eth::Config::Get().SetInt("launcher","last_page",(int)page);
+        eth::Config::Get().SetInt("theme","appearance",light ? 1 : 0);
         eth::Config::Get().SetBool("core","watermark",false); // obsolete setting must not hide it
-        auto& mgr = eth::mods::ModManager::Get(); mgr.SetLauncherMode(true);
+        auto& mgr = eth::mods::ModManager::Get(); mgr.SetLauncherMode(launcherMode);
         eth::mods::ModInfo hl; hl.id="halflife_movement"; hl.name="Half-Life Movement + FPS Camera";
         hl.version="0.1.0"; hl.type="csharp"; hl.author="EthhhSDK"; hl.enabled=true; hl.status="Ready on game start";
         hl.description="Half-Life acceleration, friction and bunnyhopping with a mouse-look FPS camera. F2 toggles; F3 stops. Experimental collision adapter: pin the ninja before activating.";
@@ -91,28 +111,42 @@ int main(int argc, char** argv)
             eth::patch::SetPreviewStatus(fixture);
         }
         eth::ui::LoadFonts(scale); ImGui_ImplDX9_Init(device);
+        Check(eth::ui::InitGlass(device),"actual DX9 glass / Dual Kawase SM3 shaders compile");
+        Check(eth::ui::UiAudioReadyCount()==5,"all five user sounds embed and decode as PCM16 (no playback in tests)");
+        Glass::g->SetTransparentTarget(transparent);
+        eth::ui::SetManagerOpacity(managerOpacity);
+        eth::ui::pages::ResetStartupWatermark();eth::ui::pages::TestSetStartupSeconds(startupSeconds);
+        if(fallback) eth::ui::InvalidateGlass();
         eth::ui::pages::SetCurrentPage(page);
         bool startRequested=false, exitRequested=false, open=true;
         bool previewWatermark=false;
         auto drawFrame = [&]() {
             ImGuiIO& io=ImGui::GetIO(); io.DisplaySize=ImVec2((float)width,(float)height); io.DeltaTime=1.0f/60;
             ImGui_ImplDX9_NewFrame(); ImGui::NewFrame();
+            eth::ui::BeginGlassFrame();
             ImGui::SetNextWindowPos(ImVec2(0,0));
             startRequested=false; exitRequested=false; open=true;
-            if (eth::ui::BeginChromeWindow("##preview","EthhhSDK","I-Ninja / Pre-game mod manager",&open,io.DisplaySize,
+            if (!islandOnly && eth::ui::BeginChromeWindow("##preview","EthhhSDK",launcherMode ? "I-Ninja / Pre-game mod manager" : "I-Ninja / In-game mod manager",&open,io.DisplaySize,
                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings)) {
-                eth::ui::pages::DrawManagerLayout(true,&startRequested,&exitRequested);
+                eth::ui::pages::DrawManagerLayout(launcherMode,&startRequested,&exitRequested);
                 eth::ui::EndChromeWindow();
             }
             if (previewWatermark) eth::ui::pages::DrawWatermark();
+            else if(islandOnly) eth::ui::pages::DrawStartupWatermark();
             Check(ImGui::GetCurrentContext()->CurrentWindowStack.Size==1,"chrome window/child stack pairing");
             Check(ImGui::GetCurrentContext()->StyleVarStack.Size==0 && ImGui::GetCurrentContext()->ColorStack.Size==0,
                   "chrome style pairing");
             ImGui::Render();
-            Hr(device->Clear(0,nullptr,D3DCLEAR_TARGET,D3DCOLOR_ARGB(255,18,20,25),1,0),"clear");
-            Hr(device->BeginScene(),"begin scene"); ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData()); Hr(device->EndScene(),"end scene");
+            Hr(device->Clear(0,nullptr,D3DCLEAR_TARGET,transparent ? 0 : D3DCOLOR_ARGB(255,18,20,25),1,0),"clear");
+            Hr(device->BeginScene(),"begin scene");
+            if(!transparent) eth::ui::DrawLauncherBackdrop(device,width,height);
+            eth::ui::RenderGlassDrawData(device,ImGui::GetDrawData()); Hr(device->EndScene(),"end scene");
+            Check(fallback || Glass::g->PrimitiveCount()==0 || Glass::g->BackdropReady(),"scene capture and six-level heavy/soft blur succeed");
+            if(islandOnly && startupSeconds<eth::ui::load::kDelay && !previewWatermark)
+                Check(Glass::g->PrimitiveCount()==0,"four-second quiet period has no surface or hidden measuring clone");
         };
-        for(int frame=0; frame<8; ++frame) drawFrame();
+        drawFrame(); eth::ui::pages::SetCurrentPage(page); // sidebar initialization preserves the actual default
+        for(int frame=0; frame<60; ++frame) drawFrame();
         if (patchPage) {
             ImGuiWindow* patch=nullptr;
             for (ImGuiWindow* w:ImGui::GetCurrentContext()->Windows) {
@@ -121,7 +155,7 @@ int main(int argc, char** argv)
             }
             Check(patch!=nullptr,"real patch window found");
             ImGuiTabBar* bar=ImGui::GetCurrentContext()->TabBars.GetByKey(patch->GetID("##patch_tabs"));
-            Check(bar && bar->Tabs.Size==4,"all four real patch tabs exist");
+            Check(bar && bar->Tabs.Size==5,"all five real patch tabs exist");
             // The pointer overload is valid outside a frame; the name overload
             // hashes through CurrentWindow and must not be called after Render.
             ImGui::TabBarQueueFocus(bar,&bar->Tabs[patchTab]);
@@ -148,7 +182,7 @@ int main(int argc, char** argv)
                 Check(w->ScrollMax.x < 1.0f,"card contents clipped horizontally");
             }
         }
-        if (!patchPage) Check(cards >= 2,"expected visible real mod cards");
+        if (modsPage && !islandOnly) Check(cards >= 2,"expected visible real mod cards");
         if (patchPage) {
             bool found=false;
             for(ImGuiWindow* w : ImGui::GetCurrentContext()->Windows) {
@@ -166,7 +200,14 @@ int main(int argc, char** argv)
         Gdiplus::GdiplusStartupInput gdiplusInput; ULONG_PTR token=0;
         Check(Gdiplus::GdiplusStartup(&token,&gdiplusInput,nullptr)==Gdiplus::Ok,"GDI+");
         {
-            Gdiplus::Bitmap bitmap(width,height,pixels.Pitch,PixelFormat32bppRGB,(BYTE*)pixels.pBits);
+            if(transparent && !islandOnly) {
+                const auto* row=static_cast<const unsigned char*>(pixels.pBits)+(height-60)*pixels.Pitch;
+                const unsigned alpha=row[(width/2)*4+3];
+                Check(alpha>0 && alpha<250,"launcher material really writes translucent alpha");
+                const unsigned corner=static_cast<const unsigned char*>(pixels.pBits)[3];
+                Check(corner<32,"outside rounded launcher is transparent, not a dark rectangular window");
+            }
+            Gdiplus::Bitmap bitmap(width,height,pixels.Pitch,transparent ? PixelFormat32bppARGB : PixelFormat32bppRGB,(BYTE*)pixels.pBits);
             CLSID png={0x557cf406,0x1a04,0x11d3,{0x9a,0x73,0,0,0xf8,0x1e,0xf3,0x2e}};
             int count=MultiByteToWideChar(CP_UTF8,0,argv[1],-1,nullptr,0); std::wstring output(count,L'\0');
             MultiByteToWideChar(CP_UTF8,0,argv[1],-1,&output[0],count);
@@ -188,9 +229,27 @@ int main(int argc, char** argv)
                 watermark->Pos.x+watermark->Size.x<=width && watermark->Pos.y+watermark->Size.y<=height,"watermark stays on screen");
         }
         previewWatermark=false;
+        CheckGlassDeviceState(device,drawFrame,width,height);
+        if(!fallback) {
+            eth::ui::InvalidateGlass();ImGui_ImplDX9_InvalidateDeviceObjects();
+            Check(!Glass::g->Ready() && !Glass::g->BackdropReady(),"glass invalidation releases all default-pool optics");
+            IDirect3DSurface9* back=nullptr;Hr(device->GetBackBuffer(0,0,D3DBACKBUFFER_TYPE_MONO,&back),"reset backbuffer");
+            Hr(device->SetRenderTarget(0,back),"restore backbuffer before Reset");back->Release();
+            target->Release();target=nullptr;
+            Hr(device->Reset(&pp),"actual device Reset succeeds without retained default-pool glass resources");
+            Hr(device->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,0,FALSE,&target,nullptr),"recreate offscreen target");
+            Hr(device->SetRenderTarget(0,target),"bind recreated target");
+            Check(ImGui_ImplDX9_CreateDeviceObjects() && eth::ui::RecreateGlass(),"font atlas and glass shaders recreate after Reset");
+            for(int frame=0;frame<8;++frame) drawFrame();
+        }
+        if(islandOnly && startupSeconds>=eth::ui::load::kDelay+eth::ui::load::kDuration) {
+            Check(Glass::g->CaptureWidth()*Glass::g->CaptureHeight()<width*height/10,"steady watermark blurs less than ten percent of the framebuffer");
+            printf("watermark atlas: %dx%d versus framebuffer %dx%d\n",Glass::g->CaptureWidth(),Glass::g->CaptureHeight(),width,height);
+        }
 
         // Synthetic ImGui navigation only: no keyboard/mouse events are sent to
         // Windows, no visible window, and launcher::Run is never called.
+        if(!islandOnly) {
         ImGuiWindow* sidebar=nullptr; ImGuiWindow* modlist=nullptr;
         for(ImGuiWindow* w : ImGui::GetCurrentContext()->Windows) {
             const char* leaf=strrchr(w->Name,'/');
@@ -198,6 +257,7 @@ int main(int argc, char** argv)
             if(leaf && strncmp(leaf,"/##modlist_",11)==0) modlist=w;
         }
         Check(sidebar!=nullptr,"sidebar window found");
+        if(launcherMode) {
         ImGui::ActivateItemByID(sidebar->GetID("Start game")); drawFrame();
         Check(startRequested && !exitRequested,"real Start button requests start, not exit");
         eth::launcher::TestReset(); eth::launcher::TestApplyRequests(startRequested,exitRequested);
@@ -206,6 +266,7 @@ int main(int argc, char** argv)
         Check(!startRequested && exitRequested,"real Exit button requests exit, not start");
         eth::launcher::TestReset(); eth::launcher::TestApplyRequests(startRequested,exitRequested);
         Check(eth::launcher::TestState()==0,"Exit routing does not start game");
+        }
         ImGuiWindow* chrome=ImGui::FindWindowByName("##preview"); Check(chrome!=nullptr,"chrome window found");
         ImGuiID close=ImHashStr("##close",0,ImHashStr("##preview",0,chrome->IDStack[0]));
         ImGui::ActivateItemByID(close); drawFrame(); Check(!open,"real close button closes manager");
@@ -226,7 +287,7 @@ int main(int argc, char** argv)
         Check(eth::launcher::TestState()==0,"WM_CLOSE routing");
         eth::launcher::TestMessage(hwnd,WM_DESTROY,0);
         MSG message{}; Check(!PeekMessageW(&message,nullptr,WM_QUIT,WM_QUIT,PM_REMOVE),"launcher teardown does not poison game message loop");
-        if(stress && !patchPage) {
+        if(stress && modsPage) {
             Check(modlist && modlist->ScrollMax.y>0,"stress list exposes scrolling");
             for(int frame=0; frame<8; ++frame) {
                 ImGui::SetScrollY(modlist,modlist->ScrollMax.y); drawFrame();
@@ -240,10 +301,11 @@ int main(int argc, char** argv)
             Check(last && last->Pos.y>=modlist->InnerClipRect.Min.y-1 &&
                   last->Pos.y+last->Size.y<=modlist->InnerClipRect.Max.y+1,"stress error card reachable by scrolling");
         }
-        ImGui_ImplDX9_Shutdown(); ImGui::DestroyContext(); readable->Release(); target->Release(); device->Release(); d3d->Release();
+        }
+        eth::ui::ShutdownGlass(); ImGui_ImplDX9_Shutdown(); ImGui::DestroyContext(); readable->Release(); target->Release(); device->Release(); d3d->Release();
         DestroyWindow(hwnd); UnregisterClassW(wc.lpszClassName,instance);
         printf("PASS off-screen chrome + launcher routing: %dx%d scale %.2f, %s, %d unclipped cards -> %s\n",width,height,scale,
-            patchPage ? tabs[patchTab] : "Mods",cards,argv[1]);
+            patchPage ? tabs[patchTab] : (modsPage ? "Mods" : "manager page"),cards,argv[1]);
         return 0;
     } catch(const std::exception& ex) { fprintf(stderr,"preview failed: %s\n",ex.what()); return 1; }
 }

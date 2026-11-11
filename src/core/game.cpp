@@ -467,7 +467,7 @@ void PlayerTracker::Reset()
     knownClass_ = nullptr;
     knownHandle_ = 0;
     manualValid_ = false;
-    mode_ = PlayerMode::Auto;
+    mode_ = PlayerMode::AutoPlus;
     candidates_.clear();
     candidatesComplete_ = false;
     learnStart_.clear();
@@ -480,9 +480,11 @@ void PlayerTracker::Reset()
 
 void PlayerTracker::SetMode(PlayerMode m)
 {
-    if (m != PlayerMode::Auto && m != PlayerMode::Manual && m != PlayerMode::Learning) return;
-    if (m != PlayerMode::Manual || mode_ != m) pinConsent_.Revoke();
-    if (mode_ != m) { auto_ = 0; manualValid_ = false; updateTimer_ = 0; }
+    if (!ValidPlayerMode(int(m))) return;
+    if (mode_ != m) {
+        pinConsent_.Revoke(); auto_ = manual_ = 0; manualValid_ = false;
+        knownClass_ = nullptr; knownHandle_ = 0; updateTimer_ = 0;
+    }
     mode_ = m;
     if (m == PlayerMode::Learning) BeginLearning();
 }
@@ -528,16 +530,18 @@ void PlayerTracker::BeginLearning()
 
 bool PlayerTracker::ReacquireExactNinja()
 {
-    // A native caller cannot turn automatic detection or a fresh session into a
-    // manual pin. Only an earlier explicit unique-Ninja selection authorizes this.
-    if (!pinConsent_.AllowsReacquire(mode_ == PlayerMode::Manual)) return false;
+    // Plain Auto/Learning cannot become a pin through this API. An established
+    // manual or Auto+ exact-Ninja pin authorizes bounded, unique reacquisition.
+    if (!pinConsent_.AllowsReacquire(PinnedMode(mode_))) return false;
+    const PlayerMode previousMode=mode_;
     bool complete = false;
     const auto live = SnapshotStrats(8192, &complete);
     if (!complete) return false;
     const uintptr_t exact = UniqueNinja(live);
     if (!exact) return false;
     Select(exact);
-    return pinConsent_.AllowsReacquire(mode_ == PlayerMode::Manual) && manual_ == exact && manualValid_;
+    mode_=previousMode;
+    return pinConsent_.AllowsReacquire(PinnedMode(mode_)) && manual_ == exact && manualValid_;
 }
 
 void PlayerTracker::RefreshCandidates()
@@ -584,6 +588,7 @@ void PlayerTracker::AutoPick()
     const uintptr_t best = candidatesComplete_ ? UniqueNinja(live) : 0;
     if (!best) {
         auto_ = 0;
+        if (mode_ == PlayerMode::AutoPlus) { manual_=0; manualValid_=false; }
         knownClass_ = nullptr;
         knownHandle_ = 0;
         info_ = "No unique exact Ninja; proximity is not identity. Load a level or inspect ambiguity.";
@@ -594,6 +599,18 @@ void PlayerTracker::AutoPick()
     auto_ = best;
     knownClass_ = s.pClass;
     knownHandle_ = s.selfHandle;
+    if (mode_ == PlayerMode::AutoPlus) {
+        StratView check;
+        // Auto discovery is not enough: re-read allocation identity and live
+        // membership before granting exactly the same pin contract as Select.
+        manualValid_=ReadStrat(best,check) && check.pClass==s.pClass && check.selfHandle==s.selfHandle &&
+            ClassRole(check.className)==StratRole::Ninja && LiveAddressMatches(best,s.pClass,s.selfHandle);
+        manual_=manualValid_ ? best : 0;
+        pinConsent_.Selected(manualValid_);
+        info_=manualValid_ ? "Auto+: unique exact Ninja pinned. HL remains OFF until you activate it." : "Auto+: identity changed during detection; waiting.";
+        if (changed && manualValid_) ETH_INFO("player: Auto+ pinned exact Ninja %08X handle %08X",unsigned(best),s.selfHandle);
+        return;
+    }
     info_ = "Unique exact Ninja detected; pin it before HL activation. Model/collision contract remains experimental.";
     if (changed) ETH_INFO("player: exact Ninja %08X class %p handle %08X", (unsigned)best, s.pClass, s.selfHandle);
 }
@@ -662,7 +679,7 @@ void PlayerTracker::Update()
         return;
     }
     updateTimer_ -= dt;
-    if (mode_ == PlayerMode::Manual) {
+    if (PinnedMode(mode_) && (mode_ == PlayerMode::Manual || manual_)) {
         if (updateTimer_ > 0.0f) return;
         updateTimer_ = 0.25f;
         StratView s;
@@ -673,7 +690,8 @@ void PlayerTracker::Update()
             manual_ = 0;
             info_ = "Pinned player disappeared; reselect after checking the new level.";
         }
-        return; // Manual pinning never needs a full candidate snapshot.
+        if (manualValid_ || mode_ == PlayerMode::Manual) return;
+        // Auto+ retries discovery after a loss, without inheriting old identity.
     }
     if (updateTimer_ > 0.0f && !candidates_.empty())
         return;
@@ -681,7 +699,7 @@ void PlayerTracker::Update()
 
     RefreshCandidates();
 
-    if (mode_ == PlayerMode::Auto)
+    if (mode_ == PlayerMode::Auto || mode_ == PlayerMode::AutoPlus)
         AutoPick();
 }
 
@@ -692,7 +710,7 @@ uintptr_t PlayerTracker::Addr() const
 
 bool PlayerTracker::Valid() const
 {
-    if (mode_ == PlayerMode::Manual) return manual_ && manualValid_;
+    if (PinnedMode(mode_)) return manual_ && manualValid_;
     StratView s;
     if (!Addr() || !ReadStrat(Addr(), s) || s.pClass != knownClass_ || s.selfHandle != knownHandle_) return false;
     if (mode_ == PlayerMode::Auto && ClassRole(s.className) != StratRole::Ninja) return false;

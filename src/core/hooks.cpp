@@ -7,6 +7,7 @@
 #include "mods.h"
 #include "ethhhpatch.h"
 #include "ethhhpatch_runtime.h"
+#include "pestcontrol.h"
 
 #include <MinHook.h>
 
@@ -82,6 +83,7 @@ void __fastcall TickDetour(void* self, void* /*edx*/, int tickIndex)
     __finally { patch::runtime::EndNativeMovementTick(); input::EndNativeTick(); }
 
     patch::OnTick(game::TimeStep());
+    patch::pest::OnNativeTickCompleted();
 
     overlay::OnGameTick();
     game::PlayerTracker::Get().Update();

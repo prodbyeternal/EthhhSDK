@@ -243,7 +243,7 @@ int g_player_detection_info(lua_State* L) { lua_pushstring(L, game::PlayerTracke
 int g_player_mode(lua_State* L)
 {
     auto m = game::PlayerTracker::Get().Mode();
-    lua_pushstring(L, m == game::PlayerMode::Auto ? "auto" : m == game::PlayerMode::Manual ? "manual" : "learning");
+    lua_pushstring(L, m == game::PlayerMode::Auto ? "auto" : m == game::PlayerMode::Manual ? "manual" : m == game::PlayerMode::AutoPlus ? "auto+" : "learning");
     return 1;
 }
 int g_set_player_mode(lua_State* L)
@@ -251,6 +251,7 @@ int g_set_player_mode(lua_State* L)
     const char* s = luaL_checkstring(L, 1);
     auto& pt = game::PlayerTracker::Get();
     if (!strcmp(s, "auto")) pt.SetMode(game::PlayerMode::Auto);
+    else if (!strcmp(s, "auto+") || !strcmp(s, "autoplus")) pt.SetMode(game::PlayerMode::AutoPlus);
     else if (!strcmp(s, "manual")) pt.SetMode(game::PlayerMode::Manual);
     else if (!strcmp(s, "learning")) pt.BeginLearning();
     return 0;

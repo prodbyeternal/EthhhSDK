@@ -3,6 +3,7 @@
 #include "player_learning.h"
 #include "strat_identity.h"
 #include "ninja_control_policy.h"
+#include "player_mode_policy.h"
 #include "util.h"
 
 namespace eth::game {
@@ -165,7 +166,6 @@ void  EachStrat(const std::function<void(const StratView&)>& fn);
 // ---------------------------------------------------------------------------
 //  Player detection
 // ---------------------------------------------------------------------------
-enum class PlayerMode { Auto, Manual, Learning };
 
 struct PlayerCandidate {
     StratView strat;
@@ -186,10 +186,11 @@ public:
     uintptr_t Addr() const;               // 0 when unknown
     bool  Valid() const;
     PlayerMode Mode() const { return mode_; }
+    bool Pinned() const { return PinnedMode(mode_) && manual_ && manualValid_; }
     void  SetMode(PlayerMode m);
     void  Select(uintptr_t addr);         // manual selection
     void  BeginLearning();                // six seconds of idle/move/stop; ranks, does NOT pin
-    bool  ReacquireExactNinja();          // only after prior user pin; complete-list unique exact class
+    bool  ReacquireExactNinja();          // only after prior Manual/Auto+ pin; complete-list unique exact class
     bool  LearningDone() const { return learnDone_; }
     bool  LearningActive() const { return mode_ == PlayerMode::Learning && learnTotal_ > 0.0f; }
     const std::vector<PlayerCandidate>& Candidates() const { return candidates_; }
@@ -200,7 +201,7 @@ private:
     void RefreshCandidates();
     void AutoPick();
 
-    PlayerMode mode_ = PlayerMode::Auto;
+    PlayerMode mode_ = PlayerMode::AutoPlus;
     uintptr_t  manual_ = 0;
     uintptr_t  auto_ = 0;
     void*      knownClass_ = nullptr;

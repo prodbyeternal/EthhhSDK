@@ -135,7 +135,7 @@ ETH_CAPI(int, EthImGui_InvisibleButton, (const char* id, float w, float h))
 ETH_CAPI(int, EthImGui_Checkbox, (const char* label, int* value))
 {
     bool v = value && *value;
-    bool changed = ImGui::Checkbox(label, &v);
+    bool changed = ui::Checkbox(label, &v);
     if (value) *value = v ? 1 : 0;
     return changed ? 1 : 0;
 }

@@ -93,6 +93,8 @@ foreach ($manifestPath in $manifests) {
         throw "Mod build failed for '$($manifest.name)' ($LASTEXITCODE)."
     }
     Copy-Item $manifestPath (Join-Path $stageDir 'mod.json') -Force
+    $license = Join-Path $modDir 'LICENSE'
+    if (Test-Path $license -PathType Leaf) { Copy-Item $license (Join-Path $stageDir 'LICENSE') -Force }
     $built++
 }
 

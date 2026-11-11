@@ -16,8 +16,27 @@ target_include_directories(eth_player_learning_tests PRIVATE ${ETH_ROOT}/src/cor
 set_target_properties(eth_player_learning_tests PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
   RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
+add_executable(eth_ui_motion_tests UiMotionTests.cpp)
+target_include_directories(eth_ui_motion_tests PRIVATE ${ETH_ROOT}/src/core)
+set_target_properties(eth_ui_motion_tests PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
 
-foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection ethhhpatch_camera ethhhpatch_interpolation ethhhpatch_entity ethhhpatch_lens movement_input mouse_attack camera_relative_heading)
+add_executable(eth_player_tracker_tests PlayerTrackerTests.cpp ${ETH_ROOT}/src/core/game.cpp)
+target_include_directories(eth_player_tracker_tests PRIVATE ${ETH_ROOT}/src/core ${ETH_TP}/imgui)
+target_link_libraries(eth_player_tracker_tests PRIVATE user32.lib)
+set_target_properties(eth_player_tracker_tests PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
+
+add_executable(eth_pestcontrol_runtime_tests PestControlRuntimeTests.cpp ${ETH_ROOT}/src/core/pestcontrol.cpp)
+target_include_directories(eth_pestcontrol_runtime_tests PRIVATE ${ETH_ROOT}/src/core ${ETH_TP}/imgui)
+target_link_libraries(eth_pestcontrol_runtime_tests PRIVATE user32.lib)
+set_target_properties(eth_pestcontrol_runtime_tests PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
+
+foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection ethhhpatch_camera ethhhpatch_interpolation ethhhpatch_entity ethhhpatch_lens movement_input mouse_attack camera_relative_heading pestcontrol)
   if(name STREQUAL "strat_identity")
     set(test_source StratIdentityTests.cpp)
   elseif(name STREQUAL "ethhhpatch_policy")
@@ -36,6 +55,8 @@ foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection eth
     set(test_source EthhhPatchLensTests.cpp)
   elseif(name STREQUAL "camera_relative_heading")
     set(test_source CameraRelativeHeadingTests.cpp)
+  elseif(name STREQUAL "pestcontrol")
+    set(test_source PestControlTests.cpp)
   else()
     set(test_source EthhhPatchCameraTests.cpp)
   endif()
@@ -67,10 +88,11 @@ set_target_properties(eth_entity_performance_tests PROPERTIES
 # Runs the actual manager drawing code on an off-screen D3D9 render target.
 # The executable's main never invokes EntryGate, launcher::Run or hooks::Init.
 add_executable(eth_chrome_preview EXCLUDE_FROM_ALL chrome_preview.cpp ${ETH_CORE_SRC})
+target_sources(eth_chrome_preview PRIVATE ${ETH_ROOT}/src/core/liquid_fonts.rc)
 target_compile_definitions(eth_chrome_preview PRIVATE ETH_TESTING)
 target_compile_definitions(eth_chrome_preview PRIVATE ETH_TRAINER_SOURCE="${ETH_ROOT}/mods/trainer/mod.lua")
 target_include_directories(eth_chrome_preview PRIVATE ${ETH_ROOT}/src/core ${ETH_TP}/lua)
-target_link_libraries(eth_chrome_preview PRIVATE imgui lua54 minhook d3d9.lib dxguid.lib ole32.lib oleaut32.lib
+target_link_libraries(eth_chrome_preview PRIVATE liquid_glass imgui lua54 minhook d3d9.lib dxguid.lib ole32.lib oleaut32.lib
   user32.lib gdi32.lib gdiplus.lib shell32.lib advapi32.lib winmm.lib bcrypt.lib shlwapi.lib)
 set_target_properties(eth_chrome_preview PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/preview"

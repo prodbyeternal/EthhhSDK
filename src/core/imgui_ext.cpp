@@ -2,12 +2,16 @@
 #include "util.h"
 #include "log.h"
 #include "config.h"
+#include "liquid_glass.h"
+#include "ui_audio.h"
+#include "imgui_internal.h"
+#include "../third_party/liquid_glass/fonts.h"
 #include <cfloat>
 
 namespace eth::ui {
 
 namespace {
-ImU32 g_accent = IM_COL32(111, 221, 193, 255);
+ImU32 g_accent = IM_COL32(0, 122, 255, 255);
 float g_scale = 1.0f;
 float g_dpi = 1.0f;
 
@@ -112,13 +116,6 @@ void LoadFonts(float scale)
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->Clear();
 
-    std::string fontDir = "C:\\Windows\\Fonts";
-    std::string regularPath = JoinPath(fontDir, "segoeui.ttf");
-    std::string boldPath = JoinPath(fontDir, "segoeuib.ttf");
-    if (!FileExists(regularPath)) regularPath = JoinPath(fontDir, "tahoma.ttf");
-    if (!FileExists(regularPath)) regularPath = JoinPath(fontDir, "arial.ttf");
-    if (!FileExists(boldPath)) boldPath = regularPath;
-
     ImFontConfig cfg;
     cfg.OversampleH = 3;
     cfg.OversampleV = 2;
@@ -126,16 +123,29 @@ void LoadFonts(float scale)
     // Font sizes already include DPI; applying it again wastes atlas space.
     cfg.RasterizerDensity = 1.0f;
 
-    auto addFont = [&](const std::string& path, float px) -> ImFont* {
-        if (!FileExists(path)) return nullptr;
+    auto addFont = [&](std::vector<unsigned char>& bytes, float px) -> ImFont* {
         ImFontConfig c = cfg;
-        return io.Fonts->AddFontFromFileTTF(path.c_str(), px * g_scale, &c, io.Fonts->GetGlyphRangesDefault());
+        c.FontDataOwnedByAtlas=false;
+        return io.Fonts->AddFontFromMemoryTTF(bytes.data(),int(bytes.size()),px*g_scale,&c,io.Fonts->GetGlyphRangesDefault());
     };
 
-    g_regular = addFont(regularPath, 16.0f);
-    g_small   = addFont(regularPath, 13.0f);
-    g_bold    = addFont(boldPath, 16.0f);
-    g_title   = addFont(boldPath, 28.0f);
+    g_regular = addFont(inter_medium, 15.0f);
+    g_small   = addFont(inter_medium, 12.0f);
+    g_bold    = addFont(inter_semibold, 15.0f);
+    g_title   = addFont(inter_semibold, 28.0f);
+    Glass::SetIconFont(nullptr); Glass::SetIconFontBrands(nullptr);
+    HMODULE module=nullptr;
+    GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        reinterpret_cast<LPCSTR>(&LoadFonts),&module);
+    static const ImWchar icons[]={0xE000,0xF8FF,0};
+    auto iconFont=[&](int id) -> ImFont* {
+        HRSRC resource=FindResourceA(module,MAKEINTRESOURCEA(id),RT_RCDATA);
+        if (!resource) return nullptr;
+        void* bytes=LockResource(LoadResource(module,resource));
+        ImFontConfig c=cfg; c.FontDataOwnedByAtlas=false;
+        return bytes ? io.Fonts->AddFontFromMemoryTTF(bytes,int(SizeofResource(module,resource)),32*g_scale,&c,icons) : nullptr;
+    };
+    Glass::SetIconFont(iconFont(201)); Glass::SetIconFontBrands(iconFont(202));
 
     if (!g_regular) {
         ETH_WARN("no system TTF font found, falling back to ImGui default");
@@ -149,7 +159,7 @@ void LoadFonts(float scale)
     io.FontDefault = g_regular;
     io.Fonts->Build();
     ApplyTheme();
-    ETH_INFO("fonts loaded: %s (scale %.2f)", regularPath.c_str(), g_scale);
+    ETH_INFO("Liquid Glass fonts loaded: embedded Inter + Font Awesome (scale %.2f)", g_scale);
 }
 
 void ApplyTheme()
@@ -240,35 +250,87 @@ void ApplyTheme()
     set(ImGuiCol_TableRowBg,           IM_COL32(0, 0, 0, 0));
     set(ImGuiCol_TableRowBgAlt,        IM_COL32(255, 255, 255, 4));
     set(ImGuiCol_ModalWindowDimBg,     IM_COL32(5, 7, 10, 170));
+
+    // Global settings apply to launcher, F9, and existing mod ImGui calls.
+    auto& cfg=Config::Get();
+    const bool light=cfg.GetInt("theme","appearance",0)==1;
+    const bool highContrast=cfg.GetBool("theme","high_contrast",true);
+    Glass::SetAppearance(light ? 1 : 0);
+    const ImVec4 accent=ImGui::ColorConvertU32ToFloat4(g_accent);
+    Glass::SetAccent(accent.x,accent.y,accent.z);
+    auto setting=[&](const char* key,float fallback,float min,float max) {
+        const float value=cfg.GetFloat("theme",key,fallback);
+        return std::isfinite(value) ? std::clamp(value,min,max) : fallback;
+    };
+    Glass::SetGlobalMaterial(setting("blur",1,0,1),setting("opacity",.306f,0,1),
+        setting("saturation",1.35f,0,3),setting("refraction",24.49f,0,40),
+        setting("chroma",30,0,40),setting("edge",.485f,0,2),setting("shadow",.046f,0,.8f));
+    const bool reduced=cfg.GetBool("theme","reduce_motion",false);
+    Glass::Spring::reduced_motion=reduced;
+    Glass::SetLiquidFlow(reduced ? 0 : setting("flow",16,0,24));
+    if(Glass::g) {
+        // The actual example application presets, not just glass.h defaults.
+        Glass::GlassEdgeConfig e;
+        e.fresnel_exp=2.551f;e.bevel_scale=1;e.lip=.6f;e.specular_exp=62.42f;
+        e.specular_amt=1.071f;e.front_amt=1.332f;e.back_amt=2.281f;e.sat_pop=1.439f;
+        e.bevel_tilt=.5f;e.light_height=.2f;e.edge_shadow=2;e.cursor_size=40;
+        e.sheen_amt=1.056f;e.grain_amt=4;e.ambient_rim=2;e.front_spread=4.305f;e.back_spread=3.417f;
+        e.panel_br_spread=4.377f;e.panel_br_smooth=4;e.panel_rim_angle=330.6f;e.tbl_fill=2;
+        e.adapt_strength=cfg.GetBool("theme","adaptive_tint",false) ? .35f : 0;
+        e.lens_amount=1;e.lens_power=4;e.lens_a=1.505f;e.lens_b=2.020f;e.lens_c=2.143f;e.lens_d=3.214f;
+        e.glow_weight=.388f;e.glow_phase=1.089f;e.glow_edge0=.102f;e.glow_edge1=-.571f;
+        e.glow_anim=cfg.GetBool("theme","reduce_motion",false) ? 0 : .857f;
+        Glass::g->SetEdgeConfig(e); Glass::g->SetLights(308.6f,.474f,130.4f,.490f);
+        Glass::g->SetBackdropRefreshHz(setting("blur_hz",10,1,60));
+    }
+    InitUiAudio();Glass::SetSfxEnabled(cfg.GetBool("theme","sounds",true));
+    Glass::SetInk(light ? IM_COL32(17,22,34,255) : IM_COL32(248,250,255,255),
+        light ? IM_COL32(55,64,80,255) : (highContrast ? IM_COL32(204,213,229,255) : IM_COL32(166,179,200,255)));
+    set(ImGuiCol_Text,ThemeInk()); set(ImGuiCol_TextDisabled,ThemeSoftInk());
+    set(ImGuiCol_WindowBg,ThemeSurface()); set(ImGuiCol_PopupBg,ThemeSurface());
+    const ImU32 frame=light ? IM_COL32(255,255,255,100) : IM_COL32(255,255,255,18);
+    const ImU32 hover=light ? IM_COL32(255,255,255,180) : IM_COL32(255,255,255,38);
+    for(auto col:{ImGuiCol_FrameBg,ImGuiCol_Button,ImGuiCol_Header,ImGuiCol_Tab,ImGuiCol_TabDimmed,ImGuiCol_TableHeaderBg}) set(col,frame);
+    for(auto col:{ImGuiCol_FrameBgHovered,ImGuiCol_ButtonHovered,ImGuiCol_HeaderHovered,ImGuiCol_TabHovered}) set(col,hover);
+    for(auto col:{ImGuiCol_FrameBgActive,ImGuiCol_ButtonActive,ImGuiCol_HeaderActive,ImGuiCol_TabSelected,ImGuiCol_TabDimmedSelected}) set(col,AccentDim(.30f));
+    for(auto col:{ImGuiCol_TitleBg,ImGuiCol_TitleBgActive,ImGuiCol_TitleBgCollapsed,ImGuiCol_MenuBarBg}) set(col,ThemeSurface());
+    const ImU32 line=light ? IM_COL32(20,30,50,48) : IM_COL32(255,255,255,48);
+    for(auto col:{ImGuiCol_Border,ImGuiCol_Separator,ImGuiCol_TableBorderStrong,ImGuiCol_TableBorderLight}) set(col,line);
+    st.WindowRounding=26*g_scale; st.ChildRounding=22*g_scale; st.PopupRounding=18*g_scale;
+    st.FrameRounding=12*g_scale; st.GrabRounding=12*g_scale;
+    st.FrameBorderSize=0; st.WindowBorderSize=0;
+    st.ChildBorderSize=0;st.ItemSpacing=ImVec2(12*g_scale,10*g_scale);
+    st.FramePadding=ImVec2(12*g_scale,8*g_scale);st.ScrollbarSize=7*g_scale;
+    st.WindowRounding=30*g_scale;st.ChildRounding=0;
+    set(ImGuiCol_Separator,light ? IM_COL32(0,0,0,14) : IM_COL32(255,255,255,16));
+    set(ImGuiCol_ChildBg,IM_COL32(0,0,0,0));
 }
+
+#include "ui_widgets.inc"
 
 // ---------------------------------------------------------------------------
 //  Custom widgets
 // ---------------------------------------------------------------------------
 bool ToggleSwitch(const char* id, bool* value, float widthScale)
 {
-    float height = 22.0f * widthScale * g_scale;
-    float width = 42.0f * widthScale * g_scale;
+    float height = 26.0f * widthScale * g_scale;
+    float width = 44.0f * widthScale * g_scale;
     ImVec2 pos = ImGui::GetCursorScreenPos();
     bool clicked = ImGui::InvisibleButton(id, ImVec2(width, height), ImGuiButtonFlags_EnableNav);
-    if (clicked) *value = !*value;
+    if (clicked) {*value = !*value;PlayUiSound(*value ? Sound::On : Sound::Off);}
     bool hovered = ImGui::IsItemHovered();
 
-    ImGuiStorage* storage = ImGui::GetStateStorage();
     ImGuiID sid = ImGui::GetID(id);
-    float t = storage->GetFloat(sid, *value ? 1.0f : 0.0f);
-    float target = *value ? 1.0f : 0.0f;
-    t += (target - t) * std::min(1.0f, ImGui::GetIO().DeltaTime * 14.0f);
-    storage->SetFloat(sid, t);
+    const float t=std::clamp(Animate(sid,130,*value ? 1 : 0,*value ? 1 : 0),0.0f,1.0f);
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 trackOff = hovered ? IM_COL32(60, 70, 88, 255) : IM_COL32(44, 52, 67, 255);
+    ImU32 trackOff = hovered ? WithAlpha(ThemeInk(),.22f) : WithAlpha(ThemeInk(),.14f);
     ImU32 track = LerpColor(trackOff, g_accent, t);
 
-    dl->AddRectFilled(pos, ImVec2(pos.x + width, pos.y + height), track, height * 0.5f);
+    dl->AddRectFilled(pos, ImVec2(pos.x + width, pos.y + height), WithAlpha(track,ImGui::GetStyle().Alpha), height * 0.5f);
     float knobR = height * 0.5f - 3.0f * g_scale;
     float knobX = pos.x + height * 0.5f + t * (width - height);
-    dl->AddCircleFilled(ImVec2(knobX, pos.y + height * 0.5f), knobR, IM_COL32(248, 250, 255, 255), 24);
+    dl->AddCircleFilled(ImVec2(knobX, pos.y + height * 0.5f), knobR, WithAlpha(IM_COL32_WHITE,ImGui::GetStyle().Alpha), 32);
     return clicked;
 }
 
@@ -319,23 +381,12 @@ void HelpMarker(const char* text)
 
 bool AccentButton(const char* label, const ImVec2& size)
 {
-    ImGui::PushStyleColor(ImGuiCol_Button, g_accent);
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, WithAlpha(g_accent, 0.88f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, WithAlpha(g_accent, 0.72f));
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(8, 10, 14, 255));
-    bool r = ImGui::Button(label, size);
-    ImGui::PopStyleColor(4);
-    return r;
+    return ConnectedButton(label,true,size);
 }
 
 bool GhostButton(const char* label, const ImVec2& size)
 {
-    ImGui::PushStyleColor(ImGuiCol_Button, IM_COL32(0, 0, 0, 0));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(255, 255, 255, 16));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, IM_COL32(255, 255, 255, 28));
-    bool r = ImGui::Button(label, size);
-    ImGui::PopStyleColor(3);
-    return r;
+    return ConnectedButton(label,false,size);
 }
 
 bool NavItem(const char* id, const char* label, bool selected, const char* shortcut)
@@ -380,8 +431,7 @@ void StatRow(const char* label, const char* value)
 void DrawCardBg(ImVec2 pos, ImVec2 size, ImU32 color, float rounding)
 {
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    dl->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + size.y), color, rounding * g_scale);
-    dl->AddRect(pos, ImVec2(pos.x + size.x, pos.y + size.y), IM_COL32(38, 44, 57, 255), rounding * g_scale);
+    GlassPanel(pos,size,rounding*g_scale);
 }
 
 bool BeginCard(const char* id, const ImVec2& size)
@@ -424,8 +474,8 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
     EnsureContext();
     ImGui::SetNextWindowSize(defaultSize, ImGuiCond_FirstUseEver);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
-    bool visible = ImGui::Begin(id, nullptr, flags | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    bool visible = ImGui::Begin(id, nullptr, flags | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground);
     ImGui::PopStyleVar(2);
     if (!visible) {
         ImGui::End();
@@ -434,14 +484,13 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
 
     ImVec2 pos = ImGui::GetWindowPos();
     ImVec2 size = ImGui::GetWindowSize();
-    float headerH = 64.0f * g_scale;
-    float pad = 20.0f * g_scale;
+    float headerH = 68.0f * g_scale;
+    float pad = 26.0f * g_scale;
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    dl->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + headerH), IM_COL32(20, 27, 29, 255), 10.0f * g_scale,
-                      ImDrawFlags_RoundCornersTop);
-    dl->AddLine(ImVec2(pos.x, pos.y + headerH), ImVec2(pos.x + size.x, pos.y + headerH),
-                 IM_COL32(43, 53, 55, 255), 1.0f);
+    g_managerFirstPrimitive=Glass::g ? Glass::g->PrimitiveCount() : 0;
+    // One material surface. Header/sidebar/content are layout regions only.
+    GlassPanel(pos,size,30*g_scale,Glass::Material::Regular);
 
     // A real header hit-target; dragging never steals a close-button click.
     ImGui::SetCursorScreenPos(pos);
@@ -450,20 +499,14 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
         ImVec2 delta = ImGui::GetIO().MouseDelta;
         ImGui::SetWindowPos(ImVec2(pos.x + delta.x, pos.y + delta.y));
     }
-    DrawLogo(ImVec2(pos.x + pad, pos.y + 16.0f * g_scale), 32.0f * g_scale);
-    float titleX = pos.x + pad + 46.0f * g_scale;
+    Glass::DrawIcon(dl,Glass::Icon::Spark,ImVec2(pos.x+pad+12*g_scale,pos.y+headerH*.5f),22,Accent());
+    float titleX = pos.x + pad + 34.0f * g_scale;
     ImVec4 textClip(titleX, pos.y, pos.x + size.x - 68.0f * g_scale, pos.y + headerH);
     dl->AddText(FontBold(), FontBold()->FontSize, ImVec2(titleX, pos.y + 12.0f * g_scale),
-                IM_COL32(235, 238, 244, 255), title, nullptr, 0, &textClip);
+                 ThemeInk(), title, nullptr, 0, &textClip);
     if (subtitle && *subtitle) {
         dl->AddText(FontSmall(), FontSmall()->FontSize, ImVec2(titleX, pos.y + 35.0f * g_scale),
-                    IM_COL32(155, 164, 179, 255), subtitle, nullptr, 0, &textClip);
-    }
-    if (size.x > 760*g_scale) {
-        const char* tag = "I-NINJA  /  MOD WORKSPACE";
-        const ImVec2 ts=FontSmall()->CalcTextSizeA(FontSmall()->FontSize,FLT_MAX,0,tag);
-        dl->AddText(FontSmall(),FontSmall()->FontSize,ImVec2(pos.x+size.x-ts.x-86*g_scale,pos.y+25*g_scale),
-            IM_COL32(107,131,130,255),tag);
+                     ThemeSoftInk(), subtitle, nullptr, 0, &textClip);
     }
 
     // custom close button
@@ -475,7 +518,7 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
     if (closeHovered) {
         dl->AddRectFilled(closePos,
                            ImVec2(closePos.x + 32.0f * g_scale, closePos.y + 32.0f * g_scale),
-                          IM_COL32(64, 28, 34, 255), 6.0f * g_scale);
+                           WithAlpha(ThemeInk(),.10f), 16.0f * g_scale);
     }
     float xc = closePos.x + 16.0f * g_scale, yc = closePos.y + 16.0f * g_scale;
     ImU32 xcol = closeHovered ? IM_COL32(255, 150, 160, 255) : IM_COL32(140, 150, 168, 255);
@@ -508,6 +551,18 @@ void EndChromeWindow()
     }
     g_chromeOpen = false;
     g_chromePushed = false;
+    // Fade every vertex in this one window tree, including custom/template
+    // widgets. Their alpha cannot get ahead of the glass during transitions.
+    ImGuiWindow* root=ImGui::GetCurrentWindow();
+    if(g_managerOpacity<1) {
+        for(ImGuiWindow* w:ImGui::GetCurrentContext()->Windows) {
+            ImGuiWindow* parent=w;
+            while(parent && parent!=root) parent=parent->ParentWindow;
+            if(!parent || !w->Active) continue;
+            for(auto& vertex:w->DrawList->VtxBuffer) vertex.col=WithAlpha(vertex.col,g_managerOpacity);
+        }
+        if(Glass::g) Glass::g->FadeSince(g_managerFirstPrimitive,g_managerOpacity);
+    }
     ImGui::End();
 }
 
