@@ -1,0 +1,11 @@
+{
+  "id": "halflife_movement",
+  "name": "Half-Life Movement + FPS Camera",
+  "version": "0.1.0",
+  "author": "EthhhSDK",
+  "description": "Showcase C# mod: Valve HLSDK pmove movement (friction, ground/air acceleration, bunnyhop cap, HL jump and gravity) plus a mouse-look FPS camera. F2 toggles, F3 panics. Movement math ported from half-life-steam_legacy/pm_shared/pm_shared.c.",
+  "type": "csharp",
+  "entry": "Mod.dll",
+  "api": 1,
+  "enabled": true
+}

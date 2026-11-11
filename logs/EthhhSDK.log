@@ -1,0 +1,2278 @@
+===== EthhhSDK 0.1.0  session 2026-11-10 18:46:58 =====
+18:46:58.769 [INF] ==========================================================
+18:46:58.769 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+18:46:58.769 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+18:46:58.769 [INF] config: C:\Users\Administrator\Desktop\ininja\EthhhSDK\config\EthhhSDK.ini not found, creating defaults
+18:46:58.770 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+18:46:58.770 [INF] config: C:\Users\Administrator\Desktop\ininja\EthhhSDK\config\mods.ini not found, creating defaults
+18:46:58.770 [INF] config: C:\Users\Administrator\Desktop\ininja\EthhhSDK\config\mod_settings.ini not found, creating defaults
+18:46:58.771 [INF] launcher: opening pre-game mod manager
+18:46:58.872 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+18:46:58.906 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+18:47:17.176 [INF] launcher: start requested
+18:47:17.215 [INF] MinHook initialized
+18:47:17.254 [INF] Fn_Tick hooked at 0043E0A0
+18:47:17.256 [ERR] lua[trainer]: load failed: cannot read mod.lua
+18:47:17.289 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+18:47:17.372 [ERR] mods[halflife_movement]: FileNotFoundException: mod assembly not found
+18:47:17.372 [ERR] managed: failed to load halflife_movement: FileNotFoundException: mod assembly not found
+18:47:17.372 [INF] managed: 0 mod(s) initialised, callbacks not registered
+18:47:17.372 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks NOT registered)
+18:47:17.372 [INF] mods: 2 enabled, 0 loaded (lua 0, csharp 0)
+18:47:17.372 [INF] EthhhSDK ready: 2 mod(s) enabled, 0 loaded
+18:47:17.372 [INF] watcher: waiting for game window / D3D9 device
+18:47:17.915 [INF] D3D9 device hooked (device=028C8920, EndScene=72463130)
+18:47:18.015 [INF] raw mouse registered
+18:47:18.015 [INF] window hook installed (hwnd=00220CE8)
+18:47:18.015 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+18:47:18.015 [INF] watcher: all hooks installed
+===== EthhhSDK 0.1.0  session 2026-11-10 18:53:42 =====
+18:53:42.150 [INF] ==========================================================
+18:53:42.150 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+18:53:42.150 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+18:53:42.151 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+18:53:42.151 [INF] launcher: opening pre-game mod manager
+18:53:42.226 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+18:53:42.253 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+18:53:52.190 [INF] launcher: start requested
+18:53:52.217 [INF] MinHook initialized
+18:53:52.247 [INF] Fn_Tick hooked at 0043E0A0
+18:53:52.248 [ERR] lua[trainer]: load failed: cannot read mod.lua
+18:53:52.265 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+18:53:52.336 [ERR] mods[halflife_movement]: FileNotFoundException: mod assembly not found
+18:53:52.336 [ERR] managed: failed to load halflife_movement: FileNotFoundException: mod assembly not found
+18:53:52.336 [INF] managed: 0 mod(s) initialised, callbacks not registered
+18:53:52.336 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks NOT registered)
+18:53:52.336 [INF] mods: 2 enabled, 0 loaded (lua 0, csharp 0)
+18:53:52.336 [INF] EthhhSDK ready: 2 mod(s) enabled, 0 loaded
+18:53:52.337 [INF] watcher: waiting for game window / D3D9 device
+18:53:52.876 [INF] D3D9 device hooked (device=079E2100, EndScene=72463130)
+18:53:52.983 [INF] raw mouse registered
+18:53:52.983 [INF] window hook installed (hwnd=00100C10)
+18:53:52.983 [INF] camera ready: pos=(851968.00, 805.35, 0.00) fov=1.047 rad
+18:53:52.983 [INF] watcher: all hooks installed
+===== EthhhSDK 0.1.0  session 2026-11-10 18:55:30 =====
+18:55:30.953 [INF] ==========================================================
+18:55:30.954 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+18:55:30.954 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+18:55:30.954 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+18:55:30.954 [INF] launcher: opening pre-game mod manager
+18:55:31.021 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+18:55:31.048 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+18:55:33.484 [INF] mods: halflife_movement disabled (launcher)
+18:55:34.464 [INF] mods: halflife_movement enabled (launcher)
+18:55:34.715 [INF] mods: halflife_movement disabled (launcher)
+18:55:35.224 [INF] mods: halflife_movement enabled (launcher)
+18:55:35.345 [INF] mods: halflife_movement disabled (launcher)
+18:55:35.504 [INF] mods: halflife_movement enabled (launcher)
+18:55:35.814 [INF] mods: halflife_movement disabled (launcher)
+18:55:40.485 [INF] launcher: start requested
+18:55:40.515 [INF] MinHook initialized
+18:55:40.547 [INF] Fn_Tick hooked at 0043E0A0
+18:55:40.548 [ERR] lua[trainer]: load failed: cannot read mod.lua
+18:55:40.548 [INF] mods: 1 enabled, 0 loaded (lua 0, csharp 0)
+18:55:40.548 [INF] EthhhSDK ready: 1 mod(s) enabled, 0 loaded
+18:55:40.548 [INF] watcher: waiting for game window / D3D9 device
+18:55:41.099 [INF] raw mouse registered
+18:55:41.099 [INF] window hook installed (hwnd=00340744)
+18:55:41.186 [INF] D3D9 device hooked (device=00846760, EndScene=72463130)
+18:55:41.186 [INF] watcher: all hooks installed
+===== EthhhSDK 0.1.0  session 2026-11-10 18:57:01 =====
+18:57:01.588 [INF] ==========================================================
+18:57:01.588 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+18:57:01.588 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+18:57:01.589 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+18:57:01.589 [INF] launcher: opening pre-game mod manager
+18:57:01.671 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+18:57:01.703 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+18:57:56.060 [INF] launcher: start requested
+18:57:56.088 [INF] MinHook initialized
+18:57:56.120 [INF] Fn_Tick hooked at 0043E0A0
+18:57:56.121 [ERR] lua[trainer]: load failed: cannot read mod.lua
+18:57:56.121 [INF] mods: 1 enabled, 0 loaded (lua 0, csharp 0)
+18:57:56.121 [INF] EthhhSDK ready: 1 mod(s) enabled, 0 loaded
+18:57:56.121 [INF] watcher: waiting for game window / D3D9 device
+18:57:56.655 [INF] D3D9 device hooked (device=007EAC40, EndScene=72463130)
+18:57:56.770 [INF] raw mouse registered
+18:57:56.771 [INF] window hook installed (hwnd=000D0E14)
+18:57:56.771 [INF] camera ready: pos=(851968.00, 805.35, 0.00) fov=1.047 rad
+18:57:56.771 [INF] watcher: all hooks installed
+===== EthhhSDK 0.1.0  session 2026-11-10 19:02:55 =====
+19:02:55.198 [INF] ==========================================================
+19:02:55.198 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+19:02:55.198 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+19:02:55.199 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+19:02:55.199 [INF] launcher: opening pre-game mod manager
+19:02:55.286 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:02:55.330 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+19:03:01.751 [INF] launcher: start requested
+19:03:01.783 [INF] MinHook initialized
+19:03:01.844 [INF] Fn_Tick hooked at 0043E0A0
+19:03:01.847 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+19:03:01.847 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+19:03:01.847 [INF] mods: 1 enabled, 1 loaded (lua 1, csharp 0)
+19:03:01.847 [INF] EthhhSDK ready: 1 mod(s) enabled, 1 loaded
+19:03:01.847 [INF] watcher: waiting for game window / D3D9 device
+19:03:02.385 [INF] D3D9 device hooked (device=00749A00, EndScene=72463130)
+19:03:02.500 [INF] raw mouse registered
+19:03:02.500 [INF] window hook installed (hwnd=000A0D6A)
+19:03:02.500 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+19:03:02.500 [INF] watcher: all hooks installed
+19:03:02.613 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:03:02.613 [INF] overlay: ImGui backends ready (hwnd=000A0D6A device=00749A00 scale 1.00)
+19:03:03.103 [INF] player: auto: 0.00 from camera (class 09409D20)
+19:03:03.819 [INF] player: auto: 0.00 from camera (class 09409D4C)
+19:03:30.063 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:03:30.063 [INF] overlay: opened
+19:03:31.782 [INF] overlay: game resumed (time scale 1.00)
+19:03:31.782 [INF] overlay: closed
+19:03:32.532 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:03:32.532 [INF] overlay: opened
+19:03:50.201 [INF] overlay: game resumed (time scale 1.00)
+19:03:50.201 [INF] overlay: closed
+19:03:50.634 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:03:50.634 [INF] overlay: opened
+19:03:55.593 [INF] mods: halflife_movement enabled
+19:03:56.243 [INF] mods: halflife_movement disabled
+19:03:57.108 [INF] overlay: game resumed (time scale 1.00)
+19:03:57.108 [INF] overlay: closed
+19:03:57.676 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:03:57.676 [INF] overlay: opened
+19:03:59.046 [INF] mods: halflife_movement enabled
+19:04:00.362 [INF] overlay: game resumed (time scale 1.00)
+19:04:00.362 [INF] overlay: closed
+19:04:00.662 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:04:00.662 [INF] overlay: opened
+19:04:03.698 [INF] overlay: game resumed (time scale 1.00)
+19:04:03.698 [INF] overlay: closed
+19:04:04.518 [INF] player: auto: 0.00 from camera (class 0BC5B598)
+19:04:22.017 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:04:22.017 [INF] overlay: opened
+19:04:25.805 [INF] overlay: game resumed (time scale 1.00)
+19:04:25.805 [INF] overlay: closed
+19:04:26.922 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:04:26.922 [INF] overlay: opened
+19:04:27.291 [INF] overlay: game resumed (time scale 1.00)
+19:04:27.291 [INF] overlay: closed
+19:04:27.857 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:04:27.857 [INF] overlay: opened
+19:04:32.144 [INF] overlay: game resumed (time scale 1.00)
+19:04:32.144 [INF] overlay: closed
+19:04:38.335 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:04:38.335 [INF] overlay: opened
+19:04:47.728 [INF] overlay: game resumed (time scale 1.00)
+19:04:47.728 [INF] overlay: closed
+19:04:52.299 [INF] overlay: game paused (time scale 0.55, camera frozen)
+19:04:52.299 [INF] overlay: opened
+19:04:53.851 [INF] overlay: game resumed (time scale 0.55)
+19:04:53.851 [INF] overlay: closed
+19:04:57.871 [INF] overlay: game paused (time scale 0.22, camera frozen)
+19:04:57.871 [INF] overlay: opened
+19:04:58.940 [INF] overlay: game resumed (time scale 0.22)
+19:04:58.940 [INF] overlay: closed
+19:04:59.756 [INF] overlay: game paused (time scale 0.22, camera frozen)
+19:04:59.756 [INF] overlay: opened
+19:05:09.271 [INF] player: learning started (213 strats). Move the character now.
+19:05:10.284 [INF] overlay: game resumed (time scale 0.22)
+19:05:10.284 [INF] overlay: closed
+19:05:11.723 [INF] player: manual selection 04B49DC8 (class 0B37DD1C) pos 6.94 15.76 78.57
+19:05:11.723 [INF] player: learning: picked 04B49DC8 (moved 16.82)
+19:05:13.954 [INF] overlay: game paused (time scale 0.22, camera frozen)
+19:05:13.954 [INF] overlay: opened
+19:05:18.926 [INF] overlay: game resumed (time scale 0.22)
+19:05:18.926 [INF] overlay: closed
+19:05:20.178 [INF] overlay: game paused (time scale 0.22, camera frozen)
+19:05:20.178 [INF] overlay: opened
+19:05:21.913 [INF] overlay: game resumed (time scale 0.22)
+19:05:21.913 [INF] overlay: closed
+19:05:26.150 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:05:26.150 [INF] overlay: opened
+19:05:30.292 [INF] player: learning started (213 strats). Move the character now.
+19:05:30.505 [INF] overlay: game resumed (time scale 1.00)
+19:05:30.505 [INF] overlay: closed
+19:05:32.779 [INF] player: manual selection 04B497A8 (class 0B37DD1C) pos 31.61 15.32 43.45
+19:05:32.779 [INF] player: learning: picked 04B497A8 (moved 16.30)
+19:05:34.158 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:05:34.158 [INF] overlay: opened
+19:05:35.110 [INF] overlay: game resumed (time scale 1.00)
+19:05:35.111 [INF] overlay: closed
+19:05:35.644 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:05:35.644 [INF] overlay: opened
+19:05:39.531 [INF] overlay: game resumed (time scale 1.00)
+19:05:39.531 [INF] overlay: closed
+19:05:40.899 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:05:40.899 [INF] overlay: opened
+19:05:41.916 [INF] overlay: game resumed (time scale 1.00)
+19:05:41.917 [INF] overlay: closed
+19:05:42.400 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:05:42.401 [INF] overlay: opened
+19:05:45.040 [INF] player: auto: 24.25 from camera (class 0B37DD1C)
+19:05:45.306 [INF] player: auto: 23.04 from camera (class 0B37DD1C)
+19:05:47.856 [INF] overlay: game resumed (time scale 1.00)
+19:05:47.856 [INF] overlay: closed
+19:05:49.044 [INF] player: auto: 22.67 from camera (class 0B37DD1C)
+19:05:51.979 [INF] player: auto: 47.18 from camera (class 0B37DD1C)
+19:05:52.780 [INF] player: auto: 49.96 from camera (class 0B37DD1C)
+19:05:54.383 [INF] player: auto: 52.99 from camera (class 0B37DD1C)
+19:05:55.983 [INF] player: auto: 55.40 from camera (class 0B37DD1C)
+19:05:57.835 [INF] player: auto: 0.00 from camera (class 0B37D198)
+19:05:59.168 [INF] player: auto: 0.00 from camera (class 0BC5B598)
+19:06:03.722 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:03.722 [INF] overlay: opened
+19:06:05.462 [INF] player: learning started (204 strats). Move the character now.
+19:06:05.725 [INF] overlay: game resumed (time scale 1.00)
+19:06:05.725 [INF] overlay: closed
+19:06:07.981 [INF] player: manual selection 04B5B788 (class 0BC5B35C) pos 13.51 0.56 -79.29
+19:06:07.981 [INF] player: learning: picked 04B5B788 (moved 12.06)
+19:06:08.410 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:08.410 [INF] overlay: opened
+19:06:11.747 [INF] overlay: game resumed (time scale 1.00)
+19:06:11.747 [INF] overlay: closed
+19:06:13.015 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:13.015 [INF] overlay: opened
+19:06:14.166 [INF] overlay: game resumed (time scale 1.00)
+19:06:14.167 [INF] overlay: closed
+19:06:14.734 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:14.734 [INF] overlay: opened
+19:06:15.584 [INF] overlay: game resumed (time scale 1.00)
+19:06:15.584 [INF] overlay: closed
+19:06:16.202 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:16.202 [INF] overlay: opened
+19:06:16.886 [INF] overlay: game resumed (time scale 1.00)
+19:06:16.886 [INF] overlay: closed
+19:06:17.670 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:17.670 [INF] overlay: opened
+19:06:18.622 [INF] overlay: game resumed (time scale 1.00)
+19:06:18.622 [INF] overlay: closed
+19:06:20.390 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:20.391 [INF] overlay: opened
+19:06:22.525 [INF] overlay: game resumed (time scale 1.00)
+19:06:22.526 [INF] overlay: closed
+19:06:23.425 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:23.425 [INF] overlay: opened
+19:06:32.440 [INF] player: learning started (204 strats). Move the character now.
+19:06:54.508 [INF] overlay: game resumed (time scale 1.00)
+19:06:54.508 [INF] overlay: closed
+19:06:55.142 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:55.142 [INF] overlay: opened
+19:06:56.510 [INF] overlay: game resumed (time scale 1.00)
+19:06:56.510 [INF] overlay: closed
+19:06:57.327 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:06:57.327 [INF] overlay: opened
+19:07:01.899 [INF] overlay: game resumed (time scale 1.00)
+19:07:01.899 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-10 19:19:33 =====
+19:19:33.274 [INF] ==========================================================
+19:19:33.274 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+19:19:33.274 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+19:19:33.274 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+19:19:33.275 [INF] launcher: opening pre-game mod manager
+19:19:33.328 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:19:33.352 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+19:19:47.583 [INF] launcher: exit requested
+19:19:47.614 [INF] launcher: exit requested
+===== session end =====
+===== EthhhSDK 0.1.0  session 2026-11-10 19:19:51 =====
+19:19:51.815 [INF] ==========================================================
+19:19:51.815 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+19:19:51.815 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+19:19:51.815 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+19:19:51.816 [INF] launcher: opening pre-game mod manager
+19:19:51.871 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:19:51.900 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+19:19:53.413 [INF] launcher: start requested
+19:19:53.440 [INF] MinHook initialized
+19:19:53.465 [INF] Fn_Tick hooked at 0043E0A0
+19:19:53.467 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+19:19:53.467 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+19:19:53.482 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+19:19:53.564 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+19:19:53.565 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+19:19:53.565 [INF] clr: managed callbacks set (tick=04B2072E gui=04B20756 overlay=04B2077E)
+19:19:53.565 [INF] managed: 1 mod(s) initialised, callbacks registered
+19:19:53.565 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+19:19:53.565 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+19:19:53.565 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+19:19:53.565 [INF] watcher: waiting for game window / D3D9 device
+19:19:53.997 [INF] raw mouse registered
+19:19:53.997 [INF] window hook installed (hwnd=00390CF4)
+19:19:54.081 [INF] D3D9 device hooked (device=006AD400, EndScene=72463130)
+19:19:54.081 [INF] watcher: all hooks installed
+19:19:54.261 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:19:54.261 [INF] overlay: ImGui backends ready (hwnd=00390CF4 device=006AD400 scale 1.00)
+19:19:58.408 [INF] player: auto: 0.00 from camera (class 0BBDDD4C)
+19:20:12.247 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:20:12.249 [INF] overlay: opened
+19:20:20.722 [INF] overlay: game resumed (time scale 1.00)
+19:20:20.722 [INF] overlay: closed
+19:20:21.573 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:20:21.573 [INF] overlay: opened
+19:20:21.991 [INF] overlay: game resumed (time scale 1.00)
+19:20:21.991 [INF] overlay: closed
+19:20:23.745 [INF] player: auto: 0.00 from camera (class 0E42F598)
+19:20:38.977 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:21:06.121 [INF] [halflife_movement] deactivated
+19:21:07.171 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:21:07.920 [INF] [halflife_movement] deactivated
+19:21:08.390 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:21:30.061 [INF] [halflife_movement] deactivated
+19:21:34.532 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:21:35.499 [INF] [halflife_movement] deactivated
+19:21:36.601 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:21:38.234 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:21:38.235 [INF] overlay: opened
+19:21:40.856 [INF] [halflife_movement] state resynced to the game's player position
+19:21:41.140 [INF] [halflife_movement] state resynced to the game's player position
+19:21:41.257 [INF] [halflife_movement] state resynced to the game's player position
+19:21:54.702 [INF] overlay: game resumed (time scale 1.00)
+19:21:54.702 [INF] overlay: closed
+19:22:03.746 [INF] [halflife_movement] deactivated
+19:22:05.215 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:22:11.054 [INF] [halflife_movement] deactivated
+19:22:14.457 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:14.457 [INF] overlay: opened
+19:22:17.799 [INF] player: learning started (213 strats). Move the character now.
+19:22:17.799 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:20.268 [INF] player: manual selection 051EAF98 (class 0DB51D48) pos -10.13 15.57 78.32
+19:22:20.268 [INF] player: learning: picked 051EAF98 (moved 11.10)
+19:22:20.613 [INF] overlay: game resumed (time scale 1.00)
+19:22:20.613 [INF] overlay: closed
+19:22:21.531 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:21.531 [INF] overlay: opened
+19:22:22.415 [INF] overlay: game resumed (time scale 1.00)
+19:22:22.415 [INF] overlay: closed
+19:22:24.668 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:24.668 [INF] overlay: opened
+19:22:25.890 [INF] player: learning started (213 strats). Move the character now.
+19:22:25.890 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:26.407 [INF] player: learning started (213 strats). Move the character now.
+19:22:26.407 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:26.690 [INF] player: learning started (213 strats). Move the character now.
+19:22:26.690 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:26.825 [INF] player: learning started (213 strats). Move the character now.
+19:22:26.825 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:26.940 [INF] player: learning started (213 strats). Move the character now.
+19:22:26.940 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:27.075 [INF] player: learning started (213 strats). Move the character now.
+19:22:27.076 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:27.207 [INF] player: learning started (213 strats). Move the character now.
+19:22:27.208 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:27.341 [INF] player: learning started (213 strats). Move the character now.
+19:22:27.341 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:27.492 [INF] player: learning started (213 strats). Move the character now.
+19:22:27.492 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:28.806 [INF] overlay: game resumed (time scale 1.00)
+19:22:28.806 [INF] overlay: closed
+19:22:30.128 [INF] player: manual selection 051EAF98 (class 0DB51D48) pos 4.22 15.57 84.27
+19:22:30.128 [INF] player: learning: picked 051EAF98 (moved 9.71)
+19:22:31.376 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:31.376 [INF] overlay: opened
+19:22:35.229 [INF] overlay: game resumed (time scale 1.00)
+19:22:35.229 [INF] overlay: closed
+19:22:36.947 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:36.947 [INF] overlay: opened
+19:22:47.194 [INF] player: auto: 31.66 from camera (class 0DB51D48)
+19:22:49.226 [INF] overlay: game resumed (time scale 1.00)
+19:22:49.226 [INF] overlay: closed
+19:22:50.211 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:50.211 [INF] overlay: opened
+19:22:51.798 [INF] player: learning started (213 strats). Move the character now.
+19:22:51.799 [INF] [halflife_movement] learning started - move the ninja for ~2.5 s
+19:22:53.431 [INF] overlay: game resumed (time scale 1.00)
+19:22:53.431 [INF] overlay: closed
+19:22:54.387 [INF] player: manual selection 051C97A8 (class 0DB51D1C) pos 24.46 15.16 66.72
+19:22:54.387 [INF] player: learning: picked 051C97A8 (moved 14.41)
+19:22:54.865 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:22:54.865 [INF] overlay: opened
+19:22:56.371 [WRN] [halflife_movement] invalid hex address
+19:23:07.912 [INF] overlay: game resumed (time scale 1.00)
+19:23:07.912 [INF] overlay: closed
+19:23:08.464 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:23:38.323 [INF] [halflife_movement] deactivated
+19:23:43.915 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:24:03.002 [INF] [halflife_movement] deactivated
+19:24:05.802 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:24:11.425 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-10 20:00:51 =====
+20:00:51.739 [INF] ==========================================================
+20:00:51.739 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+20:00:51.739 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+20:00:51.740 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+20:00:51.741 [INF] launcher: opening pre-game mod manager
+20:00:51.816 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+20:00:51.844 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+20:01:04.839 [INF] launcher: start requested
+20:01:04.865 [INF] MinHook initialized
+20:01:04.894 [INF] Fn_Tick hooked at 0043E0A0
+20:01:04.897 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+20:01:04.897 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+20:01:04.916 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+20:01:04.989 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+20:01:04.989 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+20:01:04.989 [INF] clr: managed callbacks set (tick=04D4072E gui=04D40756 overlay=04D4077E)
+20:01:04.989 [INF] managed: 1 mod(s) initialised, callbacks registered
+20:01:04.989 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+20:01:04.989 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+20:01:04.989 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+20:01:04.990 [INF] watcher: waiting for game window / D3D9 device
+20:01:05.423 [INF] raw mouse registered
+20:01:05.423 [INF] window hook installed (hwnd=00380CE2)
+20:01:05.535 [INF] D3D9 device hooked (device=02751880, EndScene=72463130)
+20:01:05.535 [INF] watcher: all hooks installed
+20:01:05.706 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+20:01:05.706 [INF] overlay: ImGui backends ready (hwnd=00380CE2 device=02751880 scale 1.00)
+20:01:12.789 [INF] player: unconfirmed proximity: 3.35 from camera (class 0BF53074)
+20:01:13.043 [INF] player: unconfirmed proximity: 1.14 from camera (class 0BF52F6C)
+20:01:15.715 [INF] player: unconfirmed proximity: 0.19 from camera (class 0BF52E38)
+20:01:16.780 [INF] player: unconfirmed proximity: 0.39 from camera (class 0BF52F6C)
+20:01:17.049 [INF] player: unconfirmed proximity: 0.44 from camera (class 0BF52E38)
+20:01:17.578 [INF] player: unconfirmed proximity: 19.67 from camera (class 0BC08D4C)
+20:01:21.855 [INF] player: unconfirmed proximity: 5.75 from camera (class 0DB7C140)
+20:01:24.790 [INF] player: unconfirmed proximity: 0.10 from camera (class 0DB7C198)
+20:01:25.058 [INF] player: unconfirmed proximity: 0.13 from camera (class 0BCB40B0)
+20:01:25.323 [INF] player: unconfirmed proximity: 0.15 from camera (class 0DB7C198)
+20:01:26.391 [INF] player: unconfirmed proximity: 0.22 from camera (class 0BCB40B0)
+20:01:26.658 [INF] player: unconfirmed proximity: 0.24 from camera (class 0DB7C198)
+20:01:27.727 [INF] player: unconfirmed proximity: 0.25 from camera (class 0BCB40B0)
+20:01:28.260 [INF] player: unconfirmed proximity: 0.23 from camera (class 0DB7C198)
+20:01:28.510 [INF] player: unconfirmed proximity: 0.21 from camera (class 0BCB40B0)
+20:01:28.780 [INF] player: unconfirmed proximity: 0.19 from camera (class 0DB7C198)
+20:01:29.044 [INF] player: unconfirmed proximity: 0.16 from camera (class 0BCB40B0)
+20:01:29.579 [INF] player: unconfirmed proximity: 0.12 from camera (class 0DB7C198)
+20:01:30.112 [INF] player: unconfirmed proximity: 0.11 from camera (class 0BCB40B0)
+20:01:30.912 [INF] player: unconfirmed proximity: 0.14 from camera (class 0DB7C198)
+20:01:31.179 [INF] player: unconfirmed proximity: 0.15 from camera (class 0BCB40B0)
+20:01:31.713 [INF] player: unconfirmed proximity: 0.17 from camera (class 0DB7C198)
+20:01:32.246 [INF] player: unconfirmed proximity: 0.19 from camera (class 0BCB40B0)
+20:01:32.780 [INF] player: unconfirmed proximity: 0.19 from camera (class 0DB7C198)
+20:01:33.049 [INF] player: unconfirmed proximity: 0.19 from camera (class 0BCB40B0)
+20:01:33.315 [INF] player: unconfirmed proximity: 0.18 from camera (class 0DB7C198)
+20:01:33.581 [INF] player: unconfirmed proximity: 0.17 from camera (class 0BCB40B0)
+20:01:33.848 [INF] player: unconfirmed proximity: 0.16 from camera (class 0DB7C198)
+20:01:34.116 [INF] player: unconfirmed proximity: 0.15 from camera (class 0BCB40B0)
+20:01:34.650 [INF] player: unconfirmed proximity: 0.12 from camera (class 0DB7C198)
+20:01:34.916 [INF] player: unconfirmed proximity: 0.10 from camera (class 0BCB40B0)
+20:01:35.182 [INF] player: unconfirmed proximity: 3.95 from camera (class 0DB7C534)
+20:01:36.517 [INF] player: unconfirmed proximity: 0.22 from camera (class 0DB7C198)
+20:01:36.785 [INF] player: unconfirmed proximity: 2.81 from camera (class 0DB7C534)
+20:01:38.653 [INF] player: unconfirmed proximity: 0.12 from camera (class 0DB7C198)
+20:01:39.456 [INF] player: unconfirmed proximity: 0.13 from camera (class 0BCB40B0)
+20:01:39.722 [INF] player: unconfirmed proximity: 1.56 from camera (class 0DB7C324)
+20:01:40.256 [INF] player: unconfirmed proximity: 0.19 from camera (class 0DB7C198)
+20:01:40.523 [INF] player: unconfirmed proximity: 2.15 from camera (class 0DB7C1F0)
+20:01:40.790 [INF] player: unconfirmed proximity: 2.24 from camera (class 0E45A35C)
+20:01:42.909 [INF] player: unconfirmed proximity: 3.18 from camera (class 0DB7D0B8)
+20:01:44.741 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:01:44.743 [INF] overlay: opened
+20:01:51.225 [INF] player: candidate learning started (213 strats). Idle/move/stop; paused time is excluded.
+20:01:54.561 [INF] player: candidate learning started (213 strats). Idle/move/stop; paused time is excluded.
+20:01:55.392 [INF] player: candidate learning started (213 strats). Idle/move/stop; paused time is excluded.
+20:01:55.685 [INF] overlay: game resumed (time scale 1.00)
+20:01:55.685 [INF] overlay: closed
+20:01:57.171 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:01:57.171 [INF] overlay: opened
+20:02:00.623 [INF] overlay: game resumed (time scale 1.00)
+20:02:00.624 [INF] overlay: closed
+20:02:01.474 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:01.474 [INF] overlay: opened
+20:02:02.058 [INF] overlay: game resumed (time scale 1.00)
+20:02:02.059 [INF] overlay: closed
+20:02:02.609 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:02.609 [INF] overlay: opened
+20:02:03.260 [INF] overlay: game resumed (time scale 1.00)
+20:02:03.260 [INF] overlay: closed
+20:02:03.976 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:03.977 [INF] overlay: opened
+20:02:04.812 [INF] overlay: game resumed (time scale 1.00)
+20:02:04.812 [INF] overlay: closed
+20:02:05.412 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:05.412 [INF] overlay: opened
+20:02:06.063 [INF] overlay: game resumed (time scale 1.00)
+20:02:06.063 [INF] overlay: closed
+20:02:06.646 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:06.646 [INF] overlay: opened
+20:02:07.081 [INF] overlay: game resumed (time scale 1.00)
+20:02:07.081 [INF] overlay: closed
+20:02:07.514 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:07.514 [INF] overlay: opened
+20:02:08.248 [INF] overlay: game resumed (time scale 1.00)
+20:02:08.248 [INF] overlay: closed
+20:02:09.022 [INF] player: ranked 215 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261110-200209.csv
+20:02:09.022 [INF] player: #1 addr 05285EB8 class 0E45A35C score 2.101 active 5.599 idle 2.332 pos 53.86 5.46 59.01
+20:02:09.022 [INF] player: #2 addr 05288998 class 0E45A514 score 2.034 active 4.891 idle 1.905 pos 53.71 5.14 58.99
+20:02:09.022 [INF] player: #3 addr 0529DD88 class 0E459FC0 score 2.034 active 4.891 idle 1.905 pos 53.71 5.14 58.99
+20:02:09.022 [INF] player: #4 addr 05287428 class 0E45A35C score 1.958 active 5.910 idle 2.635 pos 53.53 5.61 58.97
+20:02:09.022 [INF] player: #5 addr 05285BA8 class 0E45A018 score 1.887 active 6.235 idle 2.899 pos 53.43 5.80 59.03
+20:02:09.022 [INF] player: #6 addr 05285898 class 0E45A178 score 1.790 active 5.646 idle 2.571 pos 53.71 5.66 59.03
+20:02:09.022 [INF] player: #7 addr 05287118 class 0E45A35C score 1.790 active 5.646 idle 2.571 pos 53.71 5.66 59.03
+20:02:09.022 [INF] player: #8 addr 05286AF8 class 0E45A35C score 1.764 active 5.411 idle 2.432 pos 53.73 5.47 58.89
+20:02:09.149 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:09.149 [INF] overlay: opened
+20:02:09.951 [INF] overlay: game resumed (time scale 1.00)
+20:02:09.951 [INF] overlay: closed
+20:02:10.618 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:10.618 [INF] overlay: opened
+20:02:24.810 [INF] overlay: game resumed (time scale 1.00)
+20:02:24.810 [INF] overlay: closed
+20:02:25.761 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:25.761 [INF] overlay: opened
+20:02:27.884 [INF] player: candidate learning started (214 strats). Idle/move/stop; paused time is excluded.
+20:02:29.037 [INF] player: candidate learning started (214 strats). Idle/move/stop; paused time is excluded.
+20:02:29.454 [INF] player: candidate learning started (214 strats). Idle/move/stop; paused time is excluded.
+20:02:29.586 [INF] player: candidate learning started (214 strats). Idle/move/stop; paused time is excluded.
+20:02:29.705 [INF] player: candidate learning started (214 strats). Idle/move/stop; paused time is excluded.
+20:02:31.116 [INF] overlay: game resumed (time scale 1.00)
+20:02:31.116 [INF] overlay: closed
+20:02:32.584 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:32.584 [INF] overlay: opened
+20:02:33.251 [INF] overlay: game resumed (time scale 1.00)
+20:02:33.251 [INF] overlay: closed
+20:02:36.555 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:36.555 [INF] overlay: opened
+20:02:41.159 [INF] overlay: game resumed (time scale 1.00)
+20:02:41.159 [INF] overlay: closed
+20:02:41.910 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:41.910 [INF] overlay: opened
+20:02:42.377 [INF] overlay: game resumed (time scale 1.00)
+20:02:42.378 [INF] overlay: closed
+20:02:42.833 [INF] player: ranked 215 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261110-200242.csv
+20:02:42.833 [INF] player: #1 addr 0529EFE8 class 0DB7C198 score 0.799 active 5.760 idle 3.307 pos 51.62 15.42 77.48
+20:02:42.833 [INF] player: #2 addr 05288068 class 0E45A598 score 0.799 active 5.760 idle 3.307 pos 51.62 15.42 77.48
+20:02:42.833 [INF] player: #3 addr 0529E3A8 class 0BCB40B0 score 0.799 active 5.760 idle 3.307 pos 51.62 15.42 77.48
+20:02:42.833 [INF] player: #4 addr 052864D8 class 0E45A35C score 0.000 active 7.495 idle 5.696 pos 49.81 13.39 83.01
+20:02:42.833 [INF] player: #5 addr 05287738 class 0E45A35C score 0.000 active 7.360 idle 5.823 pos 49.57 13.40 82.93
+20:02:42.833 [INF] player: #6 addr 05286AF8 class 0E45A35C score 0.000 active 7.410 idle 5.599 pos 49.67 13.48 83.02
+20:02:42.833 [INF] player: #7 addr 05287428 class 0E45A35C score 0.000 active 7.436 idle 5.683 pos 49.46 13.59 83.09
+20:02:42.833 [INF] player: #8 addr 052867E8 class 0E45A35C score 0.000 active 7.641 idle 5.527 pos 49.80 13.59 83.21
+20:02:43.095 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:43.095 [INF] overlay: opened
+20:02:45.084 [INF] player: manual selection 0529E3A8 (class 0BCB40B0) pos 51.64 15.58 77.45
+20:02:46.999 [INF] overlay: game resumed (time scale 1.00)
+20:02:46.999 [INF] overlay: closed
+20:02:47.682 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:47.682 [INF] overlay: opened
+20:02:49.401 [INF] overlay: game resumed (time scale 1.00)
+20:02:49.402 [INF] overlay: closed
+20:02:49.969 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:49.969 [INF] overlay: opened
+20:02:51.303 [INF] overlay: game resumed (time scale 1.00)
+20:02:51.304 [INF] overlay: closed
+20:02:52.154 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:02:52.154 [INF] overlay: opened
+20:03:04.067 [INF] overlay: game resumed (time scale 1.00)
+20:03:04.067 [INF] overlay: closed
+20:03:04.540 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:03:09.426 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:03:09.426 [INF] [halflife_movement] deactivated
+20:03:14.582 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:03:15.067 [INF] [halflife_movement] deactivated
+20:03:24.090 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:03:28.530 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:03:28.530 [INF] [halflife_movement] deactivated
+20:03:30.365 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:03:34.718 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:03:34.718 [INF] [halflife_movement] deactivated
+20:03:36.817 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:03:36.817 [INF] overlay: opened
+20:03:52.517 [INF] overlay: game resumed (time scale 1.00)
+20:03:52.517 [INF] overlay: closed
+20:03:53.288 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:03:56.742 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:03:56.742 [INF] [halflife_movement] deactivated
+20:03:58.693 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:04:00.461 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:04:00.461 [INF] [halflife_movement] deactivated
+20:04:02.127 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:04:02.127 [INF] overlay: opened
+20:04:06.704 [INF] player: candidate learning started (213 strats). Idle/move/stop; paused time is excluded.
+20:04:06.915 [INF] overlay: game resumed (time scale 1.00)
+20:04:06.915 [INF] overlay: closed
+20:04:11.770 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:04:11.770 [INF] overlay: opened
+20:04:20.847 [INF] overlay: game resumed (time scale 1.00)
+20:04:20.847 [INF] overlay: closed
+20:04:21.813 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:04:21.814 [INF] overlay: opened
+20:04:22.548 [INF] overlay: game resumed (time scale 1.00)
+20:04:22.548 [INF] overlay: closed
+20:04:22.723 [INF] player: ranked 213 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261110-200422.csv
+20:04:22.723 [INF] player: #1 addr 0529E3A8 class 0BCB40B0 score 4.266 active 6.165 idle 1.266 pos 31.55 3.83 39.18
+20:04:22.723 [INF] player: #2 addr 0529EFE8 class 0DB7C198 score 4.266 active 6.165 idle 1.266 pos 31.55 3.83 39.18
+20:04:22.723 [INF] player: #3 addr 05288068 class 0E45A598 score 4.266 active 6.165 idle 1.266 pos 31.55 3.83 39.18
+20:04:22.725 [INF] player: #4 addr 05287A48 class 0E45A35C score 3.424 active 8.125 idle 3.134 pos 37.27 3.80 39.89
+20:04:22.725 [INF] player: #5 addr 052861C8 class 0E45A35C score 3.229 active 8.078 idle 3.233 pos 36.36 3.81 39.49
+20:04:22.725 [INF] player: #6 addr 05285EB8 class 0E45A35C score 2.782 active 7.111 idle 2.886 pos 36.72 3.47 39.52
+20:04:22.725 [INF] player: #7 addr 05285BA8 class 0E45A018 score 2.717 active 7.090 idle 2.915 pos 37.03 3.98 39.89
+20:04:22.725 [INF] player: #8 addr 052867E8 class 0E45A35C score 2.667 active 7.088 idle 2.947 pos 36.63 3.79 39.67
+20:04:27.703 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:04:27.703 [INF] overlay: opened
+20:04:29.456 [INF] overlay: game resumed (time scale 1.00)
+20:04:29.456 [INF] overlay: closed
+20:04:30.139 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:04:30.139 [INF] overlay: opened
+20:04:32.246 [INF] player: manual selection 0529EFE8 (class 0DB7C198) pos 13.22 3.83 28.77
+20:04:36.880 [INF] overlay: game resumed (time scale 1.00)
+20:04:36.880 [INF] overlay: closed
+20:04:37.299 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:04:41.222 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:04:41.222 [INF] [halflife_movement] deactivated
+20:04:42.523 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:04:44.008 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:04:44.008 [INF] [halflife_movement] deactivated
+20:05:08.969 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:08.969 [INF] overlay: opened
+20:05:12.460 [WRN] player: refused selection 00000000 (not in the live strat list)
+20:05:16.059 [INF] overlay: game resumed (time scale 1.00)
+20:05:16.059 [INF] overlay: closed
+20:05:17.645 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:17.645 [INF] overlay: opened
+20:05:22.086 [INF] player: manual selection 0529E3A8 (class 0BCB40B0) pos 3.03 3.83 24.80
+20:05:23.467 [INF] overlay: game resumed (time scale 1.00)
+20:05:23.468 [INF] overlay: closed
+20:05:24.201 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:24.201 [INF] overlay: opened
+20:05:25.903 [INF] overlay: game resumed (time scale 1.00)
+20:05:25.904 [INF] overlay: closed
+20:05:26.436 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:26.436 [INF] overlay: opened
+20:05:29.244 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 1.61 1.82 19.75
+20:05:32.877 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:05:34.311 [INF] overlay: game resumed (time scale 1.00)
+20:05:34.311 [INF] overlay: closed
+20:05:37.202 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:05:37.202 [INF] [halflife_movement] deactivated
+20:05:38.783 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:38.783 [INF] overlay: opened
+20:05:43.927 [INF] overlay: game resumed (time scale 1.00)
+20:05:43.927 [INF] overlay: closed
+20:05:44.866 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:05:47.283 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:05:47.283 [INF] [halflife_movement] deactivated
+20:05:48.409 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:05:48.409 [INF] overlay: opened
+20:05:55.066 [INF] overlay: game resumed (time scale 1.00)
+20:05:55.066 [INF] overlay: closed
+20:05:57.038 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:05:58.407 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:05:58.407 [INF] [halflife_movement] deactivated
+20:05:59.591 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:06:13.940 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:06:13.941 [INF] [halflife_movement] deactivated
+20:06:15.342 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:06:18.476 [INF] [halflife_movement] deactivated
+20:06:19.411 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:06:22.862 [INF] [halflife_movement] deactivated
+20:06:26.099 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:26.099 [INF] overlay: opened
+20:06:27.050 [INF] overlay: game resumed (time scale 1.00)
+20:06:27.050 [INF] overlay: closed
+20:06:29.218 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:29.218 [INF] overlay: opened
+20:06:33.006 [INF] overlay: game resumed (time scale 1.00)
+20:06:33.006 [INF] overlay: closed
+20:06:34.057 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:34.057 [INF] overlay: opened
+20:06:36.147 [INF] player: manual selection 052861C8 (class 0E45A35C) pos 25.56 1.79 40.05
+20:06:39.362 [INF] overlay: game resumed (time scale 1.00)
+20:06:39.363 [INF] overlay: closed
+20:06:40.717 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:06:43.516 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:43.516 [INF] overlay: opened
+20:06:45.896 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 27.83 1.80 38.52
+20:06:46.418 [INF] player: manual selection 052861C8 (class 0E45A35C) pos 27.33 1.77 37.90
+20:06:46.703 [INF] overlay: game resumed (time scale 1.00)
+20:06:46.703 [INF] overlay: closed
+20:06:47.036 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:47.036 [INF] overlay: opened
+20:06:47.861 [INF] player: manual selection 05285EB8 (class 0E45A35C) pos 27.50 1.60 38.08
+20:06:47.954 [INF] overlay: game resumed (time scale 1.00)
+20:06:47.954 [INF] overlay: closed
+20:06:47.958 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:06:47.958 [INF] [halflife_movement] deactivated
+20:06:48.272 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:06:48.272 [INF] overlay: opened
+20:06:49.350 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 27.83 1.80 38.52
+20:06:49.469 [INF] overlay: game resumed (time scale 1.00)
+20:06:49.469 [INF] overlay: closed
+20:06:50.343 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:07:00.940 [INF] [halflife_movement] deactivated
+20:07:01.802 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:07:01.802 [INF] overlay: opened
+20:07:13.210 [INF] player: manual selection 05285EB8 (class 0E45A35C) pos 27.03 1.59 39.21
+20:07:15.905 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:07:17.176 [INF] overlay: game resumed (time scale 1.00)
+20:07:17.176 [INF] overlay: closed
+20:07:23.729 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:07:23.730 [INF] [halflife_movement] deactivated
+20:07:28.246 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:07:28.246 [INF] overlay: opened
+20:07:29.140 [INF] overlay: game resumed (time scale 1.00)
+20:07:29.140 [INF] overlay: closed
+20:07:29.639 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:07:32.188 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:07:32.188 [INF] [halflife_movement] deactivated
+20:07:34.336 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:07:34.336 [INF] overlay: opened
+20:07:51.988 [INF] overlay: game resumed (time scale 1.00)
+20:07:51.988 [INF] overlay: closed
+20:08:47.908 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:08:47.908 [INF] overlay: opened
+20:08:50.456 [INF] overlay: game resumed (time scale 1.00)
+20:08:50.456 [INF] overlay: closed
+20:08:51.636 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:08:51.636 [INF] overlay: opened
+20:08:54.816 [INF] player: manual selection 05285BA8 (class 0E45A018) pos 13.94 2.22 26.90
+20:08:56.710 [INF] overlay: game resumed (time scale 1.00)
+20:08:56.710 [INF] overlay: closed
+20:08:57.112 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:09:04.395 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:09:04.395 [INF] [halflife_movement] deactivated
+20:09:06.177 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:09:06.178 [INF] overlay: opened
+20:09:24.579 [INF] overlay: game resumed (time scale 1.00)
+20:09:24.579 [INF] overlay: closed
+20:09:37.011 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:09:39.146 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:09:39.147 [INF] [halflife_movement] deactivated
+20:09:41.801 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:09:50.810 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:09:50.810 [INF] [halflife_movement] deactivated
+20:09:52.775 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:09:52.775 [INF] overlay: opened
+20:09:59.071 [INF] player probe: nudge 05285BA8 class 0E45A018 by +0.25 X: written (visual confirmation required)
+20:10:03.002 [INF] overlay: game resumed (time scale 1.00)
+20:10:03.002 [INF] overlay: closed
+20:10:04.620 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:04.620 [INF] overlay: opened
+20:10:05.554 [INF] overlay: game resumed (time scale 1.00)
+20:10:05.555 [INF] overlay: closed
+20:10:06.022 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:06.022 [INF] overlay: opened
+20:10:07.207 [INF] overlay: game resumed (time scale 1.00)
+20:10:07.207 [INF] overlay: closed
+20:10:07.774 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:07.774 [INF] overlay: opened
+20:10:10.219 [INF] player: manual selection 052861C8 (class 0E45A35C) pos 15.73 10.92 14.09
+20:10:19.519 [INF] overlay: game resumed (time scale 1.00)
+20:10:19.520 [INF] overlay: closed
+20:10:20.340 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:10:25.612 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:10:25.612 [INF] [halflife_movement] deactivated
+20:10:28.495 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:28.495 [INF] overlay: opened
+20:10:29.530 [INF] overlay: game resumed (time scale 1.00)
+20:10:29.530 [INF] overlay: closed
+20:10:29.758 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:10:33.491 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:10:33.491 [INF] [halflife_movement] deactivated
+20:10:36.921 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:36.921 [INF] overlay: opened
+20:10:37.538 [INF] overlay: game resumed (time scale 1.00)
+20:10:37.538 [INF] overlay: closed
+20:10:58.246 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:10:58.246 [INF] overlay: opened
+20:11:00.165 [INF] overlay: game resumed (time scale 1.00)
+20:11:00.165 [INF] overlay: closed
+20:11:00.965 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:00.965 [INF] overlay: opened
+20:11:02.667 [INF] overlay: game resumed (time scale 1.00)
+20:11:02.667 [INF] overlay: closed
+20:11:03.535 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:03.535 [INF] overlay: opened
+20:11:04.520 [INF] overlay: game resumed (time scale 1.00)
+20:11:04.520 [INF] overlay: closed
+20:11:10.642 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:10.642 [INF] overlay: opened
+20:11:12.227 [INF] overlay: game resumed (time scale 1.00)
+20:11:12.227 [INF] overlay: closed
+20:11:13.128 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:13.128 [INF] overlay: opened
+20:11:13.528 [INF] overlay: game resumed (time scale 1.00)
+20:11:13.528 [INF] overlay: closed
+20:11:15.580 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:15.580 [INF] overlay: opened
+20:11:23.872 [INF] overlay: game resumed (time scale 1.00)
+20:11:23.872 [INF] overlay: closed
+20:11:24.557 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:24.557 [INF] overlay: opened
+20:11:27.166 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 15.12 1.79 26.54
+20:11:28.227 [INF] overlay: game resumed (time scale 1.00)
+20:11:28.227 [INF] overlay: closed
+20:11:28.948 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:11:45.215 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:11:45.215 [INF] [halflife_movement] deactivated
+20:11:46.746 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:11:46.746 [INF] overlay: opened
+20:13:00.425 [INF] overlay: game resumed (time scale 1.00)
+20:13:00.425 [INF] overlay: closed
+20:13:01.561 [INF] [lua] trainer: player teleported to camera
+20:13:01.962 [INF] [lua] trainer: player teleported to camera
+20:13:03.046 [INF] [lua] trainer: player teleported to camera
+20:13:03.230 [INF] [lua] trainer: player teleported to camera
+20:13:03.979 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:03.979 [INF] overlay: opened
+20:13:06.866 [INF] overlay: game resumed (time scale 1.00)
+20:13:06.866 [INF] overlay: closed
+20:13:07.150 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:07.150 [INF] overlay: opened
+20:13:07.883 [INF] overlay: game resumed (time scale 1.00)
+20:13:07.883 [INF] overlay: closed
+20:13:08.284 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:08.284 [INF] overlay: opened
+20:13:09.752 [INF] overlay: game resumed (time scale 1.00)
+20:13:09.752 [INF] overlay: closed
+20:13:11.103 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:11.103 [INF] overlay: opened
+20:13:12.655 [INF] overlay: game resumed (time scale 1.00)
+20:13:12.655 [INF] overlay: closed
+20:13:13.156 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:13.156 [INF] overlay: opened
+20:13:13.689 [INF] overlay: game resumed (time scale 1.00)
+20:13:13.689 [INF] overlay: closed
+20:13:14.056 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:14.056 [INF] overlay: opened
+20:13:16.427 [INF] overlay: game resumed (time scale 1.00)
+20:13:16.428 [INF] overlay: closed
+20:13:17.566 [INF] [lua] trainer: player teleported to camera
+20:13:17.733 [INF] [lua] trainer: player teleported to camera
+20:13:17.867 [INF] [lua] trainer: player teleported to camera
+20:13:18.261 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:18.261 [INF] overlay: opened
+20:13:29.120 [INF] player: manual selection 05286E08 (class 0E45A35C) pos 20.81 2.10 30.48
+20:13:29.660 [INF] overlay: game resumed (time scale 1.00)
+20:13:29.660 [INF] overlay: closed
+20:13:30.434 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:33.443 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:33.444 [INF] overlay: opened
+20:13:34.287 [INF] player: manual selection 05287428 (class 0E45A35C) pos 25.24 2.03 33.39
+20:13:34.561 [INF] overlay: game resumed (time scale 1.00)
+20:13:34.561 [INF] overlay: closed
+20:13:34.565 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:13:34.565 [INF] [halflife_movement] deactivated
+20:13:35.800 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:36.930 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:36.930 [INF] overlay: opened
+20:13:38.253 [INF] player: manual selection 05287118 (class 0E45A35C) pos 32.54 2.10 34.92
+20:13:38.981 [INF] overlay: game resumed (time scale 1.00)
+20:13:38.982 [INF] overlay: closed
+20:13:38.982 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:13:38.983 [INF] [halflife_movement] deactivated
+20:13:39.485 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:40.333 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:40.333 [INF] overlay: opened
+20:13:41.240 [INF] player: manual selection 05285898 (class 0E45A178) pos 35.93 1.87 35.59
+20:13:41.985 [INF] overlay: game resumed (time scale 1.00)
+20:13:41.986 [INF] overlay: closed
+20:13:41.987 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:13:41.987 [INF] [halflife_movement] deactivated
+20:13:43.287 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:43.287 [INF] overlay: opened
+20:13:43.763 [INF] overlay: game resumed (time scale 1.00)
+20:13:43.764 [INF] overlay: closed
+20:13:44.005 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:44.940 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:44.940 [INF] overlay: opened
+20:13:46.443 [INF] player: manual selection 052867E8 (class 0E45A35C) pos 39.80 1.75 36.50
+20:13:47.158 [INF] overlay: game resumed (time scale 1.00)
+20:13:47.158 [INF] overlay: closed
+20:13:47.163 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:13:47.163 [INF] [halflife_movement] deactivated
+20:13:47.516 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:48.492 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:48.492 [INF] overlay: opened
+20:13:49.487 [INF] player: manual selection 05285BA8 (class 0E45A018) pos 44.20 2.09 37.54
+20:13:50.239 [INF] overlay: game resumed (time scale 1.00)
+20:13:50.240 [INF] overlay: closed
+20:13:50.246 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:13:50.246 [INF] [halflife_movement] deactivated
+20:13:52.766 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:13:52.766 [INF] overlay: opened
+20:13:53.291 [INF] overlay: game resumed (time scale 1.00)
+20:13:53.291 [INF] overlay: closed
+20:13:53.616 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:13:57.465 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:13:57.465 [INF] [halflife_movement] deactivated
+20:14:27.774 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:14:38.410 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:14:38.410 [INF] [halflife_movement] deactivated
+20:14:40.417 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:14:40.417 [INF] overlay: opened
+20:14:40.924 [INF] overlay: game resumed (time scale 1.00)
+20:14:40.925 [INF] overlay: closed
+20:14:42.204 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:14:42.204 [INF] overlay: opened
+20:14:46.006 [INF] overlay: game resumed (time scale 1.00)
+20:14:46.006 [INF] overlay: closed
+20:14:47.828 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:15:07.887 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:15:07.887 [INF] [halflife_movement] deactivated
+20:15:11.433 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:15:11.433 [INF] overlay: opened
+20:15:12.818 [INF] overlay: game resumed (time scale 1.00)
+20:15:12.818 [INF] overlay: closed
+20:15:13.889 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:17:18.352 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+20:17:18.352 [INF] [halflife_movement] deactivated
+20:27:38.734 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:27:50.786 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:27:50.786 [INF] overlay: opened
+20:27:53.177 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 9.54 1.79 25.00
+20:27:53.391 [INF] overlay: game resumed (time scale 1.00)
+20:27:53.391 [INF] overlay: closed
+20:27:53.392 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:27:53.392 [INF] [halflife_movement] deactivated
+20:27:54.627 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:02.215 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:02.215 [INF] overlay: opened
+20:28:03.949 [INF] player: manual selection 0529E3A8 (class 0BCB40B0) pos 14.51 3.83 27.53
+20:28:04.452 [INF] overlay: game resumed (time scale 1.00)
+20:28:04.452 [INF] overlay: closed
+20:28:04.456 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:28:04.456 [INF] [halflife_movement] deactivated
+20:28:05.241 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:09.806 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:09.807 [INF] overlay: opened
+20:28:12.089 [INF] overlay: game resumed (time scale 1.00)
+20:28:12.089 [INF] overlay: closed
+20:28:13.539 [INF] [halflife_movement] deactivated
+20:28:15.024 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:15.954 [INF] [halflife_movement] deactivated
+20:28:18.281 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:18.281 [INF] overlay: opened
+20:28:18.817 [INF] overlay: game resumed (time scale 1.00)
+20:28:18.817 [INF] overlay: closed
+20:28:20.417 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:20.418 [INF] overlay: opened
+20:28:21.218 [INF] overlay: game resumed (time scale 1.00)
+20:28:21.218 [INF] overlay: closed
+20:28:21.752 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:21.752 [INF] overlay: opened
+20:28:23.036 [INF] overlay: game resumed (time scale 1.00)
+20:28:23.036 [INF] overlay: closed
+20:28:26.724 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:26.724 [INF] overlay: opened
+20:28:28.499 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 9.45 3.32 24.91
+20:28:28.809 [INF] overlay: game resumed (time scale 1.00)
+20:28:28.809 [INF] overlay: closed
+20:28:29.629 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:33.047 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:33.047 [INF] overlay: opened
+20:28:34.144 [INF] player: manual selection 05288068 (class 0E45A598) pos 14.50 3.83 27.54
+20:28:34.473 [INF] overlay: game resumed (time scale 1.00)
+20:28:34.473 [INF] overlay: closed
+20:28:34.474 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:28:34.474 [INF] [halflife_movement] deactivated
+20:28:35.423 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:38.902 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:38.903 [INF] overlay: opened
+20:28:40.346 [INF] player: manual selection 0529E3A8 (class 0BCB40B0) pos 14.66 3.83 27.88
+20:28:40.521 [INF] overlay: game resumed (time scale 1.00)
+20:28:40.521 [INF] overlay: closed
+20:28:40.522 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:28:40.522 [INF] [halflife_movement] deactivated
+20:28:41.288 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:43.185 [INF] [halflife_movement] deactivated
+20:28:43.691 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:43.691 [INF] overlay: opened
+20:28:44.490 [INF] player: manual selection 05288068 (class 0E45A598) pos 14.66 3.83 27.88
+20:28:44.649 [INF] overlay: game resumed (time scale 1.00)
+20:28:44.649 [INF] overlay: closed
+20:28:45.405 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:48.563 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:48.563 [INF] overlay: opened
+20:28:49.957 [INF] player: manual selection 0529EFE8 (class 0DB7C198) pos 14.50 3.83 27.54
+20:28:50.164 [INF] overlay: game resumed (time scale 1.00)
+20:28:50.164 [INF] overlay: closed
+20:28:50.173 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:28:50.173 [INF] [halflife_movement] deactivated
+20:28:50.836 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:53.735 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:53.735 [INF] overlay: opened
+20:28:54.985 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 16.45 3.32 28.16
+20:28:55.187 [INF] overlay: game resumed (time scale 1.00)
+20:28:55.187 [INF] overlay: closed
+20:28:55.187 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:28:55.188 [INF] [halflife_movement] deactivated
+20:28:55.939 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:28:58.790 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:28:58.791 [INF] overlay: opened
+20:29:00.221 [INF] player: manual selection 05287A48 (class 0E45A35C) pos 16.99 3.32 28.52
+20:29:00.649 [INF] overlay: game resumed (time scale 1.00)
+20:29:00.649 [INF] overlay: closed
+20:29:01.316 [INF] [halflife_movement] deactivated
+20:29:02.668 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:05.798 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:05.798 [INF] overlay: opened
+20:29:07.405 [INF] player: manual selection 052861C8 (class 0E45A35C) pos 9.09 3.33 25.68
+20:29:07.746 [INF] overlay: game resumed (time scale 1.00)
+20:29:07.746 [INF] overlay: closed
+20:29:07.747 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:07.748 [INF] [halflife_movement] deactivated
+20:29:08.487 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:10.035 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:10.035 [INF] overlay: opened
+20:29:11.007 [INF] player: manual selection 05285EB8 (class 0E45A35C) pos 8.97 3.25 25.30
+20:29:11.197 [INF] overlay: game resumed (time scale 1.00)
+20:29:11.197 [INF] overlay: closed
+20:29:11.199 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:11.199 [INF] [halflife_movement] deactivated
+20:29:12.067 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:13.322 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:13.322 [INF] overlay: opened
+20:29:14.458 [INF] player: manual selection 05285BA8 (class 0E45A018) pos 9.37 3.74 25.04
+20:29:14.681 [INF] overlay: game resumed (time scale 1.00)
+20:29:14.681 [INF] overlay: closed
+20:29:14.682 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:14.682 [INF] [halflife_movement] deactivated
+20:29:15.534 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:19.361 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:19.362 [INF] overlay: opened
+20:29:20.797 [INF] player: manual selection 052867E8 (class 0E45A35C) pos 9.12 3.56 25.42
+20:29:20.991 [INF] overlay: game resumed (time scale 1.00)
+20:29:20.991 [INF] overlay: closed
+20:29:20.992 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:20.992 [INF] [halflife_movement] deactivated
+20:29:21.983 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:24.233 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:24.233 [INF] overlay: opened
+20:29:25.424 [INF] player: manual selection 05287118 (class 0E45A35C) pos 9.20 3.61 25.26
+20:29:25.621 [INF] overlay: game resumed (time scale 1.00)
+20:29:25.621 [INF] overlay: closed
+20:29:25.622 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:25.622 [INF] [halflife_movement] deactivated
+20:29:26.455 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:29:28.120 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:29:28.120 [INF] overlay: opened
+20:29:29.144 [INF] player: manual selection 05285898 (class 0E45A178) pos 9.20 3.61 25.26
+20:29:29.288 [INF] overlay: game resumed (time scale 1.00)
+20:29:29.288 [INF] overlay: closed
+20:29:29.289 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:29:29.289 [INF] [halflife_movement] deactivated
+20:29:30.143 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:08.279 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:08.279 [INF] overlay: opened
+20:31:08.996 [INF] overlay: game resumed (time scale 1.00)
+20:31:08.997 [INF] overlay: closed
+20:31:11.066 [INF] [halflife_movement] deactivated
+20:31:12.436 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:13.250 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:13.250 [INF] overlay: opened
+20:31:15.626 [INF] player: manual selection 052867E8 (class 0E45A35C) pos 10.14 2.03 25.80
+20:31:16.984 [INF] overlay: game resumed (time scale 1.00)
+20:31:16.984 [INF] overlay: closed
+20:31:16.986 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:31:16.986 [INF] [halflife_movement] deactivated
+20:31:17.537 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:20.775 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:20.776 [INF] overlay: opened
+20:31:22.245 [INF] player: manual selection 05285898 (class 0E45A178) pos 21.83 2.10 31.13
+20:31:22.543 [INF] overlay: game resumed (time scale 1.00)
+20:31:22.544 [INF] overlay: closed
+20:31:22.545 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:31:22.545 [INF] [halflife_movement] deactivated
+20:31:23.338 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:26.865 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:26.865 [INF] overlay: opened
+20:31:28.093 [INF] player: manual selection 05287118 (class 0E45A35C) pos 10.00 2.10 25.92
+20:31:28.366 [INF] overlay: game resumed (time scale 1.00)
+20:31:28.367 [INF] overlay: closed
+20:31:28.368 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:31:28.368 [INF] [halflife_movement] deactivated
+20:31:29.287 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:30.736 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:30.736 [INF] overlay: opened
+20:31:31.890 [INF] player: manual selection 05287428 (class 0E45A35C) pos 9.87 2.03 26.04
+20:31:32.053 [INF] overlay: game resumed (time scale 1.00)
+20:31:32.053 [INF] overlay: closed
+20:31:32.054 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:31:32.054 [INF] [halflife_movement] deactivated
+20:31:32.841 [INF] [halflife_movement] activated (movement=1 camera=1)
+20:31:36.241 [INF] overlay: game paused (time scale 1.00, camera frozen)
+20:31:36.242 [INF] overlay: opened
+20:31:37.410 [INF] player: manual selection 05286E08 (class 0E45A35C) pos 9.98 2.40 25.95
+20:31:37.652 [INF] overlay: game resumed (time scale 1.00)
+20:31:37.652 [INF] overlay: closed
+20:31:37.653 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+20:31:37.653 [INF] [halflife_movement] deactivated
+20:31:38.519 [INF] [halflife_movement] activated (movement=1 camera=1)
+21:07:48.237 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+21:07:48.238 [INF] [halflife_movement] deactivated
+21:07:49.761 [INF] [halflife_movement] activated (movement=1 camera=1)
+21:08:02.315 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:08:02.315 [INF] overlay: opened
+21:08:06.361 [INF] [halflife_movement] state resynced to the game's player position
+21:08:06.730 [INF] overlay: game resumed (time scale 1.00)
+21:08:06.730 [INF] overlay: closed
+21:08:10.014 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:08:10.014 [INF] overlay: opened
+21:08:12.710 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.010 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.144 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.244 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.377 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.509 [INF] [halflife_movement] state resynced to the game's player position
+21:08:13.628 [INF] [halflife_movement] state resynced to the game's player position
+21:08:22.653 [INF] overlay: game resumed (time scale 1.00)
+21:08:22.658 [INF] overlay: closed
+21:08:27.692 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:08:27.692 [INF] overlay: opened
+21:08:29.598 [INF] overlay: game resumed (time scale 1.00)
+21:08:29.598 [INF] overlay: closed
+21:08:31.162 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:08:31.162 [INF] overlay: opened
+21:08:32.451 [INF] overlay: game resumed (time scale 1.00)
+21:08:32.451 [INF] overlay: closed
+21:08:41.394 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+21:08:41.395 [INF] [halflife_movement] deactivated
+21:08:48.229 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:08:48.229 [INF] overlay: opened
+21:08:58.574 [INF] overlay: game resumed (time scale 1.00)
+21:08:58.574 [INF] overlay: closed
+21:09:00.376 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:09:00.376 [INF] overlay: opened
+21:09:02.229 [INF] overlay: game resumed (time scale 1.00)
+21:09:02.229 [INF] overlay: closed
+21:09:05.214 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:09:05.214 [INF] overlay: opened
+21:09:07.409 [INF] overlay: game resumed (time scale 1.00)
+21:09:07.409 [INF] overlay: closed
+21:09:08.829 [INF] [lua] trainer: player teleported to camera
+21:09:09.145 [INF] [lua] trainer: player teleported to camera
+21:09:09.296 [INF] [lua] trainer: player teleported to camera
+21:09:09.479 [INF] [lua] trainer: player teleported to camera
+21:09:10.019 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:09:10.019 [INF] overlay: opened
+21:09:23.358 [INF] player: manual selection 052867E8 (class 0E45A35C) pos 14.91 11.19 15.70
+21:09:23.508 [INF] overlay: game resumed (time scale 1.00)
+21:09:23.508 [INF] overlay: closed
+21:09:24.601 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:09:24.601 [INF] overlay: opened
+21:09:25.791 [INF] overlay: game resumed (time scale 1.00)
+21:09:25.791 [INF] overlay: closed
+21:09:26.811 [INF] [lua] trainer: player teleported to camera
+21:09:28.239 [INF] overlay: game paused (time scale 1.00, camera frozen)
+21:09:28.239 [INF] overlay: opened
+21:09:30.414 [INF] player: manual selection 05285898 (class 0E45A178) pos 14.73 11.25 15.76
+21:09:30.660 [INF] overlay: game resumed (time scale 1.00)
+21:09:30.660 [INF] overlay: closed
+21:09:31.093 [INF] [lua] trainer: player teleported to camera
+21:09:34.128 [INF] [lua] trainer: player teleported to camera
+21:09:34.329 [INF] [lua] trainer: player teleported to camera
+21:09:34.478 [INF] [lua] trainer: player teleported to camera
+21:09:34.611 [INF] [lua] trainer: player teleported to camera
+21:09:34.745 [INF] [lua] trainer: player teleported to camera
+21:09:35.462 [INF] [lua] trainer: player teleported to camera
+21:09:35.596 [INF] [lua] trainer: player teleported to camera
+21:09:35.729 [INF] [lua] trainer: player teleported to camera
+21:09:35.847 [INF] [lua] trainer: player teleported to camera
+===== EthhhSDK 0.1.0  session 2026-11-10 22:30:03 =====
+22:30:03.259 [INF] ==========================================================
+22:30:03.259 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+22:30:03.259 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+22:30:03.260 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+22:30:03.260 [INF] launcher: opening pre-game mod manager
+22:30:03.333 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+22:30:03.363 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+22:30:14.053 [INF] launcher: exit requested
+22:30:14.082 [INF] launcher: exit requested
+===== session end =====
+===== EthhhSDK 0.1.0  session 2026-11-10 23:13:02 =====
+23:13:02.756 [INF] ==========================================================
+23:13:02.756 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:13:02.756 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:13:02.756 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:13:02.757 [INF] launcher: opening pre-game mod manager
+23:13:02.812 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:13:02.838 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:13:15.379 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 60 Hz (saved); NOT applied, simulation untouched
+23:13:51.509 [INF] launcher: start requested
+23:13:51.534 [INF] MinHook initialized
+23:13:51.572 [INF] Fn_Tick hooked at 0043E0A0
+23:13:51.600 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:13:51.602 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:13:51.603 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:13:51.619 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:13:51.686 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:13:51.686 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:13:51.687 [INF] clr: managed callbacks set (tick=04D9072E gui=04D90756 overlay=04D9077E)
+23:13:51.687 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:13:51.687 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:13:51.687 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:13:51.687 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:13:51.687 [INF] watcher: waiting for game window / D3D9 device
+23:13:52.161 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=073B6B40)
+23:13:52.266 [INF] raw mouse registered
+23:13:52.266 [INF] window hook installed (hwnd=001D0EF4)
+23:13:52.266 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+23:13:52.266 [INF] watcher: all hooks installed
+23:13:52.321 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:13:52.321 [INF] overlay: ImGui backends ready (hwnd=001D0EF4 device=073B6B40 scale 1.00)
+23:13:59.044 [INF] player: exact Ninja 051F3C78 class 0E69EFC0 handle 00000007
+23:14:09.846 [INF] player: exact Ninja 051EDD88 class 0E69EFC0 handle 0000010D
+23:14:16.773 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:14:16.775 [INF] overlay: opened
+23:14:30.795 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:14:34.431 [INF] overlay: game resumed (time scale 1.00)
+23:14:34.431 [INF] overlay: closed
+23:14:54.478 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:14:54.478 [INF] overlay: opened
+23:14:59.263 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:09.551 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:10.871 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:11.065 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:11.252 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:11.594 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:11.697 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 60 Hz (saved); NOT applied, simulation untouched
+23:15:19.577 [INF] overlay: game resumed (time scale 1.00)
+23:15:19.577 [INF] overlay: closed
+23:15:28.917 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:15:29.882 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:15:29.883 [INF] overlay: opened
+23:15:44.139 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:15:45.389 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:15:49.224 [INF] overlay: game resumed (time scale 1.00)
+23:15:49.224 [INF] overlay: closed
+23:15:51.632 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:15:51.632 [INF] overlay: opened
+23:16:09.236 [INF] overlay: game resumed (time scale 1.00)
+23:16:09.236 [INF] overlay: closed
+23:16:09.908 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:16:09.909 [INF] overlay: opened
+23:16:16.378 [INF] overlay: game resumed (time scale 1.00)
+23:16:16.378 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-10 23:16:22 =====
+23:16:22.161 [INF] ==========================================================
+23:16:22.161 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:16:22.161 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:16:22.162 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:16:22.162 [INF] launcher: opening pre-game mod manager
+23:16:22.220 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:16:22.249 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:16:35.728 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 60 Hz (saved); NOT applied, simulation untouched
+23:16:37.542 [INF] launcher: start requested
+23:16:37.568 [INF] MinHook initialized
+23:16:37.605 [INF] Fn_Tick hooked at 0043E0A0
+23:16:37.634 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:16:37.636 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:16:37.636 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:16:37.651 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:16:37.725 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:16:37.725 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:16:37.726 [INF] clr: managed callbacks set (tick=04C2072E gui=04C20756 overlay=04C2077E)
+23:16:37.726 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:16:37.726 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:16:37.726 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:16:37.726 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:16:37.726 [INF] watcher: waiting for game window / D3D9 device
+23:16:38.171 [INF] raw mouse registered
+23:16:38.171 [INF] window hook installed (hwnd=000F0F28)
+23:16:38.223 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=0737DA80)
+23:16:38.224 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+23:16:38.224 [INF] watcher: all hooks installed
+23:16:38.355 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:16:38.355 [INF] overlay: ImGui backends ready (hwnd=000F0F28 device=0737DA80 scale 1.00)
+23:16:45.060 [INF] player: exact Ninja 05183C78 class 0E446FC0 handle 00000007
+===== EthhhSDK 0.1.0  session 2026-11-10 23:18:01 =====
+23:18:01.362 [INF] ==========================================================
+23:18:01.362 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:18:01.362 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:18:01.363 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:18:01.363 [INF] launcher: opening pre-game mod manager
+23:18:01.452 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:18:01.489 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:18:05.981 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 60 Hz (saved); NOT applied, simulation untouched
+23:18:13.751 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:18:14.741 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:18:17.780 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:18:29.750 [INF] launcher: start requested
+23:18:29.784 [INF] MinHook initialized
+23:18:29.826 [INF] Fn_Tick hooked at 0043E0A0
+23:18:29.860 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:18:29.863 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:18:29.863 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:18:29.880 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:18:29.977 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:18:29.977 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:18:29.977 [INF] clr: managed callbacks set (tick=04C4072E gui=04C40756 overlay=04C4077E)
+23:18:29.977 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:18:29.977 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:18:29.977 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:18:29.978 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:18:29.978 [INF] watcher: waiting for game window / D3D9 device
+23:18:30.525 [INF] raw mouse registered
+23:18:30.525 [INF] window hook installed (hwnd=000C0832)
+23:18:30.570 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=028C4140)
+23:18:30.570 [INF] watcher: all hooks installed
+23:18:30.854 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:18:30.854 [INF] overlay: ImGui backends ready (hwnd=000C0832 device=028C4140 scale 1.00)
+23:18:38.189 [INF] player: exact Ninja 05283C78 class 0E431FC0 handle 00000007
+23:18:48.596 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:18:48.597 [INF] overlay: opened
+23:18:53.454 [INF] overlay: game resumed (time scale 1.00)
+23:18:53.454 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-10 23:19:01 =====
+23:19:01.195 [INF] ==========================================================
+23:19:01.195 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:19:01.195 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:19:01.195 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:19:01.195 [INF] launcher: opening pre-game mod manager
+23:19:01.286 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:19:01.321 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:19:05.975 [INF] launcher: start requested
+23:19:06.011 [INF] MinHook initialized
+23:19:06.051 [INF] Fn_Tick hooked at 0043E0A0
+23:19:06.085 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:19:06.087 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:19:06.087 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:19:06.104 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:19:06.199 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:19:06.199 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:19:06.200 [INF] clr: managed callbacks set (tick=04CB072E gui=04CB0756 overlay=04CB077E)
+23:19:06.200 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:19:06.200 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:19:06.200 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:19:06.200 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:19:06.200 [INF] watcher: waiting for game window / D3D9 device
+23:19:06.748 [INF] raw mouse registered
+23:19:06.748 [INF] window hook installed (hwnd=01EC08A2)
+23:19:06.808 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=0281F6C0)
+23:19:06.808 [INF] watcher: all hooks installed
+23:19:07.024 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:19:07.025 [INF] overlay: ImGui backends ready (hwnd=01EC08A2 device=0281F6C0 scale 1.00)
+23:19:14.227 [INF] player: exact Ninja 05213C78 class 0E64FFC0 handle 00000007
+===== EthhhSDK 0.1.0  session 2026-11-10 23:19:27 =====
+23:19:27.288 [INF] ==========================================================
+23:19:27.288 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:19:27.288 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:19:27.289 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:19:27.289 [INF] launcher: opening pre-game mod manager
+23:19:27.376 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:19:27.410 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:19:39.230 [INF] launcher: start requested
+23:19:39.264 [INF] MinHook initialized
+23:19:39.303 [INF] Fn_Tick hooked at 0043E0A0
+23:19:39.336 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:19:39.337 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:19:39.337 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:19:39.354 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:19:39.449 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:19:39.449 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:19:39.450 [INF] clr: managed callbacks set (tick=04D1072E gui=04D10756 overlay=04D1077E)
+23:19:39.450 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:19:39.450 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:19:39.450 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:19:39.450 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:19:39.450 [INF] watcher: waiting for game window / D3D9 device
+23:19:40.000 [INF] raw mouse registered
+23:19:40.000 [INF] window hook installed (hwnd=00190F52)
+23:19:40.046 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=02940FC0)
+23:19:40.046 [INF] watcher: all hooks installed
+23:19:40.277 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:19:40.277 [INF] overlay: ImGui backends ready (hwnd=00190F52 device=02940FC0 scale 1.00)
+23:19:47.442 [INF] player: exact Ninja 05273C78 class 0E46DFC0 handle 00000007
+===== EthhhSDK 0.1.0  session 2026-11-10 23:19:55 =====
+23:19:55.733 [INF] ==========================================================
+23:19:55.733 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:19:55.733 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:19:55.734 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:19:55.734 [INF] launcher: opening pre-game mod manager
+23:19:55.827 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:19:55.861 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:19:59.644 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+23:20:02.504 [INF] launcher: start requested
+23:20:02.539 [INF] MinHook initialized
+23:20:02.575 [INF] Fn_Tick hooked at 0043E0A0
+23:20:02.608 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:20:02.610 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:20:02.610 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:20:02.628 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:20:02.723 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:20:02.724 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:20:02.724 [INF] clr: managed callbacks set (tick=0269072E gui=02690756 overlay=0269077E)
+23:20:02.724 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:20:02.724 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:20:02.724 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:20:02.724 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:20:02.724 [INF] watcher: waiting for game window / D3D9 device
+23:20:03.278 [INF] raw mouse registered
+23:20:03.278 [INF] window hook installed (hwnd=001B0F52)
+23:20:03.324 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=00794980)
+23:20:03.325 [INF] watcher: all hooks installed
+23:20:03.542 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:20:03.542 [INF] overlay: ImGui backends ready (hwnd=001B0F52 device=00794980 scale 1.00)
+23:20:10.724 [INF] player: exact Ninja 051F3C78 class 0E452FC0 handle 00000007
+23:20:13.432 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:20:13.437 [INF] overlay: opened
+23:20:20.062 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+23:20:20.527 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+23:20:25.165 [INF] overlay: game resumed (time scale 1.00)
+23:20:25.165 [INF] overlay: closed
+23:20:29.079 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:20:29.080 [INF] overlay: opened
+===== EthhhSDK 0.1.0  session 2026-11-10 23:20:31 =====
+23:20:31.827 [INF] ==========================================================
+23:20:31.827 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:20:31.827 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:20:31.828 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:20:31.828 [INF] launcher: opening pre-game mod manager
+23:20:31.890 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:20:31.916 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:20:38.612 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:20:41.601 [INF] launcher: start requested
+23:20:41.635 [INF] MinHook initialized
+23:20:41.672 [INF] Fn_Tick hooked at 0043E0A0
+23:20:41.705 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:20:41.707 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:20:41.707 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:20:41.726 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:20:41.821 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:20:41.821 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:20:41.822 [INF] clr: managed callbacks set (tick=04E9072E gui=04E90756 overlay=04E9077E)
+23:20:41.822 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:20:41.822 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:20:41.822 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:20:41.822 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:20:41.822 [INF] watcher: waiting for game window / D3D9 device
+23:20:42.377 [INF] raw mouse registered
+23:20:42.377 [INF] window hook installed (hwnd=000410FA)
+23:20:42.428 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=00725200)
+23:20:42.429 [INF] watcher: all hooks installed
+23:20:42.633 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:20:42.633 [INF] overlay: ImGui backends ready (hwnd=000410FA device=00725200 scale 1.00)
+23:20:46.934 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:20:46.937 [INF] overlay: opened
+23:20:48.017 [INF] overlay: game resumed (time scale 1.00)
+23:20:48.018 [INF] overlay: closed
+23:20:49.781 [INF] player: exact Ninja 052F3C78 class 0E473FC0 handle 00000007
+23:20:50.546 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:20:50.546 [INF] overlay: opened
+23:20:55.770 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:20:56.226 [INF] EthhhPatch render split activated internally (aspect 1.333333); display application still gated
+23:21:00.117 [INF] overlay: game resumed (time scale 1.00)
+23:21:00.117 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-10 23:21:05 =====
+23:21:05.257 [INF] ==========================================================
+23:21:05.257 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:21:05.257 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:21:05.257 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:21:05.257 [INF] launcher: opening pre-game mod manager
+23:21:05.349 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:21:05.384 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:21:13.510 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 100 Hz (saved); NOT applied, simulation untouched
+23:21:16.940 [INF] launcher: start requested
+23:21:16.975 [INF] MinHook initialized
+23:21:17.015 [INF] Fn_Tick hooked at 0043E0A0
+23:21:17.052 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:21:17.054 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:21:17.054 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:21:17.073 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:21:17.170 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:21:17.171 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:21:17.171 [INF] clr: managed callbacks set (tick=04C6072E gui=04C60756 overlay=04C6077E)
+23:21:17.171 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:21:17.171 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:21:17.171 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:21:17.171 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:21:17.171 [INF] watcher: waiting for game window / D3D9 device
+23:21:17.720 [INF] raw mouse registered
+23:21:17.720 [INF] window hook installed (hwnd=04680B02)
+23:21:17.764 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=028F2880)
+23:21:17.765 [INF] watcher: all hooks installed
+23:21:18.045 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:21:18.045 [INF] overlay: ImGui backends ready (hwnd=04680B02 device=028F2880 scale 1.00)
+23:21:25.261 [INF] player: exact Ninja 051F3C78 class 0E40BFC0 handle 00000007
+23:21:31.683 [INF] player: exact Ninja 051EDD88 class 0E40BFC0 handle 00000072
+23:21:33.988 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:21:33.990 [INF] overlay: opened
+23:21:35.526 [INF] EthhhPatch: future windowed display plan 1280x768 @ 100 Hz (saved); NOT applied, simulation untouched
+23:21:40.725 [INF] EthhhPatch: future fullscreen display plan 1280x768 @ 100 Hz (saved); NOT applied, simulation untouched
+23:21:44.558 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+23:21:45.040 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+23:21:48.426 [INF] overlay: game resumed (time scale 1.00)
+23:21:48.426 [INF] overlay: closed
+23:22:16.264 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:22:19.609 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:22:19.609 [INF] overlay: opened
+23:22:25.549 [INF] overlay: game resumed (time scale 1.00)
+23:22:25.549 [INF] overlay: closed
+23:22:26.620 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:22:26.620 [INF] overlay: opened
+23:22:27.452 [INF] overlay: game resumed (time scale 1.00)
+23:22:27.452 [INF] overlay: closed
+23:22:27.753 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:22:27.753 [INF] overlay: opened
+23:22:39.323 [INF] overlay: game resumed (time scale 1.00)
+23:22:39.324 [INF] overlay: closed
+23:22:54.684 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:22:55.614 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:22:55.614 [INF] overlay: opened
+23:22:59.989 [INF] player: manual selection 051EDD88 (class 0E40BFC0) pos 9.71 1.33 23.61
+23:23:03.545 [INF] overlay: game resumed (time scale 1.00)
+23:23:03.545 [INF] overlay: closed
+23:23:05.205 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:23:05.205 [INF] overlay: opened
+23:23:14.299 [INF] overlay: game resumed (time scale 1.00)
+23:23:14.300 [INF] overlay: closed
+23:23:15.576 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:23:26.147 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-10 23:24:11 =====
+23:24:11.336 [INF] ==========================================================
+23:24:11.336 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:24:11.336 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:24:11.337 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:24:11.337 [INF] launcher: opening pre-game mod manager
+23:24:11.431 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:24:11.465 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:24:20.423 [INF] launcher: start requested
+23:24:20.465 [INF] MinHook initialized
+23:24:20.506 [INF] Fn_Tick hooked at 0043E0A0
+23:24:20.539 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:24:20.541 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:24:20.541 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:24:20.560 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:24:20.665 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:24:20.665 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:24:20.665 [INF] clr: managed callbacks set (tick=04E7072E gui=04E70756 overlay=04E7077E)
+23:24:20.665 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:24:20.666 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:24:20.666 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:24:20.666 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:24:20.666 [INF] watcher: waiting for game window / D3D9 device
+23:24:21.160 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=02837680)
+23:24:21.264 [INF] raw mouse registered
+23:24:21.264 [INF] window hook installed (hwnd=046B0B02)
+23:24:21.264 [INF] watcher: all hooks installed
+23:24:21.455 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:24:21.455 [INF] overlay: ImGui backends ready (hwnd=046B0B02 device=02837680 scale 1.00)
+23:24:28.664 [INF] player: exact Ninja 053D3C78 class 0E45BFC0 handle 00000007
+23:24:35.352 [INF] player: exact Ninja 053CDD88 class 0E45BFC0 handle 0000006C
+23:24:39.358 [INF] [lua] trainer: saved position 67.108, 5.093, 47.694
+23:24:40.632 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:24:40.636 [INF] overlay: opened
+23:25:00.078 [INF] player: manual selection 053CDD88 (class 0E45BFC0) pos 67.11 5.09 47.69
+23:25:09.537 [INF] overlay: game resumed (time scale 1.00)
+23:25:09.537 [INF] overlay: closed
+23:25:26.265 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:25:40.960 [INF] [halflife_movement] deactivated
+23:25:46.070 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:25:48.417 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:25:48.417 [INF] overlay: opened
+23:25:52.879 [INF] overlay: game resumed (time scale 1.00)
+23:25:52.879 [INF] overlay: closed
+23:25:53.613 [INF] [halflife_movement] deactivated
+23:25:54.212 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:25:54.212 [INF] overlay: opened
+23:26:21.430 [INF] overlay: game resumed (time scale 1.00)
+23:26:21.430 [INF] overlay: closed
+23:26:22.848 [INF] [halflife_movement] activated (movement=1 camera=1)
+===== EthhhSDK 0.1.0  session 2026-11-10 23:28:13 =====
+23:28:13.288 [INF] ==========================================================
+23:28:13.288 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:28:13.288 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:28:13.288 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:28:13.289 [INF] launcher: opening pre-game mod manager
+23:28:13.346 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:28:13.365 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:28:22.193 [INF] launcher: start requested
+23:28:22.219 [INF] MinHook initialized
+23:28:22.240 [INF] Fn_Tick hooked at 0043E0A0
+23:28:22.258 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:28:22.259 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:28:22.259 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:28:22.272 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:28:22.333 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:28:22.333 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:28:22.333 [INF] clr: managed callbacks set (tick=04D1072E gui=04D10756 overlay=04D1077E)
+23:28:22.333 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:28:22.333 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:28:22.333 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:28:22.333 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:28:22.333 [INF] watcher: waiting for game window / D3D9 device
+23:28:22.773 [INF] raw mouse registered
+23:28:22.773 [INF] window hook installed (hwnd=012E0DEE)
+23:28:22.796 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=027821E0)
+23:28:22.796 [INF] watcher: all hooks installed
+23:28:23.013 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:28:23.013 [INF] overlay: ImGui backends ready (hwnd=012E0DEE device=027821E0 scale 1.00)
+23:28:29.966 [INF] player: exact Ninja 05273C78 class 0E45EFC0 handle 00000007
+23:28:37.194 [INF] player: exact Ninja 0526DD88 class 0E45EFC0 handle 00000078
+23:28:41.832 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:28:41.835 [INF] overlay: opened
+23:28:47.744 [INF] player: manual selection 0526DD88 (class 0E45EFC0) pos 67.11 5.09 47.69
+23:28:55.213 [INF] overlay: game resumed (time scale 1.00)
+23:28:55.213 [INF] overlay: closed
+23:28:57.707 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:29:01.216 [INF] [halflife_movement] deactivated
+23:29:18.242 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:29:18.242 [INF] overlay: opened
+23:29:26.437 [INF] EthhhPatch: future fullscreen display plan 640x480 @ 100 Hz (saved); NOT applied, simulation untouched
+23:29:26.985 [INF] EthhhPatch: future fullscreen display plan 640x480 @ 100 Hz (saved); NOT applied, simulation untouched
+23:29:27.364 [INF] EthhhPatch render split activated internally (aspect 1.333333); display application still gated
+23:29:31.431 [INF] overlay: game resumed (time scale 1.00)
+23:29:31.431 [INF] overlay: closed
+23:29:33.917 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:29:44.671 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:29:44.671 [INF] overlay: opened
+23:30:01.449 [INF] overlay: game resumed (time scale 1.00)
+23:30:01.454 [INF] overlay: closed
+23:30:04.373 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:30:04.373 [INF] overlay: opened
+23:30:10.493 [INF] overlay: game resumed (time scale 1.00)
+23:30:10.498 [INF] overlay: closed
+23:30:11.546 [INF] [halflife_movement] deactivated
+23:30:12.275 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:30:28.401 [INF] [halflife_movement] deactivated
+23:30:33.472 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:30:43.444 [INF] [halflife_movement] deactivated
+23:31:53.489 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:31:55.405 [INF] [halflife_movement] deactivated
+23:31:55.790 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:31:55.791 [INF] overlay: opened
+23:32:08.505 [INF] overlay: game resumed (time scale 1.00)
+23:32:08.505 [INF] overlay: closed
+23:32:09.367 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:32:39.498 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-10 23:33:04 =====
+23:33:04.168 [INF] ==========================================================
+23:33:04.168 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:33:04.168 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:33:04.168 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:33:04.169 [INF] launcher: opening pre-game mod manager
+23:33:04.224 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:33:04.243 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:33:05.194 [INF] launcher: start requested
+23:33:05.234 [INF] MinHook initialized
+23:33:05.260 [INF] Fn_Tick hooked at 0043E0A0
+23:33:05.284 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:33:05.285 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:33:05.286 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:33:05.302 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:33:05.381 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:33:05.382 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:33:05.382 [INF] clr: managed callbacks set (tick=04CC072E gui=04CC0756 overlay=04CC077E)
+23:33:05.382 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:33:05.382 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:33:05.382 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:33:05.382 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:33:05.382 [INF] watcher: waiting for game window / D3D9 device
+23:33:05.810 [INF] raw mouse registered
+23:33:05.810 [INF] window hook installed (hwnd=000F0ECC)
+23:33:05.839 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=02812D00)
+23:33:05.839 [INF] watcher: all hooks installed
+23:33:06.032 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:33:06.032 [INF] overlay: ImGui backends ready (hwnd=000F0ECC device=02812D00 scale 1.00)
+23:33:13.024 [INF] player: exact Ninja 05373C78 class 0E486FC0 handle 00000007
+23:33:14.433 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:33:15.165 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:33:15.167 [INF] overlay: opened
+23:33:19.383 [INF] player: manual selection 05373C78 (class 0E486FC0) pos -13.47 4.40 0.46
+23:33:22.003 [INF] overlay: game resumed (time scale 1.00)
+23:33:22.003 [INF] overlay: closed
+23:33:23.199 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:33:41.187 [INF] [halflife_movement] deactivated
+23:33:42.518 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:33:50.699 [WRN] player: manual strat 05373C78 disappeared
+23:33:51.610 [WRN] [halflife_movement] player strat lost - reselect the ninja in the Trainer
+23:33:51.611 [INF] [halflife_movement] deactivated
+23:33:51.727 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:34:15.775 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:34:16.725 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+23:34:17.861 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:34:17.861 [INF] overlay: opened
+23:34:24.831 [INF] player: manual selection 0536DD88 (class 0E486FC0) pos 54.64 5.12 48.98
+23:34:27.666 [INF] overlay: game resumed (time scale 1.00)
+23:34:27.666 [INF] overlay: closed
+23:34:28.163 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:34:30.580 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:34:30.580 [INF] overlay: opened
+23:34:44.655 [INF] overlay: game resumed (time scale 1.00)
+23:34:44.655 [INF] overlay: closed
+23:34:46.086 [INF] [lua] trainer: player teleported to camera
+23:34:46.120 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+23:34:46.121 [INF] [halflife_movement] deactivated
+23:34:48.439 [INF] [lua] trainer: player teleported to camera
+23:34:48.905 [INF] [lua] trainer: player teleported to camera
+23:34:49.489 [INF] [lua] trainer: player teleported to camera
+23:34:50.872 [INF] [lua] trainer: player teleported to camera
+23:34:51.105 [INF] [lua] trainer: player teleported to camera
+23:34:51.270 [INF] [lua] trainer: player teleported to camera
+23:34:51.421 [INF] [lua] trainer: player teleported to camera
+23:34:51.572 [INF] [lua] trainer: player teleported to camera
+23:34:51.721 [INF] [lua] trainer: player teleported to camera
+23:34:51.855 [INF] [lua] trainer: player teleported to camera
+23:34:55.058 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:34:56.520 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:34:56.520 [INF] overlay: opened
+23:34:57.986 [INF] overlay: game resumed (time scale 1.00)
+23:34:57.986 [INF] overlay: closed
+23:34:58.751 [INF] [halflife_movement] deactivated
+23:34:59.194 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:34:59.194 [INF] overlay: opened
+23:35:15.134 [INF] overlay: game resumed (time scale 1.00)
+23:35:15.138 [INF] overlay: closed
+23:35:15.988 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:35:18.419 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:35:18.419 [INF] overlay: opened
+23:35:22.342 [INF] overlay: game resumed (time scale 1.00)
+23:35:22.348 [INF] overlay: closed
+23:35:23.248 [INF] [halflife_movement] deactivated
+23:35:23.652 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:35:29.416 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:35:29.416 [INF] overlay: opened
+23:35:33.446 [INF] overlay: game resumed (time scale 1.00)
+23:35:33.450 [INF] overlay: closed
+23:35:38.214 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:35:38.214 [INF] overlay: opened
+23:36:33.039 [INF] overlay: game resumed (time scale 1.00)
+23:36:33.039 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-10 23:55:07 =====
+23:55:07.418 [INF] ==========================================================
+23:55:07.418 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+23:55:07.418 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+23:55:07.418 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+23:55:07.418 [INF] launcher: opening pre-game mod manager
+23:55:07.467 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:55:07.486 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+23:55:10.008 [INF] launcher: start requested
+23:55:10.027 [INF] MinHook initialized
+23:55:10.047 [INF] Fn_Tick hooked at 0043E0A0
+23:55:10.048 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+23:55:10.048 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+23:55:10.059 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+23:55:10.113 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+23:55:10.113 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+23:55:10.113 [INF] clr: managed callbacks set (tick=04DB072E gui=04DB0756 overlay=04DB077E)
+23:55:10.113 [INF] managed: 1 mod(s) initialised, callbacks registered
+23:55:10.113 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+23:55:10.113 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+23:55:10.113 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+23:55:10.113 [INF] watcher: waiting for game window / D3D9 device
+23:55:10.554 [INF] raw mouse registered
+23:55:10.554 [INF] window hook installed (hwnd=003A0C38)
+23:55:10.579 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=0097B480)
+23:55:10.579 [INF] watcher: all hooks installed
+23:55:10.733 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+23:55:10.733 [INF] overlay: ImGui backends ready (hwnd=003A0C38 device=0097B480 scale 1.00)
+23:55:17.670 [INF] player: exact Ninja 05213C78 class 0E422FC0 handle 00000007
+23:55:24.365 [INF] player: exact Ninja 0520DD88 class 0E422FC0 handle 00000072
+23:55:28.720 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:55:28.722 [INF] overlay: opened
+23:55:42.030 [INF] player: manual selection 0520DD88 (class 0E422FC0) pos 67.11 5.09 47.69
+23:55:45.700 [INF] overlay: game resumed (time scale 1.00)
+23:55:45.700 [INF] overlay: closed
+23:55:51.445 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:55:53.463 [INF] [halflife_movement] deactivated
+23:55:56.799 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:55:56.799 [INF] overlay: opened
+23:56:06.224 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:56:07.139 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:56:07.160 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:56:07.476 [INF] EthhhPatch render split activated internally (aspect 1.333333); display application still gated
+23:56:11.702 [INF] overlay: game resumed (time scale 1.00)
+23:56:11.702 [INF] overlay: closed
+23:56:16.842 [INF] [halflife_movement] activated (movement=1 camera=1)
+23:56:38.943 [INF] overlay: game paused (time scale 1.00, camera frozen)
+23:56:38.943 [INF] overlay: opened
+23:56:42.975 [INF] EthhhPatch compatibility hooks removed
+23:56:49.617 [INF] EthhhPatch: future windowed display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+23:56:55.340 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+23:56:55.363 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+23:56:55.715 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+23:56:59.445 [INF] overlay: game resumed (time scale 1.00)
+23:56:59.446 [INF] overlay: closed
+00:01:49.140 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:01:49.140 [INF] [halflife_movement] deactivated
+00:01:49.337 [WRN] player: manual strat 0520DD88 disappeared
+00:01:52.318 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:01:52.656 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:01:52.857 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:01:53.395 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:01:53.395 [INF] overlay: opened
+00:01:57.330 [INF] player: manual selection 0520DD88 (class 0C421F6C) pos 143.30 57.08 -260.93
+00:01:57.843 [INF] overlay: game resumed (time scale 1.00)
+00:01:57.844 [INF] overlay: closed
+00:02:02.818 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:02:03.286 [INF] [halflife_movement] deactivated
+00:02:12.848 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:02:15.048 [INF] [halflife_movement] deactivated
+00:02:50.327 [WRN] player: manual strat 0520DD88 disappeared
+00:03:07.727 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:03:07.727 [INF] overlay: opened
+00:03:08.600 [INF] overlay: game resumed (time scale 1.00)
+00:03:08.600 [INF] overlay: closed
+00:03:25.000 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:03:25.000 [INF] overlay: opened
+00:03:26.169 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:26.270 [INF] overlay: game resumed (time scale 1.00)
+00:03:26.270 [INF] overlay: closed
+00:03:27.350 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:03:28.161 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:03:28.410 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:03:29.049 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:03:29.049 [INF] overlay: opened
+00:03:30.099 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:30.752 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:30.878 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:30.999 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:31.146 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:31.258 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:31.366 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:32.280 [INF] overlay: game resumed (time scale 1.00)
+00:03:32.280 [INF] overlay: closed
+00:03:35.430 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:03:35.430 [INF] overlay: opened
+00:03:41.091 [INF] overlay: game resumed (time scale 1.00)
+00:03:41.091 [INF] overlay: closed
+00:03:46.281 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:03:46.581 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:03:47.140 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:03:47.140 [INF] overlay: opened
+00:03:49.590 [WRN] player: refused selection 0520DD88 (not in the live strat list)
+00:03:56.630 [INF] player: candidate learning started (201 strats). Idle/move/stop; paused time is excluded.
+00:03:58.336 [INF] overlay: game resumed (time scale 1.00)
+00:03:58.336 [INF] overlay: closed
+00:04:11.128 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:04:11.366 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:04:12.189 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:04:12.189 [INF] overlay: opened
+00:04:16.067 [INF] overlay: game resumed (time scale 1.00)
+00:04:16.067 [INF] overlay: closed
+00:04:17.437 [INF] player: ranked 205 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261111-000417.csv
+00:04:17.437 [INF] player: #1 addr 051F0C08 class 0E422FC0 score 0.000 active 0.000 idle 13.297 pos 76.21 16.93 -100.72
+00:04:17.437 [INF] player: #2 addr 05206618 class 0E423598 score 0.000 active 0.000 idle 14.557 pos 74.68 1.23 -102.62
+00:04:17.437 [INF] player: #3 addr 051DCA78 class 0D943704 score 0.000 active 0.000 idle 14.604 pos 74.68 1.23 -102.62
+00:04:17.437 [INF] player: #4 addr 051DBE38 class 0BC7D0B0 score 0.000 active 0.000 idle 14.604 pos 74.68 1.23 -102.62
+00:04:17.437 [INF] player: #5 addr 051DC148 class 0D943184 score 0.000 active 0.000 idle 0.000 pos 76.68 0.70 -105.60
+00:04:17.437 [INF] player: #6 addr 051E2968 class 0D943024 score 0.000 active 0.000 idle 0.000 pos 76.21 -1.47 -100.72
+00:04:17.437 [INF] player: #7 addr 05208AD8 class 0D944078 score 0.000 active 0.000 idle 0.000 pos 78.77 0.16 -104.24
+00:04:17.437 [INF] player: #8 addr 051F0F18 class 0D944078 score 0.000 active 0.000 idle 0.000 pos 79.48 0.10 -103.09
+00:04:27.146 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:04:27.146 [INF] overlay: opened
+00:04:28.750 [INF] player: manual selection 051F0C08 (class 0C13DD94) pos 217.00 4.50 -94.65
+00:04:29.318 [INF] overlay: game resumed (time scale 1.00)
+00:04:29.318 [INF] overlay: closed
+00:04:30.135 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:04:33.913 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:04:33.913 [INF] overlay: opened
+00:04:35.956 [INF] player: manual selection 051F0C08 (class 0C13DD94) pos 219.24 4.50 -94.86
+00:04:37.697 [INF] player: manual selection 05206618 (class 0C13DD94) pos 165.00 8.50 -30.15
+00:04:38.611 [INF] overlay: game resumed (time scale 1.00)
+00:04:38.611 [INF] overlay: closed
+00:04:38.633 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:04:38.633 [INF] [halflife_movement] deactivated
+00:04:38.869 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:04:40.953 [INF] [halflife_movement] deactivated
+00:04:42.896 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:04:42.896 [INF] overlay: opened
+00:04:43.475 [INF] overlay: game resumed (time scale 1.00)
+00:04:43.475 [INF] overlay: closed
+00:04:43.917 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:04:43.917 [INF] overlay: opened
+00:04:46.225 [INF] player: candidate learning started (236 strats). Idle/move/stop; paused time is excluded.
+00:04:47.587 [INF] overlay: game resumed (time scale 1.00)
+00:04:47.587 [INF] overlay: closed
+00:05:08.056 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:05:08.056 [INF] overlay: opened
+00:05:09.330 [INF] overlay: game resumed (time scale 1.00)
+00:05:09.330 [INF] overlay: closed
+00:05:19.563 [INF] player: ranked 238 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261111-000519.csv
+00:05:19.563 [INF] player: #1 addr 05202BE8 class 0E422FC0 score 0.000 active 6.331 idle 4.544 pos 48.11 -2.59 -19.51
+00:05:19.563 [INF] player: #2 addr 051DBE38 class 0BC7D0B0 score 0.000 active 4.246 idle 3.170 pos 49.01 -0.09 -26.27
+00:05:19.563 [INF] player: #3 addr 051E1D28 class 0DEA6880 score 0.000 active 4.246 idle 3.170 pos 49.01 -0.09 -26.27
+00:05:19.563 [INF] player: #4 addr 051DABD8 class 0E423598 score 0.000 active 4.246 idle 3.170 pos 49.01 -0.09 -26.27
+00:05:19.563 [INF] player: #5 addr 0520B5B8 class 0E422FEC score 0.000 active 0.000 idle 0.000 pos 48.74 -2.59 -22.35
+00:05:19.563 [INF] player: #6 addr 051EA6F8 class 0E422FEC score 0.000 active 0.000 idle 0.000 pos 48.50 -2.59 -21.63
+00:05:19.563 [INF] player: #7 addr 0520D148 class 0C13DDC0 score 0.000 active 0.000 idle 0.000 pos 44.72 -0.09 -21.96
+00:05:19.563 [INF] player: #8 addr 051F8CA8 class 0E42335C score 0.000 active 7.849 idle 5.777 pos 47.81 -2.18 -19.77
+00:05:20.074 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:05:20.074 [INF] overlay: opened
+00:05:21.876 [INF] player: manual selection 05202BE8 (class 0E422FC0) pos 47.26 -2.59 -15.75
+00:05:22.704 [INF] overlay: game resumed (time scale 1.00)
+00:05:22.704 [INF] overlay: closed
+00:05:23.066 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:05:57.316 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:05:57.316 [INF] overlay: opened
+00:06:09.583 [INF] overlay: game resumed (time scale 1.00)
+00:06:09.583 [INF] overlay: closed
+00:06:16.075 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:06:16.075 [INF] overlay: opened
+00:06:21.501 [INF] overlay: game resumed (time scale 1.00)
+00:06:21.501 [INF] overlay: closed
+00:06:22.956 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:06:22.956 [INF] overlay: opened
+00:06:36.285 [INF] overlay: game resumed (time scale 1.00)
+00:06:36.285 [INF] overlay: closed
+00:06:52.450 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:06:52.450 [INF] [halflife_movement] deactivated
+00:06:52.649 [WRN] player: manual strat 05202BE8 disappeared
+00:06:54.608 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:06:54.608 [INF] overlay: opened
+00:06:58.211 [INF] overlay: game resumed (time scale 1.00)
+00:06:58.216 [INF] overlay: closed
+00:07:00.629 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:07:01.869 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:07:01.869 [INF] overlay: opened
+00:07:04.779 [INF] player: manual selection 05202BE8 (class 0C13DD10) pos 223.04 29.78 -89.44
+00:07:06.415 [INF] overlay: game resumed (time scale 1.00)
+00:07:06.415 [INF] overlay: closed
+00:07:07.131 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:07:07.859 [INF] [halflife_movement] deactivated
+00:07:08.649 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:07:08.649 [INF] overlay: opened
+00:07:10.010 [INF] player: candidate learning started (235 strats). Idle/move/stop; paused time is excluded.
+00:07:11.468 [INF] overlay: game resumed (time scale 1.00)
+00:07:11.468 [INF] overlay: closed
+00:07:42.307 [INF] player: ranked 238 candidates (no auto-selection); evidence C:\Users\Administrator\Desktop\ininja\EthhhSDK\logs\player-learning-20261111-000742.csv
+00:07:42.308 [INF] player: #1 addr 052120E8 class 0E422FC0 score 0.000 active 6.153 idle 0.000 pos 50.19 -2.59 -15.59
+00:07:42.308 [INF] player: #2 addr 05212D28 class 0DEA6880 score 0.000 active 1.698 idle 0.000 pos 45.73 -0.09 -19.93
+00:07:42.308 [INF] player: #3 addr 052059D8 class 0BC7D0B0 score 0.000 active 1.698 idle 0.000 pos 45.73 -0.09 -19.93
+00:07:42.308 [INF] player: #4 addr 052087C8 class 0E423598 score 0.000 active 1.698 idle 0.000 pos 45.73 -0.09 -19.93
+00:07:42.308 [INF] player: #5 addr 051FE888 class 0C13DDC0 score 0.000 active 1.672 idle 0.000 pos 45.70 -0.09 -19.96
+00:07:42.308 [INF] player: #6 addr 05206308 class 0C13DD68 score 0.000 active 0.000 idle 0.000 pos 43.75 1.45 -20.18
+00:07:42.308 [INF] player: #7 addr 051E0DD8 class 0E422FEC score 0.000 active 0.000 idle 0.000 pos 50.76 -2.59 -19.84
+00:07:42.308 [INF] player: #8 addr 051DAEE8 class 0E422FEC score 0.000 active 0.000 idle 0.000 pos 50.46 -2.59 -18.04
+00:07:44.424 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:07:44.424 [INF] overlay: opened
+00:07:45.890 [INF] player: manual selection 052120E8 (class 0E422FC0) pos 49.81 -2.59 -20.75
+00:07:46.090 [INF] overlay: game resumed (time scale 1.00)
+00:07:46.090 [INF] overlay: closed
+00:07:47.322 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:08:27.583 [INF] [halflife_movement] deactivated
+00:08:28.693 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:08:29.282 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:08:29.282 [INF] overlay: opened
+00:08:40.884 [INF] overlay: game resumed (time scale 1.00)
+00:08:40.884 [INF] overlay: closed
+00:08:55.633 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:08:55.633 [INF] overlay: opened
+00:09:05.121 [INF] overlay: game resumed (time scale 1.00)
+00:09:05.121 [INF] overlay: closed
+00:09:18.163 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:18.163 [INF] overlay: opened
+00:09:21.556 [INF] overlay: game resumed (time scale 1.00)
+00:09:21.561 [INF] overlay: closed
+00:09:25.054 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:25.054 [INF] overlay: opened
+00:09:27.498 [INF] overlay: game resumed (time scale 1.00)
+00:09:27.498 [INF] overlay: closed
+00:09:34.397 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:34.397 [INF] overlay: opened
+00:09:36.382 [INF] overlay: game resumed (time scale 1.00)
+00:09:36.387 [INF] overlay: closed
+00:09:40.607 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:09:40.607 [INF] [halflife_movement] deactivated
+00:09:40.816 [WRN] player: manual strat 052120E8 disappeared
+00:09:44.075 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:44.075 [INF] overlay: opened
+00:09:46.829 [INF] player: manual selection 052120E8 (class 0C13E550) pos 158.84 17.20 -66.61
+00:09:47.765 [INF] overlay: game resumed (time scale 1.00)
+00:09:47.765 [INF] overlay: closed
+00:09:48.774 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:09:49.923 [INF] [halflife_movement] deactivated
+00:09:51.262 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:51.262 [INF] overlay: opened
+00:09:53.156 [INF] player: exact Ninja 051DB508 class 0E422FC0 handle 00000EF8
+00:09:54.444 [INF] overlay: game resumed (time scale 1.00)
+00:09:54.445 [INF] overlay: closed
+00:09:56.849 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:09:57.683 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:09:57.683 [INF] overlay: opened
+00:10:00.338 [INF] player: manual selection 051DB508 (class 0E422FC0) pos 50.53 -2.59 -20.42
+00:10:01.955 [INF] overlay: game resumed (time scale 1.00)
+00:10:01.955 [INF] overlay: closed
+00:10:02.847 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:10:17.918 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:10:17.918 [INF] [halflife_movement] deactivated
+00:10:18.057 [WRN] player: manual strat 051DB508 disappeared
+00:10:29.656 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:10:29.656 [INF] overlay: opened
+00:10:31.043 [INF] player: manual selection 051DB508 (class 0C13DD94) pos 105.00 3.00 -0.15
+00:10:32.326 [INF] overlay: game resumed (time scale 1.00)
+00:10:32.326 [INF] overlay: closed
+00:10:33.009 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:10:33.506 [INF] [halflife_movement] deactivated
+00:10:34.637 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:10:34.638 [INF] overlay: opened
+00:10:36.805 [INF] player: exact Ninja 05208DE8 class 0E422FC0 handle 0000101D
+00:10:37.603 [INF] overlay: game resumed (time scale 1.00)
+00:10:37.604 [INF] overlay: closed
+00:10:38.934 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:10:38.934 [INF] overlay: opened
+00:10:40.688 [INF] player: manual selection 05208DE8 (class 0E422FC0) pos 50.66 -2.59 -22.43
+00:10:41.737 [INF] overlay: game resumed (time scale 1.00)
+00:10:41.737 [INF] overlay: closed
+00:10:42.527 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:12:04.981 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:12:04.982 [INF] [halflife_movement] deactivated
+00:12:05.061 [WRN] player: manual strat 05208DE8 disappeared
+00:12:17.850 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:12:17.851 [INF] overlay: opened
+00:12:19.604 [INF] player: exact Ninja 05213038 class 0E422FC0 handle 000013B5
+00:12:20.491 [INF] overlay: game resumed (time scale 1.00)
+00:12:20.491 [INF] overlay: closed
+00:12:21.627 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:12:21.627 [INF] overlay: opened
+00:12:22.607 [INF] player: manual selection 05213038 (class 0E422FC0) pos 50.16 -2.59 -19.63
+00:12:23.661 [INF] overlay: game resumed (time scale 1.00)
+00:12:23.661 [INF] overlay: closed
+00:12:24.423 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:12:32.378 [INF] [halflife_movement] deactivated
+00:12:36.541 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:12:37.644 [INF] [halflife_movement] deactivated
+00:12:45.579 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:13:08.413 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:13:08.413 [INF] [halflife_movement] deactivated
+00:13:10.752 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:13:32.113 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:13:32.113 [INF] [halflife_movement] deactivated
+00:13:34.514 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:13:43.164 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:13:43.164 [INF] [halflife_movement] deactivated
+00:13:48.644 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:13:51.745 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:13:51.745 [INF] [halflife_movement] deactivated
+00:13:53.424 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:14:38.687 [INF] [halflife_movement] deactivated
+00:14:40.114 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:14:41.536 [INF] [halflife_movement] deactivated
+00:14:42.486 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:14:44.947 [INF] [halflife_movement] deactivated
+00:14:47.996 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:14:48.666 [INF] [halflife_movement] deactivated
+00:14:49.437 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:14:50.816 [INF] [halflife_movement] deactivated
+00:14:52.336 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:15:37.429 [INF] [halflife_movement] deactivated
+00:15:39.489 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:15:40.558 [INF] [halflife_movement] deactivated
+00:15:53.988 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:15:54.409 [INF] [halflife_movement] deactivated
+00:15:57.319 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:15:59.420 [INF] [halflife_movement] deactivated
+00:16:00.770 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:16:01.159 [INF] [halflife_movement] deactivated
+00:16:18.779 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:16:22.800 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:16:22.801 [INF] [halflife_movement] deactivated
+00:16:25.400 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:16:25.850 [INF] [halflife_movement] deactivated
+00:16:48.751 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:17:20.182 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:17:20.183 [INF] [halflife_movement] deactivated
+00:17:20.382 [WRN] player: manual strat 05213038 disappeared
+00:17:25.612 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:17:26.281 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:17:26.852 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:17:27.002 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:17:27.321 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:17:27.321 [INF] overlay: opened
+00:17:29.496 [INF] player: exact Ninja 052056C8 class 0E422FC0 handle 000025D5
+00:17:32.055 [INF] overlay: game resumed (time scale 1.00)
+00:17:32.056 [INF] overlay: closed
+00:17:33.052 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:17:33.052 [INF] overlay: opened
+00:17:34.415 [INF] player: manual selection 052056C8 (class 0E422FC0) pos 277.99 2.14 -9.63
+00:17:35.281 [INF] overlay: game resumed (time scale 1.00)
+00:17:35.281 [INF] overlay: closed
+00:17:35.612 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:17:40.242 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:17:40.242 [INF] overlay: opened
+00:17:45.743 [INF] overlay: game resumed (time scale 1.00)
+00:17:45.744 [INF] overlay: closed
+00:18:42.136 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:18:42.136 [INF] [halflife_movement] deactivated
+00:18:42.266 [WRN] player: manual strat 052056C8 disappeared
+00:18:46.687 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:18:47.455 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:18:48.306 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:18:48.555 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:18:48.964 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:18:48.964 [INF] overlay: opened
+00:19:02.445 [INF] overlay: game resumed (time scale 1.00)
+00:19:02.445 [INF] overlay: closed
+00:19:32.777 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:19:33.577 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:19:33.935 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:19:33.936 [INF] overlay: opened
+00:19:37.438 [INF] player: exact Ninja 051FE888 class 0E422FC0 handle 000027A2
+00:19:39.206 [INF] overlay: game resumed (time scale 1.00)
+00:19:39.206 [INF] overlay: closed
+00:19:40.326 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:19:40.326 [INF] overlay: opened
+00:19:41.742 [INF] player: manual selection 051FE888 (class 0E422FC0) pos 271.93 3.44 20.49
+00:19:42.906 [INF] overlay: game resumed (time scale 1.00)
+00:19:42.906 [INF] overlay: closed
+00:19:43.256 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:19:45.378 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:19:45.378 [INF] [halflife_movement] deactivated
+00:19:47.957 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:19:49.969 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:19:49.969 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-11 00:48:22 =====
+00:48:22.154 [INF] ==========================================================
+00:48:22.154 [INF] EthhhSDK v0.1.0 (build 2026-11-10) entry gate
+00:48:22.154 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+00:48:22.154 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+00:48:22.154 [INF] launcher: opening pre-game mod manager
+00:48:22.210 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+00:48:22.231 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+00:48:35.289 [INF] launcher: start requested
+00:48:35.311 [INF] MinHook initialized
+00:48:35.344 [INF] Fn_Tick hooked at 0043E0A0
+00:48:35.345 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+00:48:35.346 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+00:48:35.359 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+00:48:35.434 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+00:48:35.435 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+00:48:35.435 [INF] clr: managed callbacks set (tick=04D4072E gui=04D40756 overlay=04D4077E)
+00:48:35.435 [INF] managed: 1 mod(s) initialised, callbacks registered
+00:48:35.435 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+00:48:35.435 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+00:48:35.435 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+00:48:35.435 [INF] watcher: waiting for game window / D3D9 device
+00:48:35.875 [INF] raw mouse registered
+00:48:35.876 [INF] window hook installed (hwnd=00190B16)
+00:48:35.920 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=006FAC20)
+00:48:35.921 [INF] watcher: all hooks installed
+00:48:36.201 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+00:48:36.201 [INF] overlay: ImGui backends ready (hwnd=00190B16 device=006FAC20 scale 1.00)
+00:48:43.321 [INF] player: exact Ninja 052A3C78 class 0E60DFC0 handle 00000007
+00:48:46.512 [INF] player: exact Ninja 0529DD88 class 0E60DFC0 handle 00000073
+00:48:51.616 [INF] player: exact Ninja 05294D98 class 0E60DFC0 handle 0000008E
+00:48:53.015 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:48:53.018 [INF] overlay: opened
+00:48:54.813 [INF] overlay: game resumed (time scale 1.00)
+00:48:54.813 [INF] overlay: closed
+00:48:56.053 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:48:56.053 [INF] overlay: opened
+00:49:01.217 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+00:49:01.253 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+00:49:02.350 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+00:49:05.253 [INF] overlay: game resumed (time scale 1.00)
+00:49:05.253 [INF] overlay: closed
+00:49:30.781 [INF] player: exact Ninja 0527F9A8 class 0E60DFC0 handle 00000187
+00:49:40.911 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:49:40.911 [INF] overlay: opened
+00:49:43.463 [INF] overlay: game resumed (time scale 1.00)
+00:49:43.464 [INF] overlay: closed
+00:49:43.996 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:49:43.996 [INF] overlay: opened
+00:49:46.268 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+00:49:47.574 [INF] EthhhPatch compatibility hooks removed
+00:49:50.755 [INF] overlay: game resumed (time scale 1.00)
+00:49:50.755 [INF] overlay: closed
+00:49:51.690 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:49:51.690 [INF] overlay: opened
+00:49:53.422 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+00:49:53.446 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+00:49:54.547 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+00:49:57.432 [INF] overlay: game resumed (time scale 1.00)
+00:49:57.432 [INF] overlay: closed
+00:50:06.917 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:50:06.917 [INF] overlay: opened
+00:50:14.563 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+00:50:16.519 [INF] EthhhPatch compatibility hooks removed
+00:50:21.349 [INF] EthhhPatch: future fullscreen display plan 800x600 @ 100 Hz (saved); NOT applied, simulation untouched
+00:50:21.373 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+00:50:21.784 [INF] EthhhPatch render split activated internally (aspect 1.333333); display application still gated
+00:50:25.541 [INF] overlay: game resumed (time scale 1.00)
+00:50:25.541 [INF] overlay: closed
+00:50:48.208 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:50:48.208 [INF] overlay: opened
+00:50:48.715 [INF] overlay: game resumed (time scale 1.00)
+00:50:48.715 [INF] overlay: closed
+00:50:49.467 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:50:50.144 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:50:50.144 [INF] overlay: opened
+00:51:00.240 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+00:51:03.577 [INF] EthhhPatch compatibility hooks removed
+00:51:07.965 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+00:51:07.985 [INF] EthhhPatch pass-through compatibility hooks ready (culling/HUD pulse/movie fit); render split inactive
+00:51:08.329 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+00:51:16.101 [INF] player: manual selection 0527F9A8 (class 0E60DFC0) pos 57.44 -2.59 -21.43
+00:51:16.961 [INF] overlay: game resumed (time scale 1.00)
+00:51:16.961 [INF] overlay: closed
+00:51:23.830 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:51:23.831 [INF] overlay: opened
+00:51:39.185 [INF] overlay: game resumed (time scale 1.00)
+00:51:39.185 [INF] overlay: closed
+00:51:40.043 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:51:56.630 [WRN] player: manual strat 0527F9A8 disappeared
+00:51:57.613 [WRN] [halflife_movement] player strat lost - reselect the ninja in the Trainer
+00:51:57.614 [INF] [halflife_movement] deactivated
+00:52:17.713 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:52:18.523 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:52:18.523 [INF] overlay: opened
+00:52:20.714 [INF] player: exact Ninja 05297B88 class 0E60DFC0 handle 0000044D
+00:52:20.802 [INF] overlay: game resumed (time scale 1.00)
+00:52:20.802 [INF] overlay: closed
+00:52:22.615 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:52:22.615 [INF] overlay: opened
+00:52:23.797 [INF] player: manual selection 05297B88 (class 0E60DFC0) pos 55.74 -2.59 -17.81
+00:52:24.616 [INF] overlay: game resumed (time scale 1.00)
+00:52:24.616 [INF] overlay: closed
+00:52:27.184 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:52:37.628 [INF] [halflife_movement] deactivated
+00:52:45.583 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:52:45.584 [INF] overlay: opened
+00:52:46.863 [INF] overlay: game resumed (time scale 1.00)
+00:52:46.863 [INF] overlay: closed
+00:53:15.626 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:53:33.575 [INF] [halflife_movement] deactivated
+00:53:34.455 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:53:36.766 [INF] [halflife_movement] deactivated
+00:53:38.156 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:53:57.867 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:53:57.867 [INF] [halflife_movement] deactivated
+00:54:00.397 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:23.417 [INF] [halflife_movement] deactivated
+00:54:24.918 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:27.448 [INF] [halflife_movement] deactivated
+00:54:28.598 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:30.518 [INF] [halflife_movement] deactivated
+00:54:40.179 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:44.031 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:54:44.031 [INF] [halflife_movement] deactivated
+00:54:45.256 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:54.660 [INF] [halflife_movement] deactivated
+00:54:56.029 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:54:56.609 [INF] [halflife_movement] deactivated
+00:55:36.401 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:56:00.542 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:56:00.542 [INF] [halflife_movement] deactivated
+00:56:00.701 [WRN] player: manual strat 05297B88 disappeared
+00:56:02.101 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:02.271 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:02.421 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:02.601 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:02.802 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:03.022 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:04.151 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:04.302 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+00:56:04.701 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:56:04.701 [INF] overlay: opened
+00:56:07.079 [INF] player: manual selection 052A0558 (class 0C539570) pos 158.71 7.03 -85.05
+00:56:08.153 [INF] player: manual selection 05297B88 (class 0E60E178) pos 168.31 7.54 -7.30
+00:56:09.412 [WRN] player: refused selection 05296928 (not in the live strat list)
+00:56:10.998 [INF] player: manual selection 05281228 (class 0E60E018) pos 168.55 7.65 -7.14
+00:56:12.473 [INF] player: manual selection 0529BEE8 (class 0C539544) pos 200.96 -1.17 -95.50
+00:56:13.955 [INF] player: manual selection 052A20E8 (class 0C539360) pos 63.38 -2.59 -14.33
+00:56:15.292 [INF] overlay: game resumed (time scale 1.00)
+00:56:15.292 [INF] overlay: closed
+00:56:15.532 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:56:28.553 [INF] [halflife_movement] deactivated
+00:56:29.315 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:56:44.792 [INF] [halflife_movement] deactivated
+00:56:46.708 [INF] overlay: game paused (time scale 1.00, camera frozen)
+00:56:46.708 [INF] overlay: opened
+00:56:50.173 [INF] player: exact Ninja 05289BF8 class 0E60DFC0 handle 00001345
+00:56:52.585 [INF] player: manual selection 05289BF8 (class 0E60DFC0) pos 172.75 6.76 -30.74
+00:56:55.603 [INF] overlay: game resumed (time scale 1.00)
+00:56:55.603 [INF] overlay: closed
+00:56:56.263 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:58:02.016 [WRN] [halflife_movement] teleport/respawn detected; reactivate after checking the player
+00:58:02.017 [INF] [halflife_movement] deactivated
+00:58:03.636 [INF] [halflife_movement] activated (movement=1 camera=1)
+00:58:29.390 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+00:58:29.390 [INF] [halflife_movement] deactivated
+00:58:29.520 [WRN] player: manual strat 05289BF8 disappeared
