@@ -1,5 +1,7 @@
 // Offline policy tests: no engine functions, process access or user settings.
 #include "strat_identity.h"
+#include "ninja_control_policy.h"
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 #include <map>
@@ -81,4 +83,61 @@ int main()
     list.pop_back(); list[2].selfHandle=0; Check(!UniqueNinja(list),"uninitialized Ninja handle refused");
     list.erase(list.begin()+2); Check(!UniqueNinja(list),"no root never falls back to followers");
     printf("PASS strat identity: %d assertions (offline; no live identity/model claim)\n",checks);
+    checks = 0;
+    NinjaPinConsent consent;
+    Check(!consent.AllowsReacquire(true), "fresh manual mode cannot create pin consent");
+    Check(!consent.AllowsReacquire(false), "fresh auto mode cannot reacquire");
+    consent.Selected(false);
+    Check(!consent.AllowsReacquire(true), "attachment/ambiguous/incomplete selection cannot authorize reacquire");
+    consent.Selected(true);
+    Check(consent.AllowsReacquire(true), "explicit unique exact-Ninja selection authorizes reacquire");
+    Check(!consent.AllowsReacquire(false), "even prior pin cannot reacquire in another mode");
+    Check(consent.AllowsReacquire(true), "player loss does not itself revoke explicit intent");
+    consent.Selected(false);
+    Check(!consent.AllowsReacquire(true), "different or failed explicit selection revokes consent");
+    consent.Selected(true); consent.Revoke();
+    Check(!consent.AllowsReacquire(true), "reset/mode switch/learning revokes consent");
+
+    std::array<unsigned char, 0x30> pose{};
+    for (size_t i = 0; i < pose.size(); ++i) pose[i] = (unsigned char)(i * 7 + 3);
+    const auto original = pose;
+    const uintptr_t base = (uintptr_t)pose.data();
+    int writes = 0;
+    auto write = [&](uintptr_t addr, const void* data, size_t size) {
+        ++writes;
+        if (addr < base || addr - base > pose.size() || size > pose.size() - (addr - base)) return false;
+        memcpy((void*)addr, data, size); return true;
+    };
+    std::vector<float> yaws;
+    for (int i = -64; i <= 64; ++i) yaws.push_back(i * 0.25f);
+    yaws.push_back((std::numeric_limits<float>::max)());
+    yaws.push_back(-(std::numeric_limits<float>::max)());
+    for (float yaw : yaws) {
+        pose = original; writes = 0;
+        Check(WriteNinjaFacingPose(base, base + 0x10, yaw, write) && writes == 2, "facing uses one yaw scalar and one quaternion write");
+        float units = 0, q[4]{};
+        memcpy(&units, pose.data() + 4, sizeof(units));
+        memcpy(q, pose.data() + 0x10, sizeof(q));
+        Check(std::isfinite(units) && std::abs(units) <= 2048.01f, "finite wrapped facing script units");
+        Check(q[0] == 0 && q[2] == 0 && std::abs(q[1]*q[1]+q[3]*q[3]-1) < 0.000001f, "finite unit yaw quaternion");
+        Check(std::abs(std::sin(double(units) * 6.283185307179586 / 4096) - 2*q[1]*q[3]) < 0.000001f,
+            "yaw scalar and quaternion agree on forward X");
+        auto unchanged = pose;
+        memcpy(unchanged.data() + 4, original.data() + 4, sizeof(float));
+        memcpy(unchanged.data() + 0x10, original.data() + 0x10, sizeof(q));
+        Check(unchanged == original, "pitch/roll/fourth-slot padding and neighboring bytes are untouched");
+    }
+    for (float invalid : {std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::infinity(),
+        -std::numeric_limits<float>::infinity()}) {
+        pose = original; writes = 0;
+        Check(!WriteNinjaFacingPose(base, base + 0x10, invalid, write) && !writes && pose == original,
+            "nonfinite yaw performs no writes");
+    }
+    writes = 0;
+    Check(!WriteNinjaFacingPose(0, base + 0x10, 0, write) && !writes, "null angle address refused");
+    Check(!WriteNinjaFacingPose(base, 0, 0, write) && !writes, "null quaternion address refused");
+    int attempts = 0;
+    auto refuse = [&](uintptr_t, const void*, size_t) { ++attempts; return false; };
+    Check(!WriteNinjaFacingPose(base, base + 0x10, 0, refuse) && attempts == 1, "failed yaw write stops before quaternion");
+    printf("PASS native Ninja consent/facing: %d assertions (offline; no engine transform-refresh claim)\n", checks);
 }

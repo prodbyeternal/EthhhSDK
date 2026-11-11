@@ -25,6 +25,9 @@ WNDPROC g_oldWndProc = nullptr;
 
 using TickFn = void(__thiscall*)(void*, int);
 TickFn g_tickOrig = nullptr;
+using KeyboardTickFn = void(__thiscall*)(void*);
+KeyboardTickFn g_keyboardTickOrig = nullptr;
+bool g_keyboardTickHooked = false;
 
 using EndSceneFn = HRESULT(WINAPI*)(IDirect3DDevice9*);
 using ResetFn = HRESULT(WINAPI*)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*);
@@ -73,10 +76,11 @@ void __fastcall TickDetour(void* self, void* /*edx*/, int tickIndex)
 {
     input::PumpKeys();
     input::PumpCapture();
+    input::BeginNativeTick();
     if (g_tickOrig)
         g_tickOrig(self, tickIndex);
+    input::EndNativeTick();
 
-    patch::runtime::OnTickCompleted();
     patch::OnTick(game::TimeStep());
 
     overlay::OnGameTick();
@@ -84,6 +88,14 @@ void __fastcall TickDetour(void* self, void* /*edx*/, int tickIndex)
     mods::ModManager::Get().Tick(tickIndex);
 
     RunTickCallbacks(tickIndex);
+    // Camera targets/ownership are sampled only after tracker and all mod writes.
+    patch::runtime::OnTickCompleted();
+}
+
+void __fastcall KeyboardTickDetour(void* self, void* /*edx*/)
+{
+    if (g_keyboardTickOrig) g_keyboardTickOrig(self);
+    input::FilterNativeKeyboard(self);
 }
 
 // ---------------------------------------------------------------------------
@@ -315,8 +327,55 @@ void StartGameWatcher()
     if (h) CloseHandle(h);
 }
 
+bool InstallMovementInputHook()
+{
+    if (g_keyboardTickHooked) return true;
+    if (!g_tickHooked || !g_mhInit) {
+        ETH_WARN("HL keyboard hook unavailable: tick=%d minhook=%d", (int)g_tickHooked, (int)g_mhInit);
+        return false;
+    }
+    char exe[MAX_PATH]{};
+    const DWORD length = GetModuleFileNameA(nullptr, exe, MAX_PATH);
+    if (!length || length >= MAX_PATH) {
+        ETH_WARN("HL keyboard hook refused: executable path unavailable (%lu)", (unsigned long)length);
+        return false;
+    }
+    constexpr const char* kSupportedExeSha256 = "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0";
+    const std::string sha = Sha256FileHex(exe);
+    if (sha != kSupportedExeSha256) {
+        ETH_WARN("HL keyboard hook refused: %s SHA-256 %s (expected %s)", exe,
+                 sha.empty() ? "<unreadable>" : sha.c_str(), kSupportedExeSha256);
+        return false;
+    }
+    // Supported image: keyboard.cfm's DirectInput keyboard poll. Not a generic
+    // COM/device hook; refuse any foreign patch before installing the detour.
+    const uintptr_t target = game::A(0x4427A0);
+    uint8_t bytes[13]{};
+    uint8_t expected[13] = { 0xa1, 0x14, 0x92, 0x52, 0x00, 0x53, 0x56, 0x8b, 0xf1, 0x80, 0x78, 0x0d, 0x01 };
+    const uint32_t global = (uint32_t)game::A(0x529214);
+    memcpy(expected + 1, &global, sizeof(global));
+    if (!SafeReadBytes(target, bytes, sizeof(bytes)) || memcmp(bytes, expected, sizeof(bytes)) != 0) {
+        ETH_WARN("HL keyboard poll fingerprint mismatch; native movement keys not owned"); return false;
+    }
+    MH_STATUS status = MH_CreateHook((void*)target, (void*)&KeyboardTickDetour, (void**)&g_keyboardTickOrig);
+    if (status != MH_OK) {
+        ETH_WARN("HL keyboard hook create failed at %p: %s", (void*)target, MH_StatusToString(status));
+        return false;
+    }
+    status = MH_EnableHook((void*)target);
+    if (status != MH_OK) {
+        ETH_WARN("HL keyboard hook enable failed at %p: %s", (void*)target, MH_StatusToString(status));
+        MH_RemoveHook((void*)target); g_keyboardTickOrig = nullptr; return false;
+    }
+    g_keyboardTickHooked = true;
+    ETH_INFO("HL opt-in WASD filter installed at %p (one-tick exact-Ninja lease)", (void*)target);
+    return true;
+}
+
 void Shutdown()
 {
+    input::LeaseMovementKeys(0, false);
+    input::EndNativeTick();
     patch::runtime::Shutdown();
     if (g_hookedHwnd && g_oldWndProc) {
         SetWindowLongPtrA(g_hookedHwnd, GWLP_WNDPROC, (LONG_PTR)g_oldWndProc);
@@ -330,6 +389,7 @@ void Shutdown()
         g_mhInit = false;
     }
     g_tickHooked = g_d3dHooked = false;
+    g_keyboardTickHooked = false; g_keyboardTickOrig = nullptr;
     ClearTickCallbacks();
 }
 

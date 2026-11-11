@@ -56,6 +56,9 @@ ImU32 StatusColor(const mods::ModInfo& m)
 
 void PageTitle(const char* title, const char* subtitle)
 {
+    ImGui::PushFont(FontSmall());
+    ImGui::TextColored(ImGui::ColorConvertU32ToFloat4(ui::Accent()), "WORKSPACE  /  I-NINJA");
+    ImGui::PopFont();
     ImGui::PushFont(FontTitle());
     ImGui::TextUnformatted(title);
     ImGui::PopFont();
@@ -65,6 +68,19 @@ void PageTitle(const char* title, const char* subtitle)
         ImGui::PopStyleColor();
     }
     ImGui::Dummy(ImVec2(0, 8 * ui::Scale()));
+}
+
+void Metric(const char* label, const char* value, const char* hint)
+{
+    ImGui::PushID(label);
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(24,32,34,255));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(14*ui::Scale(),12*ui::Scale()));
+    ImGui::BeginChild("##metric", ImVec2(0,89*ui::Scale()), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysUseWindowPadding,
+        ImGuiWindowFlags_NoScrollbar);
+    ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s", label); ImGui::PopFont();
+    ImGui::PushFont(FontBold()); ImGui::TextUnformatted(value); ImGui::PopFont();
+    ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s",hint); ImGui::PopFont();
+    ImGui::EndChild(); ImGui::PopStyleVar(); ImGui::PopStyleColor(); ImGui::PopID();
 }
 
 void ErrorBanner(const char* text)
@@ -81,23 +97,25 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
 {
     ImGui::PushID(m.id.c_str());
     const float s = ui::Scale();
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(25, 28, 35, 255));
-    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 8.0f * s);
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(23, 30, 32, 255));
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f * s);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(18.0f * s, 16.0f * s));
     // Content-sized cards: long descriptions and loader errors stay readable.
-    if (ImGui::BeginChild("##card", ImVec2(0, 0), ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeY,
+    if (ImGui::BeginChild("##card", ImVec2(0, 0), ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
                           ImGuiWindowFlags_NoScrollbar)) {
         if (ImGui::BeginTable("##layout", 2, ImGuiTableFlags_SizingStretchProp)) {
             ImGui::TableSetupColumn("Details", ImGuiTableColumnFlags_WidthStretch);
             ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthFixed, 100.0f * s);
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
+            ImGui::PushFont(FontSmall());
+            Badge(TypeBadge(m),TypeBadgeColor(m));
+            ImGui::SameLine(); ImGui::TextDisabled("%s", m.id.c_str());
+            ImGui::PopFont();
             ImGui::PushFont(FontBold());
             ImGui::TextWrapped("%s", m.name.c_str());
             ImGui::PopFont();
             ImGui::PushFont(FontSmall());
-            Badge(TypeBadge(m), TypeBadgeColor(m));
-            ImGui::SameLine();
             ImGui::TextDisabled("v%s", m.version.c_str());
             if (!m.author.empty()) {
                 ImGui::SameLine();
@@ -105,7 +123,7 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
             }
             ImGui::PopFont();
             ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_TextDisabled));
-            ImGui::TextWrapped("%s", m.description.empty() ? "No description." : m.description.c_str());
+            ImGui::TextWrapped("%s", m.description.empty() ? "No description provided." : m.description.c_str());
             ImGui::PopStyleColor();
             ImGui::PushFont(FontSmall());
             ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(StatusColor(m)));
@@ -118,7 +136,7 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
                 mods::ModManager::Get().SetEnabled(m.id, enabled);
             if (ImGui::IsItemHovered()) ImGui::SetTooltip("%s %s", enabled ? "Disable" : "Enable", m.name.c_str());
             ImGui::PushFont(FontSmall());
-            ImGui::TextDisabled(enabled ? "Enabled" : "Disabled");
+            ImGui::TextDisabled(enabled ? "ON NEXT START" : "NOT SELECTED");
             ImGui::PopFont();
             if (!launcherMode && m.IsLua() && ImGui::SmallButton("Reload"))
                 mods::ModManager::Get().ReloadLua(m.id);
@@ -133,13 +151,24 @@ void DrawModCard(mods::ModInfo& m, bool launcherMode)
 
 void DrawModsPage(bool launcherMode)
 {
-    PageTitle("Your mods", launcherMode ? "Choose what loads when the game starts." :
+    // Scroll the complete library, not just a tiny card viewport below fixed
+    // metrics. Tall error cards stay reachable on small displays/high DPI.
+    ImGui::BeginChild("##modlist", ImVec2(0, 0), false);
+    PageTitle("Mod library", launcherMode ? "Build your loadout. Changes take effect when you start playing." :
               "Manage this session. C# mods first enabled in-game need a restart.");
 
     auto& mgr = mods::ModManager::Get();
     auto& list = mgr.List();
 
     const float s = ui::Scale();
+    if (ImGui::BeginTable("##library_metrics",3,ImGuiTableFlags_SizingStretchSame)) {
+        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        Metric("INSTALLED",Format("%zu mods",list.size()).c_str(),"Lua + managed C#");
+        ImGui::TableNextColumn(); Metric("SELECTED",Format("%zu enabled",mgr.CountEnabled()).c_str(),"Your current loadout");
+        ImGui::TableNextColumn(); Metric("RUNTIME",launcherMode ? "Pre-game" : "In session",launcherMode ? "Ready when you are" : "F9 to return to play");
+        ImGui::EndTable();
+    }
+    ImGui::Dummy(ImVec2(0,4*s));
     if (ImGui::BeginTable("##mod_toolbar", 2, ImGuiTableFlags_SizingStretchProp)) {
         ImGui::TableSetupColumn("Search", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Actions", ImGuiTableColumnFlags_WidthFixed, (launcherMode ? 216.0f : 132.0f) * s);
@@ -169,10 +198,10 @@ void DrawModsPage(bool launcherMode)
         ImGui::TextUnformatted(GetModsDir().c_str());
         if (ui::AccentButton("Open mods folder", ImVec2(190 * ui::Scale(), 0)))
             mgr.OpenModsFolder();
+        ImGui::EndChild();
         return;
     }
 
-    ImGui::BeginChild("##modlist", ImVec2(0, 0), false);
     std::string filter = ToLower(g_modFilter);
     size_t shown = 0;
     for (auto& m : list) {
@@ -210,9 +239,8 @@ void DrawSettingsPage()
     ImGui::BeginChild("##settings2", ImVec2(0, 0), false);
 
     SectionHeader("OVERLAY", "How the in-game menu behaves");
-    bool watermark = cfg.GetBool("core", "watermark", true);
-    if (ui::ToggleSwitch("##watermark", &watermark)) { cfg.SetBool("core", "watermark", watermark); changed = true; }
-    ImGui::SameLine(); ImGui::TextUnformatted("Always-on EthhhSDK watermark");
+    Badge("ETHHHSDK",ui::Accent()); ImGui::SameLine();
+    ImGui::TextUnformatted("Watermark is always visible during gameplay");
 
     bool pause = cfg.GetBool("core", "pause_on_overlay", true);
     if (ui::ToggleSwitch("##pause", &pause)) { cfg.SetBool("core", "pause_on_overlay", pause); changed = true; }
@@ -733,42 +761,18 @@ void DrawAboutPage()
 
 void DrawPatchPage(bool launcherMode)
 {
-    PageTitle("EthhhPatch", "Experimental resolution, widescreen and high-refresh patch with fixed-60-Hz simulation.");
+    PageTitle("EthhhPatch", "A smoother I-Ninja. Display, free-look camera and render-only animation blending.");
 #ifdef ETH_TESTING
     if (patch::HasPreviewStatus()) ImGui::TextWrapped("OFF-SCREEN FIXTURE: synthetic readings below, not live game FPS or an unlock.");
 #endif
     ImGui::BeginChild("##patch", ImVec2(0, 0), false);
     ImGui::PushTextWrapPos(0);
-    ImGui::TextWrapped("Experimental display application is opt-in. Saving a plan alone does not apply it; application uses exact mode checks, the game's Reset lifecycle, fixed-60 simulation and automatic rollback.");
     static patch::DisplayPlan plan = patch::LoadPlan();
     static std::string message;
+    auto& cfg=Config::Get();
     const auto monitor = patch::ReadMonitor(launcherMode ? GetActiveWindow() : (HWND)game::GameHwnd());
-    SectionHeader("DISPLAY PLAN", "Presets are future targets, not active display modes.");
-    if (ImGui::Button("1080p")) plan.width = 1920, plan.height = 1080;
-    ImGui::SameLine();
-    if (ImGui::Button("4K")) plan.width = 3840, plan.height = 2160;
-    ImGui::SameLine();
-    if (ImGui::Button("Monitor size") && monitor.width && monitor.height) plan.width = monitor.width, plan.height = monitor.height;
-    ImGui::SetNextItemWidth(180 * ui::Scale()); ImGui::InputInt("Width", &plan.width);
-    ImGui::SetNextItemWidth(180 * ui::Scale()); ImGui::InputInt("Height", &plan.height);
-    ImGui::SetNextItemWidth(180 * ui::Scale()); ImGui::InputInt("Render Hz (0 = monitor)", &plan.renderHz);
-    ImGui::Checkbox("Windowed target", &plan.windowed);
-    ImGui::Checkbox("Per-render mouse look outside HL mode", &plan.mouseLook);
-    if (monitor.hz) ImGui::TextDisabled("OS monitor: %dx%d @ %d Hz (not measured game FPS)", monitor.width, monitor.height, monitor.hz);
-    else ImGui::TextDisabled("Monitor refresh unknown; no assumed 60-Hz fallback.");
-    const bool valid = patch::ValidPlan(plan);
-    if (valid) {
-        const int target = patch::TargetRenderHz(plan, monitor.hz);
-        ImGui::Text("Target aspect %.4f  |  %s render %s  |  simulation fixed 60 Hz", patch::Aspect(plan.width, plan.height),
-            plan.windowed ? "windowed" : "fullscreen", target ? Format("%d Hz", target).c_str() : "unknown");
-        ImGui::TextDisabled("World FOV preview: vertical 60 deg -> horizontal %.2f deg; CPU culling repair still required",
-            patch::HorizontalFov(60, patch::Aspect(plan.width, plan.height)));
-    } else ImGui::TextWrapped("Invalid plan: width 640..7680, height 480..4320, render Hz 0 or 30..360.");
-    ImGui::BeginDisabled(!valid);
-    if (ImGui::Button("Save future plan (not applied)")) message = patch::SavePlan(plan) ? "Plan saved. No runtime display/timing change." : "Plan could not be saved.";
-    ImGui::EndDisabled();
-    if (!message.empty()) ImGui::TextWrapped("%s", message.c_str());
     const auto apply = patch::runtime::ReadApplyStatus();
+    const auto status=patch::ReadStatus();
     const char* applyName = "Idle";
     switch (apply.state) {
     case patch::runtime::ApplyState::Applying: applyName = "Applying / waiting for Reset"; break;
@@ -778,72 +782,122 @@ void DrawPatchPage(bool launcherMode)
     case patch::runtime::ApplyState::Failed: applyName = "Failed"; break;
     default: break;
     }
-    ImGui::TextDisabled("Runtime implementation: compatibility hooks %s | transaction %s",
-        patch::runtime::HooksReady() ? "active/ready" : "lazy (installed only when applying)", applyName);
-    if (!apply.detail.empty()) ImGui::TextWrapped("%s", apply.detail.c_str());
-    static bool acknowledgeExperimental = false;
-    ImGui::Checkbox("I understand this display patch is experimental", &acknowledgeExperimental);
-    const bool pending = apply.state == patch::runtime::ApplyState::Applying || apply.state == patch::runtime::ApplyState::RollingBack;
-    ImGui::BeginDisabled(launcherMode || !valid || !acknowledgeExperimental || pending || apply.state == patch::runtime::ApplyState::Active);
-    if (ImGui::Button("Apply experimental patch")) {
-        std::string error;
-        if (!patch::SavePlan(plan)) message = "Plan save failed; display was not changed.";
-        else if (patch::runtime::RequestDisplayPlan(plan, monitor.hz, error)) message = "Display transaction requested; waiting for exact Reset verification.";
-        else message = "Apply refused: " + error;
+    if (ImGui::BeginTable("##patch_metrics",3,ImGuiTableFlags_SizingStretchSame)) {
+        ImGui::TableNextRow(); ImGui::TableNextColumn(); Metric("TRANSACTION",applyName,"Opt-in + reversible");
+        ImGui::TableNextColumn(); Metric("GAME RENDER",status.sampled ? Format("%.0f FPS",status.gamePresentsPerSecond).c_str() : "Waiting","Measured game presents");
+        ImGui::TableNextColumn(); Metric("SIMULATION",status.sampled ? Format("%.0f Hz",status.activeTicksPerSecond).c_str() : "60 Hz target","No extra animation ticks");
+        ImGui::EndTable();
     }
-    ImGui::EndDisabled();
-    ImGui::SameLine();
-    ImGui::BeginDisabled(launcherMode || apply.state != patch::runtime::ApplyState::Active);
-    if (ImGui::Button("Restore previous display")) {
-        std::string error;
-        message = patch::runtime::RequestRestore(error) ? "Restore requested." : "Restore refused: " + error;
+    if (!apply.detail.empty()) ImGui::TextWrapped("%s",apply.detail.c_str());
+    if (ImGui::BeginTabBar("##patch_tabs")) {
+        if (ImGui::BeginTabItem("Display")) {
+            SectionHeader("BUILD A DISPLAY PLAN","Saving is harmless. Apply changes the display only after an explicit acknowledgement.");
+            if (ImGui::Button("1080p")) plan.width=1920,plan.height=1080;
+            ImGui::SameLine(); if (ImGui::Button("4K")) plan.width=3840,plan.height=2160;
+            ImGui::SameLine(); if (ImGui::Button("Monitor size") && monitor.width && monitor.height) plan.width=monitor.width,plan.height=monitor.height;
+            ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Width",&plan.width);
+            ImGui::SameLine(); ImGui::SetNextItemWidth(140*ui::Scale()); ImGui::InputInt("Height",&plan.height);
+            ImGui::SetNextItemWidth(180*ui::Scale()); ImGui::InputInt("Render Hz (0 = monitor)",&plan.renderHz);
+            ImGui::Checkbox("Windowed target",&plan.windowed);
+            if (monitor.hz) ImGui::TextWrapped("OS monitor: %dx%d @ %d Hz. This is not measured game FPS.",monitor.width,monitor.height,monitor.hz);
+            else ImGui::TextWrapped("Monitor refresh unknown. No assumed fallback.");
+            const bool valid=patch::ValidPlan(plan);
+            if (valid) ImGui::TextWrapped("Target aspect %.4f. Simulation remains fixed at 60 Hz.",patch::Aspect(plan.width,plan.height));
+            else ImGui::TextWrapped("Invalid plan: width 640..7680, height 480..4320, render Hz 0 or 30..360.");
+            ImGui::BeginDisabled(!valid);
+            if (ui::GhostButton("Save future plan (not applied)")) message=patch::SavePlan(plan) ? "Plan saved. No runtime display change." : "Plan could not be saved.";
+            ImGui::EndDisabled();
+            Divider(4);
+            static bool acknowledgeExperimental=false;
+            ImGui::Checkbox("I understand this display patch is experimental",&acknowledgeExperimental);
+            const bool pending=apply.state==patch::runtime::ApplyState::Applying || apply.state==patch::runtime::ApplyState::RollingBack;
+            ImGui::BeginDisabled(launcherMode || !valid || !acknowledgeExperimental || pending || apply.state==patch::runtime::ApplyState::Active);
+            if (ui::AccentButton("Apply experimental patch")) {
+                std::string error;
+                if (!patch::SavePlan(plan)) message="Plan save failed; display was not changed.";
+                else if (patch::runtime::RequestDisplayPlan(plan, monitor.hz, error)) message="Waiting for exact Reset verification.";
+                else message="Apply refused: "+error;
+            }
+            ImGui::EndDisabled();
+            ImGui::SameLine(); ImGui::BeginDisabled(launcherMode || apply.state!=patch::runtime::ApplyState::Active);
+            if (ui::GhostButton("Restore previous display")) {
+                std::string error; message=patch::runtime::RequestRestore(error) ? "Restore requested." : "Restore refused: "+error;
+            }
+            ImGui::EndDisabled();
+            if (launcherMode) ImGui::TextWrapped("Start the game manually, then open F9 to apply or restore.");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Camera")) {
+            SectionHeader("FREE-LOOK ORBIT","Move the mouse to look around Ninja. Scroll the wheel to zoom.");
+            if (ImGui::Checkbox("Third-person mouse orbit outside HL mode",&plan.mouseLook)) {
+                patch::SavePlan(plan);
+                if (!launcherMode && patch::runtime::Active()) patch::runtime::SetOrbitEnabled(plan.mouseLook);
+            }
+            float sensitivity=cfg.GetFloat("ethhhpatch","orbit_sensitivity",1);
+            bool invert=cfg.GetBool("ethhhpatch","orbit_invert_y",false);
+            bool changed=false;
+            ImGui::SetNextItemWidth(210*ui::Scale());
+            changed|=ImGui::SliderFloat("Sensitivity",&sensitivity,.05f,5,"%.2fx");
+            changed|=ImGui::Checkbox("Invert vertical look",&invert);
+            if (changed) {
+                patch::runtime::SetOrbitTuning(sensitivity,invert);
+                cfg.SetFloat("ethhhpatch","orbit_sensitivity",sensitivity); cfg.SetBool("ethhhpatch","orbit_invert_y",invert); cfg.Save();
+            }
+            const auto orbit=patch::runtime::ReadOrbitTelemetry();
+            Divider(4); Badge(orbit.following ? "FOLLOWING" : "NATIVE CAMERA",ui::Accent());
+            ImGui::TextWrapped("%s",patch::runtime::OrbitStateName(orbit.state));
+            ImGui::TextWrapped("Mouse capture %s. Native distance %.2f / orbit %.2f units. Yaw %.1f / pitch %.1f degrees.",
+                orbit.capture ? "active" : "released",orbit.nativeDistance,orbit.orbitDistance,orbit.yawDegrees,orbit.pitchDegrees);
+            float distance=orbit.orbitDistance;
+            ImGui::BeginDisabled(!orbit.following); ImGui::SetNextItemWidth(210*ui::Scale());
+            if (ImGui::SliderFloat("Orbit distance",&distance,2.5f,15,"%.1f units")) patch::runtime::SetOrbitDistance(distance);
+            ImGui::EndDisabled();
+            ImGui::BeginDisabled(launcherMode || !patch::runtime::Active() || !plan.mouseLook);
+            if (ui::GhostButton("Resume orbit after scripted camera")) patch::runtime::ResumeOrbit();
+            ImGui::EndDisabled();
+            ImGui::TextWrapped("Camera cuts and off-target pans yield to native framing with a temporary hold. Stable gameplay reacquires automatically. HL and movies always have priority.");
+            ImGui::TextWrapped("Cutscene detection is heuristic, not a verified game flag. If a cinematic looks wrong, disable orbit. Live cutscene validation is still required.");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Animation")) {
+            SectionHeader("ENTITY POSE INTERPOLATION","Smooth rendered motion between completed simulation poses, including bone rotation.");
+            bool enabled=cfg.GetBool("ethhhpatch","entity_interpolation",true);
+            if (ui::ToggleSwitch("##entity_interpolation",&enabled)) {
+                cfg.SetBool("ethhhpatch","entity_interpolation",enabled); cfg.Save(); patch::runtime::SetEntityInterpolationEnabled(enabled);
+            }
+            ImGui::SameLine(); ImGui::TextUnformatted("Render-only entity animation blending");
+            const auto animation=patch::runtime::ReadEntityTelemetry();
+            Divider(4);
+            ImGui::TextWrapped("%zu entities sampled / %zu continuous pose pairs",animation.sampled,animation.paired);
+            ImGui::TextWrapped("%llu interpolated submissions / %llu native fallbacks",
+                (unsigned long long)animation.interpolatedSubmissions,(unsigned long long)animation.nativeSubmissions);
+            ImGui::TextWrapped("Requires the active high-refresh display patch. Native scripts, collision and animation still run only at the game's fixed tick rate.");
+            ImGui::BulletText("Quaternion rotation blending preserves bone scale and reflection.");
+            ImGui::BulletText("SDK-owned matrices are passed only to the renderer. Native bone and root memory is never overwritten.");
+            ImGui::BulletText("New entities, teleports, changed owners, unsupported matrices and invalid bounds use native poses.");
+            ImGui::TextWrapped("Current scope is the verified owner-aware mesh renderer. Custom deformers, particles and other unverified animation paths are not claimed as interpolated.");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Diagnostics")) {
+            SectionHeader("LIVE ENGINE OBSERVATIONS","Actual game presents and active simulation ticks. Movies are counted separately.");
+            if (!status.sampled) ImGui::TextWrapped("Waiting for fresh game timing samples.");
+            else {
+                ImGui::TextWrapped("Game %.2f presents/s / %.2f active ticks/s / simulation %.5f seconds per wall second.",
+                    status.gamePresentsPerSecond,status.activeTicksPerSecond,status.simulationSecondsPerSecond);
+                ImGui::TextWrapped("Backbuffer %ux%u / viewport %ux%u / %s",status.width,status.height,status.viewportWidth,status.viewportHeight,status.windowed ? "windowed" : "fullscreen");
+            }
+            ImGui::TextWrapped("Cadence: %llu zero-tick frames / %llu repeated presents / %llu catch-up frames",
+                (unsigned long long)status.cadence.zeroTickFrames,(unsigned long long)status.cadence.repeatedFramePresents,(unsigned long long)status.cadence.catchupFrames);
+            ImGui::TextWrapped("Reset: %llu succeeded / %llu failed / HRESULT 0x%08X",
+                (unsigned long long)status.resetSuccesses,(unsigned long long)status.resetFailures,(unsigned)status.lastResetHresult);
+            ImGui::TextWrapped("Movie presents %llu / failed presents %llu",(unsigned long long)status.moviePresents,(unsigned long long)status.failedPresents);
+            if (status.projectionValid) ImGui::TextWrapped("World projection: aspect %.6f / vertical FOV %.2f / horizontal FOV %.2f degrees",status.projection.aspect,status.projection.verticalFovDegrees,status.projection.horizontalFovDegrees);
+            ImGui::TextWrapped("Hooks %s. Exact Reset verification and rollback gate activation. Extra renders never call a simulation or animation update.",patch::runtime::HooksReady() ? "ready" : "inactive");
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
     }
-    ImGui::EndDisabled();
-    if (launcherMode) ImGui::TextDisabled("Start the game, then use F9 to apply or restore on the render thread.");
-    Divider();
-    SectionHeader("LIVE OBSERVATIONS", "Successful game Present calls, not ImGui FPS. Movies are counted separately.");
-    const auto status = patch::ReadStatus();
-    if (launcherMode || !status.sampled) ImGui::TextWrapped("Waiting for game presentation samples. This page never starts, resets or resizes the game.");
-    else {
-        ImGui::Text("Game presents %.2f/s  |  tick calls %.2f/s  |  active ticks %.2f/s",
-            status.gamePresentsPerSecond, status.tickCallsPerSecond, status.activeTicksPerSecond);
-        ImGui::Text("Simulation advance %.5f game seconds / wall second (pause and time-scale aware)", status.simulationSecondsPerSecond);
-        ImGui::Text("Backbuffer %ux%u  |  viewport %ux%u  |  %s", status.width, status.height,
-            status.viewportWidth, status.viewportHeight, status.windowed ? "windowed" : "fullscreen");
-        ImGui::TextDisabled("PresentationInterval %08X  fullscreen refresh %u  engine aspect %.6f",
-            status.presentInterval, status.fullscreenHz, status.engineAspect);
-    }
-    ImGui::TextDisabled("Failed presents %llu  |  movie presents %llu", (unsigned long long)status.failedPresents, (unsigned long long)status.moviePresents);
-    ImGui::TextDisabled("Cadence: %llu zero-tick engine frames, %llu repeated-frame presents, %llu catch-up frames (since Reset)",
-        (unsigned long long)status.cadence.zeroTickFrames, (unsigned long long)status.cadence.repeatedFramePresents,
-        (unsigned long long)status.cadence.catchupFrames);
-    ImGui::TextDisabled("Device Reset: %llu attempts, %llu succeeded, %llu failed; last HRESULT 0x%08X",
-        (unsigned long long)status.resetAttempts, (unsigned long long)status.resetSuccesses,
-        (unsigned long long)status.resetFailures, (unsigned)status.lastResetHresult);
-    if (status.lastResetParametersValid)
-        ImGui::TextDisabled("Last Reset request: %ux%u, %s, refresh %u, interval 0x%08X",
-            status.resetWidth, status.resetHeight, status.resetWindowed ? "windowed" : "fullscreen",
-            status.resetFullscreenHz, status.resetInterval);
-    if (!status.sampled && status.observationAgeSeconds >= 0)
-        ImGui::TextDisabled("Last timing sample is %.1f seconds old; stale rates are not shown as live FPS.", status.observationAgeSeconds);
-    if (status.projectionValid && !launcherMode) {
-        const auto& projection = status.projection;
-        ImGui::Text("Submitted world projection: aspect %.6f  |  vertical FOV %.2f deg  |  horizontal %.2f deg",
-            projection.aspect, projection.verticalFovDegrees, projection.horizontalFovDegrees);
-        ImGui::TextDisabled("Near %.5f  far %.2f (float estimate)  |  %llu checked submissions",
-            projection.nearPlane, projection.farPlane, (unsigned long long)status.projectionSamples);
-        ImGui::TextDisabled("Matrix/source errors: aspect %.8f, vertical FOV %.6f deg (non-atomic reads)",
-            status.projectionAspectError, status.projectionFovErrorDegrees);
-        if (status.width && status.height && std::abs(projection.aspect - patch::Aspect(status.width, status.height)) > 0.01)
-            ImGui::TextWrapped("Warning: world projection aspect differs from the backbuffer. This is diagnostic evidence, not an applied widescreen repair.");
-    } else ImGui::TextDisabled("Waiting for a checked world-perspective submission (not HUD or ImGui matrices).");
-    Divider();
-    SectionHeader("SAFETY GATES", nullptr);
-    ImGui::BulletText("No timer/limiter edits: App_Run currently waits for >= 1 tick before rendering.");
-    ImGui::BulletText("No automatic native calls for Ninja root/model/collision refresh.");
-    ImGui::BulletText("No display writes or forced device Reset; 1080p/4K are not claimed as working yet.");
-    ImGui::BulletText("One CPU culler ignores aspect; changing only projection can clip edge objects.");
-    ImGui::BulletText("A render-path HUD pulse adds 0.1 per call; more renders could accelerate it.");
+    if (!message.empty()) ImGui::TextWrapped("%s",message.c_str());
     ImGui::PopTextWrapPos();
     ImGui::EndChild();
 }
@@ -882,22 +936,25 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
             g_page = (Page)last;
     }
 
-    ImGui::BeginChild("##sidebar", ImVec2(width, 0), false);
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(19,26,28,255));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(16*ui::Scale(),20*ui::Scale()));
+    ImGui::BeginChild("##sidebar", ImVec2(width, 0), ImGuiChildFlags_AlwaysUseWindowPadding);
+    ImGui::PopStyleVar(); ImGui::PopStyleColor();
 
     ImGui::PushFont(FontSmall());
-    ImGui::TextDisabled(launcherMode ? "BEFORE YOU PLAY" : "THIS SESSION");
+    ImGui::TextDisabled(launcherMode ? "YOUR WORKSPACE" : "SESSION TOOLS");
     ImGui::PopFont();
     ImGui::Dummy(ImVec2(0, 6 * ui::Scale()));
 
     struct Item { Page page; const char* label; const char* hint; };
     Item items[] = {
-        { Page::Mods, "Mods", "" },
-        { Page::Interfaces, "Mod interfaces", "" },
-        { Page::Inspector, "Inspector", "" },
-        { Page::Settings, "Settings", "" },
-        { Page::Console, "Console", "" },
-        { Page::About, "About", "" },
-        { Page::Patch, "EthhhPatch", "" },
+        { Page::Mods, "Mod library", "01" },
+        { Page::Interfaces, "Live interfaces", "02" },
+        { Page::Patch, "EthhhPatch", "03" },
+        { Page::Inspector, "Inspector", "04" },
+        { Page::Console, "Console", "05" },
+        { Page::Settings, "Preferences", "06" },
+        { Page::About, "About", "07" },
     };
     for (const auto& it : items) {
         if (launcherMode && (it.page == Page::Interfaces || it.page == Page::Inspector))
@@ -924,13 +981,13 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
         }
         ImGui::Dummy(ImVec2(0, 2 * ui::Scale()));
         ImGui::PushFont(FontSmall());
-        ImGui::TextDisabled("Enter to start");
+        ImGui::TextDisabled("ENTER  start  /  ESC  exit");
         ImGui::PopFont();
     } else {
         ImGui::Separator();
         ImGui::PushFont(FontSmall());
         ImGui::TextDisabled("%s closes the manager", input::KeyName(overlay::ToggleKey()));
-        ImGui::TextDisabled("%.0f FPS  /  tick %u", ImGui::GetIO().Framerate, game::TickCount());
+        ImGui::TextDisabled("Lua + C# mod platform");
         ImGui::PopFont();
     }
 
@@ -939,7 +996,9 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
 
 void DrawContent(const ImVec2& avail, bool launcherMode, Page page)
 {
-    ImGui::BeginChild("##content", avail, false);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(26*ui::Scale(),22*ui::Scale()));
+    ImGui::BeginChild("##content", avail, ImGuiChildFlags_AlwaysUseWindowPadding);
+    ImGui::PopStyleVar();
     switch (page) {
     case Page::Mods:       DrawModsPage(launcherMode); break;
     case Page::Interfaces: if (launcherMode) DrawModsPage(true); else DrawInterfacesPage(); break;
@@ -953,19 +1012,31 @@ void DrawContent(const ImVec2& avail, bool launcherMode, Page page)
     ImGui::EndChild();
 }
 
+void DrawManagerLayout(bool launcherMode, bool* startGame, bool* exitApp)
+{
+    const float s=ui::Scale(), footer=38*s;
+    const ImVec2 avail=ImGui::GetContentRegionAvail();
+    const float width=(std::min)(220*s,avail.x*.30f);
+    ImGui::BeginChild("##workspace",ImVec2(0,(std::max)(1.0f,avail.y-footer-ImGui::GetStyle().ItemSpacing.y)),false,ImGuiWindowFlags_NoScrollbar);
+    DrawSidebar(width,launcherMode,startGame,exitApp);
+    ImGui::SameLine(0,0);
+    DrawContent(ImGui::GetContentRegionAvail(),launcherMode,CurrentPage());
+    ImGui::EndChild();
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(20*s,7*s));
+    ImGui::BeginChild("##status",ImVec2(0,footer),ImGuiChildFlags_AlwaysUseWindowPadding,ImGuiWindowFlags_NoScrollbar);
+    DrawStatusStrip(); ImGui::EndChild(); ImGui::PopStyleVar();
+}
+
 // ---------------------------------------------------------------------------
 void DrawWatermark()
 {
     auto& cfg = Config::Get();
-    if (!cfg.GetBool("core", "watermark", true))
-        return;
-
     ImGuiIO& io = ImGui::GetIO();
-    int detail = cfg.GetInt("core", "watermark_detail", 1);
-    int pos = cfg.GetInt("core", "watermark_pos", 0);
+    int detail = std::clamp(cfg.GetInt("core", "watermark_detail", 1),0,2);
+    int pos = std::clamp(cfg.GetInt("core", "watermark_pos", 0),0,3);
     float margin = 12.0f * ui::Scale();
 
-    ImGui::SetNextWindowBgAlpha(0.80f);
+    ImGui::SetNextWindowBgAlpha(0.88f);
     ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs |
                              ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
                              ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav |
@@ -975,8 +1046,8 @@ void DrawWatermark()
                                    pos < 2 ? margin : io.DisplaySize.y - margin),
                             ImGuiCond_Always, ImVec2(pos == 0 || pos == 2 ? 0.0f : 1.0f,
                                                      pos < 2 ? 0.0f : 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.035f, 0.045f, 0.06f, 0.55f));
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.17f, 0.21f, 0.28f, 0.9f));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(17,25,27,255));
+    ImGui::PushStyleColor(ImGuiCol_Border, ui::AccentDim(.3f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10.0f * ui::Scale(), 7.0f * ui::Scale()));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 7.0f * ui::Scale());
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
@@ -987,20 +1058,18 @@ void DrawWatermark()
     ImGui::PopFont();
     ImGui::SameLine();
     ImGui::PushFont(FontSmall());
-    ImGui::TextDisabled("v%s", kVersion);
+    ImGui::TextDisabled("/  I-NINJA");
 
     if (detail >= 1) {
-        ImGui::Text("FPS %.0f   tick %u   frame %u", io.Framerate, game::TickCount(), game::FrameCount());
-        ImGui::TextDisabled("time %.2fs   scale %.2fx", game::GameTime(), game::TimeScale());
         const auto rates = patch::ReadStatus();
-        if (rates.sampled) ImGui::TextDisabled("game %.1f presents/s   sim %.1f active ticks/s", rates.gamePresentsPerSecond, rates.activeTicksPerSecond);
+        if (rates.sampled) ImGui::TextDisabled("%.0f game FPS  /  %.0f sim Hz", rates.gamePresentsPerSecond, rates.activeTicksPerSecond);
+        else ImGui::TextDisabled("F9 workspace  /  fixed-tick engine");
     }
     if (detail >= 2) {
         game::CameraView cam;
         if (game::ReadCamera(cam)) {
             ImGui::TextDisabled("cam %.1f %.1f %.1f", cam.x, cam.y, cam.z);
-            ImGui::TextDisabled("fov %.1f deg   strats %zu", cam.fov * 180.0f / 3.14159265358979f,
-                                game::CountStrats());
+            ImGui::TextDisabled("fov %.1f deg", cam.fov * 180.0f / 3.14159265358979f);
         } else {
             ImGui::TextDisabled("cam: waiting for level");
         }

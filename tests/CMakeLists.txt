@@ -17,13 +17,21 @@ set_target_properties(eth_player_learning_tests PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
   RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
 
-foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection)
+foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection ethhhpatch_camera ethhhpatch_interpolation ethhhpatch_entity movement_input)
   if(name STREQUAL "strat_identity")
     set(test_source StratIdentityTests.cpp)
   elseif(name STREQUAL "ethhhpatch_policy")
     set(test_source EthhhPatchPolicyTests.cpp)
-  else()
+  elseif(name STREQUAL "ethhhpatch_projection")
     set(test_source EthhhPatchProjectionTests.cpp)
+  elseif(name STREQUAL "ethhhpatch_interpolation")
+    set(test_source EthhhPatchInterpolationTests.cpp)
+  elseif(name STREQUAL "ethhhpatch_entity")
+    set(test_source EthhhPatchEntityTests.cpp)
+  elseif(name STREQUAL "movement_input")
+    set(test_source MovementInputTests.cpp)
+  else()
+    set(test_source EthhhPatchCameraTests.cpp)
   endif()
   add_executable(eth_${name}_tests ${test_source})
   target_include_directories(eth_${name}_tests PRIVATE ${ETH_ROOT}/src/core)
@@ -31,6 +39,16 @@ foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection)
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
     RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
 endforeach()
+
+# Calls the production Sha256FileHex so the BCrypt object-length query stays
+# correct. An aliased property buffer silently returned an empty hash and made
+# the live WASD keyboard hook refuse to install.
+add_executable(eth_sha256_tests Sha256Tests.cpp ${ETH_ROOT}/src/core/util.cpp)
+target_include_directories(eth_sha256_tests PRIVATE ${ETH_ROOT}/src/core ${ETH_TP}/imgui)
+target_link_libraries(eth_sha256_tests PRIVATE bcrypt.lib user32.lib)
+set_target_properties(eth_sha256_tests PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
 
 # Runs the actual manager drawing code on an off-screen D3D9 render target.
 # The executable's main never invokes EntryGate, launcher::Run or hooks::Init.

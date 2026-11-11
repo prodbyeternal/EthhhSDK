@@ -58,7 +58,11 @@ namespace EthhhSDK
             fixed(float* a=Start) fixed(float* b=End) { a[0]=sx;a[1]=sy;a[2]=sz;b[0]=ex;b[1]=ey;b[2]=ez; }
         }
         public float StartX { get { fixed(float* p=Start) return p[0]; } }
+        public float StartY { get { fixed(float* p=Start) return p[1]; } }
         public float StartZ { get { fixed(float* p=Start) return p[2]; } }
+        public float EndX { get { fixed(float* p=End) return p[0]; } }
+        public float EndY { get { fixed(float* p=End) return p[1]; } }
+        public float EndZ { get { fixed(float* p=End) return p[2]; } }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -201,6 +205,8 @@ namespace EthhhSDK
         // ----------------------------------------------------------------- input
         [DllImport(Dll, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         internal static extern int EthInput_KeyDown(int vk);
+        [DllImport(Dll, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        internal static extern int EthInput_LeaseMovementKeys(uint player, int enabled);
         [DllImport(Dll, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         internal static extern int EthInput_KeyPressed(int vk);
         [DllImport(Dll, CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]

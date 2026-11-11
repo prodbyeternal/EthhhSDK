@@ -1,0 +1,78 @@
+{
+  "profile": "Release Win32",
+  "status": "installed; live acceptance pending",
+  "installed_at": "2026-11-11T06:42:02+01:00",
+  "installed_by_assistant": true,
+  "installation_authorized_after_manual_closure_confirmation": true,
+  "game_launched_or_controlled": false,
+  "installer": "install.ps1 without -Force",
+  "staging_root": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist",
+  "game_root": "C:\\Users\\Administrator\\Desktop\\ininja",
+  "backup": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\_backup\\20261111-064203",
+  "pre_install_baseline": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-install-baseline-20261111-064151.json",
+  "pre_install_baseline_sha256": "f5a4172ac4e73c7de0643d3479b5d47fa9b527c3a20c78ca6c432848fcaddd71",
+  "install_log": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-install-20261111-064202.log",
+  "install_log_sha256": "17f4e46c7be52d5ca83ea3a74d9b8ea32df2d6c73d373b3e9802c803d9c6e478",
+  "verification": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-install-verification-20261111-064203.json",
+  "report": "deployment-hl-direction-2026-11-11-0642.md",
+  "prior_staged_manifest": "staged-hl-direction-artifacts-2026-11-11-0300.json",
+  "pre_install_observation": "Live core already matched staged d8dd2de319e71bf5c900fbddb131ea9ba687f6ee5f473f17d64c95dbace53ab3; managed host and HL mod were older. This install created the first fully matching set. The backup preserves the exact pre-install live files.",
+  "installed": [
+    {
+      "relative": "dinput8.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "changed_by_this_install": false
+    },
+    {
+      "relative": "EthhhSDK.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK.dll",
+      "bytes": 1256960,
+      "sha256": "d8dd2de319e71bf5c900fbddb131ea9ba687f6ee5f473f17d64c95dbace53ab3",
+      "changed_by_this_install": false
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "6044ff7a81f0bcdcfbd4fe35f396e538421780f4ced7265977e070755b72ade8",
+      "changed_by_this_install": true
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 34816,
+      "sha256": "073334faa78b45d26eaef7e1d5a8a2db862ac2d29d6fd23be19efecc3cd957d3",
+      "changed_by_this_install": true
+    }
+  ],
+  "live_manifest": {
+    "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\mod.json",
+    "sha256": "8c6487de965d1a50fcdc05dcdae421312eaf4edacf801a1e249e1428ee930d7c",
+    "unchanged": true
+  },
+  "verification_results": {
+    "expected_live_hashes_matched": 4,
+    "expected_live_hashes_total": 4,
+    "pre_install_backups_matched": 4,
+    "pre_install_backups_total": 4,
+    "non_deployed_baseline_files_unchanged": 63,
+    "non_deployed_baseline_files_total": 63,
+    "unexpected_changes": 0,
+    "game_processes_after_install": 0
+  },
+  "preserved_snapshot": {
+    "settings_files": [
+      "EthhhSDK\\config\\EthhhSDK.ini",
+      "EthhhSDK\\config\\mod_settings.ini",
+      "EthhhSDK\\config\\mods.ini"
+    ],
+    "settings_hash_scope": "All three live settings files were captured pre-install and verified byte-identical post-install.",
+    "user_reference": "C:\\Users\\Administrator\\Desktop\\ininja\\ininja-offsets.h",
+    "original_game_and_data_preserved": true,
+    "existing_mod_manifests_preserved": true,
+    "camera_defaults_eye_forward_hl_units": [69, 24]
+  },
+  "limitations": "Installed, not live accepted. No proof yet of correct camera-relative movement, traversal handoff, native animation, collision, cutscene preservation, high-refresh smoothness or lag elimination. Collision remains a segment-bundle approximation; native state flags and safe post-movement model refresh remain unverified. Final Valve agreement/attribution packaging remains pending."
+}

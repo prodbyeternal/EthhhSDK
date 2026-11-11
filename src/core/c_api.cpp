@@ -243,6 +243,7 @@ ETH_CAPI(unsigned int, EthMem_GameAddr, (unsigned int va)) { return (unsigned in
 //  Input / overlay
 // ---------------------------------------------------------------------------
 ETH_CAPI(int, EthInput_KeyDown, (int vk)) { return input::KeyDown(vk) ? 1 : 0; }
+ETH_CAPI(int, EthInput_LeaseMovementKeys, (unsigned int player, int enabled)) { return input::LeaseMovementKeys(player, enabled != 0) ? 1 : 0; }
 ETH_CAPI(int, EthInput_KeyPressed, (int vk)) { return input::KeyPressed(vk) ? 1 : 0; }
 ETH_CAPI(int, EthInput_MouseDown, (int button)) { return input::MouseDown(button) ? 1 : 0; }
 ETH_CAPI(void, EthInput_GetMouseDelta, (float* dx, float* dy))

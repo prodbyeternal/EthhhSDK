@@ -207,24 +207,10 @@ int Run()
             ImGui::EndFrame();
         } else {
             bool startRequested = false, exitRequested = !open;
-            float sidebarW = 196.0f * ui::Scale();
-            ImVec2 avail = ImGui::GetContentRegionAvail();
-            avail.y = ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - 54.0f * ui::Scale();
-
-            ui::pages::DrawSidebar(sidebarW, true, &startRequested, &exitRequested);
-
-            ImGui::SameLine();
-            ImVec2 contentAvail(ImGui::GetContentRegionAvail().x, avail.y);
-            ui::pages::DrawContent(contentAvail, true, ui::pages::CurrentPage());
-
-            // status strip at the bottom
-            ImGui::SetCursorPos(ImVec2(sidebarW, ImGui::GetWindowHeight() - 44.0f * ui::Scale()));
-            ImGui::BeginChild("##status", ImVec2(0, 40.0f * ui::Scale()), false);
-            ui::pages::DrawStatusStrip();
-            ImGui::EndChild();
+            ui::pages::DrawManagerLayout(true, &startRequested, &exitRequested);
 
             // Drag the borderless window by its custom header.
-            float headerH = 76.0f * ui::Scale();
+            float headerH = 64.0f * ui::Scale();
             ImVec2 mouse = io.MousePos;
             bool onHeader = mouse.y >= 0 && mouse.y < headerH && mouse.x >= 0 && mouse.x < io.DisplaySize.x;
             if (ImGui::IsMouseClicked(0) && onHeader && mouse.x < io.DisplaySize.x - 62.0f * ui::Scale()) {

@@ -12,9 +12,9 @@
 //      PM_PreventMegaBunnyJumping -> CapBunnySpeed
 //      PM_CheckVelocity     -> ClampVelocity
 //
-//  Collision (PM_FlyMove / PM_ClipVelocity) is intentionally *not* ported:
-//  no verified I-Ninja hull-trace adapter is available yet. Post-tick position
-//  writes are experimental and may bypass the game's collision corrections.
+//  No verified I-Ninja hull-trace adapter is available yet. HlCollision supplies
+//  bounded segment sweeps/sliding, not PM_FlyMove's native hull/start-solid
+//  contract. Post-tick position writes remain experimental.
 //  This mod supplies the HL acceleration/friction/gravity/jump model and
 //  writes the resulting displacement after the game's scripts have run.
 //
@@ -40,9 +40,9 @@ namespace HalfLifeMovement
         public float AirWishSpeedCap = 30.0f;
 
         /// <summary>
-        /// Vertical speed (units/second) the *game* must produce before we stop
-        /// treating the player as standing on ground (stairs are below this,
-        /// jumps and falls are above it).
+        /// Downward native speed cutoff near support (HL units/second).
+        /// Kept under the existing setting name for configuration compatibility.
+        /// Rising native takeoffs are handled independently and have priority.
         /// </summary>
         public float GameVerticalThreshold = 180.0f;
     }
@@ -159,8 +159,19 @@ namespace HalfLifeMovement
 
     internal static class HlJump
     {
+        // Runtime integration has no takeoff-height clamp: land on a queried
+        // surface, including one below takeoff, not on an imaginary floor.
+        public static float Integrate(ref float velocity, float gravity, float dt)
+        {
+            velocity -= gravity * dt * 0.5f;
+            float displacement = velocity * dt;
+            velocity -= gravity * dt * 0.5f;
+            return displacement;
+        }
+
         // HLSDK half-gravity before and after movement. Height is an offset
-        // from takeoff, never an offset added to last tick's written position.
+        // from takeoff. Kept for the standalone math/reference comparison only;
+        // the live adapter uses Integrate and collision-driven landing.
         public static void Step(ref float height, ref float velocity, float gravity, float dt)
         {
             velocity -= gravity * dt * 0.5f;

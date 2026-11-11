@@ -237,6 +237,10 @@ namespace EthhhSDK
     public static class Input
     {
         public static bool KeyDown(int vk) => Native.EthInput_KeyDown(vk) != 0;
+        /// <summary>Experimental manual exact-Ninja native WASD filter for ONE upcoming tick.
+        /// Renew after each successful movement callback; Ctrl/F9/focus loss bypass it.
+        /// Other keys, native corrections, mouse and gamepad are not filtered.</summary>
+        public static bool LeaseMovementKeys(uint player, bool enabled) => Native.EthInput_LeaseMovementKeys(player, enabled ? 1 : 0) != 0;
         public static bool KeyPressed(int vk) => Native.EthInput_KeyPressed(vk) != 0;
         public static bool MouseDown(int button = 0) => Native.EthInput_MouseDown(button) != 0;
 

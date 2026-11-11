@@ -16,8 +16,8 @@
 //
 //  IMPORTANT
 //    * The default mod jump key is V, NOT Space: I-Ninja's own jump usually
-//      listens to Space and would add a second jump impulse. Rebind in the UI
-//      if your keyboard layout / game config uses something else.
+//      listens to Space. Native takeoffs have priority; use a separate key for
+//      a predictable HL impulse. Rebind for your keyboard/game configuration.
 //    * The player tracker must know which strat is the ninja. The Trainer mod
 //      ("Player" section) can pin it; this mod also has a manual address box.
 //    * This is an experimental position-write adapter, not a verified hull-
@@ -94,16 +94,22 @@ namespace HalfLifeMovement
         private float _gameVy;
         private float _jumpCarry;
         private float _jumpVel;
-        private float _jumpBaseY;
+        private bool _hlJumpActive;
+        private bool _nativeVerticalActive;
         private bool _grounded = true;
         private float _speed;
         private int _failTicks;
         private int _nativeTraversalTicks;
+        private int _traversalSupportTicks;
         private int _reacquireTicks;
         private Vec3 _wallNormal;
         private bool _hasWall;
-        private readonly TraceSegment[] _traceSegments = new TraceSegment[16];
-        private readonly TraceHit[] _traceHits = new TraceHit[16];
+        private readonly HlWall _wall = new HlWall();
+        private bool _spaceHeld;
+        private Vec3 _wallProbeNormal;
+        private float _wallFacingDot;
+        private readonly HlCollision _collision = new HlCollision(Game.TraceSegments);
+        private bool _supportQueryValid;
 
         // settings persistence (throttled so slider drags do not hammer the INI)
         private bool _settingsDirty;
@@ -281,6 +287,7 @@ namespace HalfLifeMovement
 
         private void Deactivate()
         {
+            Input.LeaseMovementKeys(0, false);
             if (!_active)
                 return;
 
@@ -296,8 +303,8 @@ namespace HalfLifeMovement
             _fovOwned = false;
 
             _move.Reset();
-            _jumpCarry = 0.0f;
-            _jumpVel = 0.0f;
+            ResetVertical();
+            _wall.Reset();
             _haveWritten = false;
 
             ModLog.Info("deactivated");
@@ -324,60 +331,38 @@ namespace HalfLifeMovement
             _haveWritten = true;
 
             _move.Reset();
-            _jumpCarry = 0.0f;
-            _jumpVel = 0.0f;
-            _jumpBaseY = y;
+            ResetVertical();
+            _wall.Reset();
+            _spaceHeld = Input.KeyDown(Keys.Space);
             _gameVy = 0.0f;
             _grounded = ProbeGround(pos, out float _, out Vec3 _);
             _speed = 0.0f;
             _failTicks = 0;
             _nativeTraversalTicks = 0;
+            _traversalSupportTicks = 0;
             _reacquireTicks = 0;
-            return true;
+            return _supportQueryValid;
+        }
+
+        private void ResetVertical()
+        {
+            _jumpCarry = _jumpVel = 0;
+            _hlJumpActive = _nativeVerticalActive = false;
         }
 
         private bool ProbeGround(Vec3 position, out float groundY, out Vec3 normal)
         {
-            groundY = float.NegativeInfinity; normal = new Vec3(0,1,0);
-            float radius = 12.0f * _worldScale, up = 4.0f * _worldScale, down = 10.0f * _worldScale;
-            float[] ox = {0,-radius,radius,0,0}, oz = {0,0,0,-radius,radius};
-            var segments = new TraceSegment[5]; var hits = new TraceHit[5];
-            for(int i=0;i<5;i++) segments[i]=new TraceSegment(position.X+ox[i],position.Y+up,position.Z+oz[i],position.X+ox[i],position.Y-down,position.Z+oz[i]);
-            if(!Game.TraceSegments(_playerAddr,segments,hits)) return false;
-            bool found=false;
-            for(int i=0;i<hits.Length;i++) if(hits[i].HasHit && Finite(hits[i].PointY) && hits[i].NormalY>=0.50f && hits[i].PointY>groundY) {
-                groundY=hits[i].PointY; normal=new Vec3(hits[i].NormalX,hits[i].NormalY,hits[i].NormalZ); found=true;
-            }
-            return found && position.Y-groundY <= 6.0f*_worldScale && position.Y-groundY >= -2.0f*_worldScale;
+            _supportQueryValid = _collision.TryGround(_playerAddr, position, _worldScale, out bool supported, out groundY, out normal);
+            return _supportQueryValid && supported;
         }
 
-        private bool ResolveHorizontal(Vec3 from, ref float targetX, ref float targetZ)
+        private bool ProbeWall(Vec3 position, Vec3 facing, out Vec3 normal, out float facingDot)
         {
-            float dx=targetX-from.X,dz=targetZ-from.Z,len2=dx*dx+dz*dz;
-            _hasWall=false; _wallNormal=Vec3.Zero;
-            if(len2<1e-12f) return true;
-            float len=(float)Math.Sqrt(len2),px=-dz/len,pz=dx/len,radius=12.0f*_worldScale;
-            float[] heights={4.0f,34.0f,68.0f}; float[] sides={0.0f,-radius,radius};
-            int n=0;
-            for(int h=0;h<heights.Length;h++) for(int s=0;s<sides.Length;s++) {
-                float ox=px*sides[s],oz=pz*sides[s],y=from.Y+heights[h]*_worldScale;
-                _traceSegments[n++]=new TraceSegment(from.X+ox,y,from.Z+oz,targetX+ox,y,targetZ+oz);
-            }
-            var segments=new TraceSegment[n];var hits=new TraceHit[n];Array.Copy(_traceSegments,segments,n);
-            if(!Game.TraceSegments(_playerAddr,segments,hits)) return false;
-            float fraction=1.0f;int best=-1;
-            for(int i=0;i<n;i++) if(hits[i].HasHit) {
-                float hx=hits[i].PointX-segments[i].StartX,hz=hits[i].PointZ-segments[i].StartZ;
-                float f=(hx*dx+hz*dz)/len2;
-                if(Finite(f)&&f>=0&&f<fraction){fraction=f;best=i;}
-            }
-            if(best>=0) {
-                float safe=Math.Max(0.0f,fraction-(0.5f*_worldScale)/len);
-                targetX=from.X+dx*safe;targetZ=from.Z+dz*safe;
-                _wallNormal=new Vec3(hits[best].NormalX,hits[best].NormalY,hits[best].NormalZ);_hasWall=true;
-                float into=_move.Velocity.X*_wallNormal.X+_move.Velocity.Z*_wallNormal.Z;
-                if(into<0){_move.Velocity.X-=_wallNormal.X*into;_move.Velocity.Z-=_wallNormal.Z*into;}
-            }
+            normal = Vec3.Zero; facingDot = 0.0f;
+            if (!_collision.TryWallProbe(_playerAddr, position, facing, _worldScale,
+                                         out bool contact, out normal, out facingDot))
+                return false;
+            if (!contact) { normal = Vec3.Zero; facingDot = 0.0f; return false; }
             return true;
         }
 
@@ -433,6 +418,7 @@ namespace HalfLifeMovement
             if (!Game.IsReady) { Deactivate(); return; }
             if (Input.OverlayOpen)
             {
+                _jumpHeld = Input.KeyDown(_jumpKey);
                 Input.ConsumeMouseDelta();
                 return;
             }
@@ -487,7 +473,10 @@ namespace HalfLifeMovement
             float teleportLimit = 300.0f * _worldScale;
             if (ex * ex + ey * ey + ez * ez > teleportLimit * teleportLimit)
             {
-                _nativeTraversalTicks=30;_move.Reset();_jumpCarry=_jumpVel=0;_lastWritten=gamePos;_lastGame=gamePos;
+                _nativeTraversalTicks=30;_traversalSupportTicks=0;_move.Reset();ResetVertical();_wall.Reset();_lastWritten=gamePos;_lastGame=gamePos;
+                Input.LeaseMovementKeys(0, false);
+                _jumpHeld=Input.KeyDown(_jumpKey);
+                _spaceHeld=Input.KeyDown(Keys.Space);
                 if(_cameraEnabled) ApplyCamera(gamePos);
                 return;
             }
@@ -495,26 +484,119 @@ namespace HalfLifeMovement
             // Remove the displacement we ourselves supplied last tick.
             _gameVy = (gamePos.Y - _lastWritten.Y) / (dt * _worldScale);
             UpdateMouseLook();
-
-            bool nativeUse=Input.KeyDown(Keys.Ctrl);
-            if(nativeUse)_nativeTraversalTicks=30;
-            if(_nativeTraversalTicks>0){
-                if((gamePos-_lastGame).Length>2.0f*_worldScale)_nativeTraversalTicks=30;else _nativeTraversalTicks--;
-                _move.Reset();_jumpCarry=_jumpVel=0;_lastWritten=gamePos;_lastGame=gamePos;
-                _grounded=ProbeGround(gamePos,out float _,out Vec3 _);Game.SetNinjaFacing(_yaw);if(_cameraEnabled)ApplyCamera(gamePos);return;
-            }
-            bool onGround=ProbeGround(gamePos,out float groundY,out Vec3 groundNormal);
-
             bool jumpDown = Input.KeyDown(_jumpKey);
-            bool arcWasActive = _jumpCarry > 0.0f;
-            bool wantJump = _movementEnabled && _hlVertical && onGround && jumpDown && (_autoHop || !_jumpHeld);
+            bool wasJumpHeld = _jumpHeld;
+            _jumpHeld = jumpDown;
+            bool spaceDown = Input.KeyDown(Keys.Space);
+            bool spacePressed = spaceDown && !_spaceHeld;
+            _spaceHeld = spaceDown;
+            _wall.TickLock();
+
+            bool onGround=ProbeGround(gamePos,out float groundY,out Vec3 groundNormal);
+            if (!_supportQueryValid) { ModLog.Warn("support query failed/invalid; stopped without a position write"); Deactivate(); return; }
+
+            // A native takeoff has priority, even while it is still within the
+            // support ray's reach. Never pin its first upward frames to a floor.
+            float gap = gamePos.Y - groundY;
+            bool nativeRising = ey > 0.01f * _worldScale && (!onGround || gap > 0.01f * _worldScale);
+            if (nativeRising) { ResetVertical(); _nativeVerticalActive = true; }
+            // The longer probe finds nearby support; only skin-close contact
+            // can grant friction/jump permission. Do not ground a short fall or
+            // an activation that happens to be hovering inside the probe range.
+            onGround = onGround && gap <= HlCollision.Skin * _worldScale;
+            bool fastFall = _gameVy < -_tune.GameVerticalThreshold && gap > HlCollision.Skin * _worldScale;
+            if (nativeRising || fastFall) onGround = false;
+            if (_nativeVerticalActive && onGround && gap <= HlCollision.Skin * _worldScale && !nativeRising && _gameVy <= 0) _nativeVerticalActive = false;
+
+            bool nativeUse = Input.KeyDown(Keys.Ctrl);
+            if (nativeUse) { _nativeTraversalTicks = 30; _traversalSupportTicks = 0; }
+            if (_nativeTraversalTicks > 0) {
+                // Translation is not evidence of still owning a chain/rail: WASD
+                // walking used to refresh this forever after Ctrl was released.
+                if (!nativeUse) {
+                    _nativeTraversalTicks--;
+                    _traversalSupportTicks = onGround && !nativeRising && _gameVy <= 0 ? _traversalSupportTicks + 1 : 0;
+                    if (_traversalSupportTicks >= 2) _nativeTraversalTicks = 0;
+                }
+                if (_nativeTraversalTicks > 0) {
+                    Input.LeaseMovementKeys(0, false);
+                    _move.Reset(); ResetVertical(); _wall.Reset();
+                    // Carry native airborne authority across the grace timeout;
+                    // being near a floor is not permission for an HL takeoff.
+                    _nativeVerticalActive = !onGround;
+                    _lastWritten = gamePos; _lastGame = gamePos;
+                    _grounded = onGround;
+                    Game.SetNinjaFacing(_yaw);
+                    if (_cameraEnabled) ApplyCamera(gamePos);
+                    return;
+                }
+            }
+
+            // I-Ninja wall interaction. Space is read independently of the HL
+            // jump key: at a wall the first press attaches a climb/wall run and
+            // the next press kicks away. Ctrl still yields to native traversal.
+            Vec3 viewDir = new Vec3((float)Math.Sin(_yaw), 0.0f, (float)Math.Cos(_yaw));
+            bool wallContact = ProbeWall(gamePos, viewDir, out _wallProbeNormal, out _wallFacingDot);
+            Vec3 intoWall = new Vec3(-_wallProbeNormal.X, 0.0f, -_wallProbeNormal.Z).Normalized();
+            bool wallAttached = false, wallKicked = false;
+            if (!nativeUse && _movementEnabled)
+            {
+                if (_wall.Active && spacePressed)
+                {
+                    Vec3 kick = _wall.Kick(out float kickUp);
+                    _move.Velocity = new Vec3(kick.X, 0.0f, kick.Z);
+                    _jumpVel = kickUp;
+                    _jumpCarry = 0.0f;
+                    _hlJumpActive = _hlVertical;
+                    _nativeVerticalActive = false;
+                    wallKicked = true;
+                }
+                else if (!_wall.Active && wallContact && spacePressed &&
+                         _wall.KickLock == 0 && _wallFacingDot >= 0.2f &&
+                         _wall.TryAttach(_wallProbeNormal, viewDir, _move.Velocity, _tune))
+                {
+                    wallAttached = true;
+                }
+                else if (!_wall.Active && !spacePressed && wallContact && onGround &&
+                         _wall.KickLock == 0 &&
+                         _wallProbeNormal.Y >= HlCollision.SteepNormalY &&
+                         _move.Speed >= HlWall.RunMinSpeed &&
+                         Vec3.Dot(viewDir, intoWall) >= 0.3f &&
+                         Vec3.Dot(_move.Velocity, intoWall) >= 80.0f &&
+                         _wall.TryAttach(_wallProbeNormal, viewDir, _move.Velocity, _tune))
+                {
+                    // Running fast into the curved part of a half-pipe starts a
+                    // wall run without requiring a mode switch or another key.
+                    wallAttached = true;
+                }
+            }
+            if (wallAttached)
+            {
+                ResetVertical();
+                _nativeVerticalActive = false;
+                onGround = false;
+                nativeRising = false;
+            }
+            else if (wallKicked)
+            {
+                _nativeVerticalActive = false;
+                onGround = false;
+                nativeRising = false;
+            }
+
+            // Height above takeoff is telemetry, NOT the flight/grounded flag.
+            // An owned arc stays airborne until a downward sweep hits support.
+            if (_hlJumpActive || _nativeVerticalActive || _wall.Active) onGround = false;
+            bool wantJump = _movementEnabled && _hlVertical && !_hlJumpActive && !_nativeVerticalActive &&
+                            !_wall.Active && onGround && groundNormal.Y >= HlCollision.WalkableNormalY &&
+                            jumpDown && (_autoHop || !wasJumpHeld);
             bool jumped = false;
 
             if (wantJump)
             {
                 _jumpVel = _tune.JumpSpeed;
-                _jumpBaseY = gamePos.Y;
-                _jumpCarry = 0.0001f;
+                _hlJumpActive = true;
+                _jumpCarry = 0;
                 if (_capBunnySpeed)
                     _move.CapBunnySpeed(_tune);
                 onGround = false;
@@ -529,7 +611,29 @@ namespace HalfLifeMovement
                 if (wishSpeed > _tune.MaxSpeed)
                     wishSpeed = _tune.MaxSpeed;
 
-                if (onGround)
+                bool wallMove = _wall.Active;
+                Vec3 wallVelocity = Vec3.Zero;
+                if (wallMove)
+                {
+                    // Wall motion owns vertical and supersedes any native
+                    // takeoff ownership for the duration of the climb/run.
+                    _nativeVerticalActive = false;
+                    _hlJumpActive = false;
+                    WallTickResult wallResult = _wall.Tick(dt, wallContact,
+                        spaceDown || Input.KeyDown(Keys.W), wishDir, _tune.MaxSpeed, out wallVelocity);
+                    if (wallResult == WallTickResult.Detached)
+                    {
+                        // Finish this tick with the last wall velocity, then let
+                        // the normal gravity/landing path resume.
+                        _jumpVel = Clamp(wallVelocity.Y, -_tune.MaxVelocity, _tune.MaxVelocity);
+                        _jumpCarry = 0.0f;
+                        _hlJumpActive = _hlVertical;
+                        _nativeVerticalActive = false;
+                    }
+                    _move.Velocity = new Vec3(wallVelocity.X, 0.0f, wallVelocity.Z);
+                    onGround = false;
+                }
+                else if (onGround)
                 {
                     _move.Velocity.Y = 0.0f;
                     _move.ApplyFriction(dt, _tune);
@@ -541,48 +645,76 @@ namespace HalfLifeMovement
                 }
                 _move.ClampVelocity(_tune);
 
-                if (_hlVertical)
+                float ny = gamePos.Y;
+                if (wallMove)
                 {
-                    if (jumped || arcWasActive)
+                    // Wall motion owns vertical this tick. Anchoring at
+                    // _lastWritten discards the native jump impulse so Space
+                    // does not fight the climb/run.
+                    ny = _lastWritten.Y + wallVelocity.Y * dt * _worldScale;
+                }
+                else if (_hlVertical && _hlJumpActive) {
+                    // Large native corrections cannot be identified as gravity.
+                    // Yield rather than restore an obsolete absolute jump pose.
+                    if (Math.Abs(ey) > 16 * _worldScale) { ResetVertical(); _nativeVerticalActive = true; }
+                    else {
+                        float verticalStep = HlJump.Integrate(ref _jumpVel, _tune.Gravity, dt);
+                        _jumpVel = Clamp(_jumpVel, -_tune.MaxVelocity, _tune.MaxVelocity);
+                        _jumpCarry += verticalStep;
+                        ny = (jumped ? gamePos.Y : _lastWritten.Y) + verticalStep * _worldScale;
+                    }
+                }
+                else if (!_hlVertical) { ResetVertical(); }
+
+                Vec3 delta = HlCollision.RemainingHorizontal(_move.Velocity * (dt * _worldScale),
+                                                            gamePos - _lastWritten, _replaceGameMovement);
+                float blockBelow = wallMove ? HlCollision.WalkableNormalY : HlCollision.SteepNormalY;
+                if (!_collision.TryHorizontal(_playerAddr, gamePos, delta, _worldScale, ref _move.Velocity,
+                                               out Vec3 horizontalPos, out _hasWall, out _wallNormal, blockBelow)) {
+                    ModLog.Warn("body query failed/invalid; stopped without a position write"); Deactivate(); return;
+                }
+
+                // Follow walkable slopes, platform edges and the lower half-pipe
+                // within one step instead of leaving support and falling through
+                // the horizontal sweep. Wall mode already owns vertical motion.
+                if (!wallMove && !jumped && !_hlJumpActive && !_nativeVerticalActive)
+                {
+                    if (_collision.TryStepSupport(_playerAddr, horizontalPos, _worldScale,
+                                                  out bool stepSupported, out float stepY, out Vec3 stepNormal))
                     {
-                        HlJump.Step(ref _jumpCarry, ref _jumpVel, _tune.Gravity, dt);
-                    }
-                    else
-                    {
-                        _jumpCarry = 0.0f;
-                        _jumpVel = 0.0f;
+                        float stepGap = gamePos.Y - stepY;
+                        bool into = Vec3.Dot(wishDir, new Vec3(-stepNormal.X, 0.0f, -stepNormal.Z)) > 0.05f;
+                        if (stepSupported && Finite(stepY) &&
+                            stepGap <= HlCollision.StepHeight * _worldScale &&
+                            stepGap >= -HlCollision.StepHeight * _worldScale &&
+                            (onGround || (_grounded && into)))
+                            ny = stepY;
                     }
                 }
-                else
+
+                if (!_collision.TryVertical(_playerAddr, horizontalPos, ny, _worldScale, out ny, out bool landed, out bool ceiling)) {
+                    ModLog.Warn("vertical query failed/invalid; stopped without a position write"); Deactivate(); return;
+                }
+                if (landed) { ResetVertical(); _wall.Reset(); wallMove = false; onGround = true; }
+                else if (ceiling) { _jumpVel = Math.Min(0, _jumpVel); }
+                // Recheck the final support, never a pre-movement/stale floor.
+                var finalPos = new Vec3(horizontalPos.X, ny, horizontalPos.Z);
+                bool finalSupport = ProbeGround(finalPos, out float finalGroundY, out Vec3 _);
+                if (!_supportQueryValid) { ModLog.Warn("final support query failed/invalid; stopped without a position write"); Deactivate(); return; }
+                bool finalSteep = false;
+                if (!wallMove &&
+                    _collision.TryStepSupport(_playerAddr, finalPos, _worldScale,
+                                              out bool finalStepSupported, out float finalStepY, out Vec3 _) &&
+                    finalStepSupported && Math.Abs(finalPos.Y - finalStepY) <= HlCollision.Skin * _worldScale)
+                    finalSteep = true;
+                onGround = !wallMove && !_hlJumpActive && !_nativeVerticalActive && !_wall.Active &&
+                           ((finalSupport && finalPos.Y-finalGroundY <= HlCollision.Skin*_worldScale) || finalSteep);
+
+                if (Game.WritePlayerPosition(finalPos.X, finalPos.Y, finalPos.Z))
                 {
-                    _jumpCarry = 0.0f;
-                    _jumpVel = 0.0f;
-                }
-
-                // Experimental adapter: replace avoids doubling script walk,
-                // but also cannot distinguish it from collision corrections.
-                Vec3 basePos = _replaceGameMovement ? _lastWritten : gamePos;
-                float nx = basePos.X + _move.Velocity.X * dt * _worldScale;
-                float nz = basePos.Z + _move.Velocity.Z * dt * _worldScale;
-                float ny = _hlVertical && (jumped || arcWasActive)
-                    ? _jumpBaseY + _jumpCarry * _worldScale : gamePos.Y;
-
-                if(!ResolveHorizontal(basePos,ref nx,ref nz)) { ModLog.Warn("collision query failed; stopped");Deactivate();return; }
-                if(!jumped&&!arcWasActive&&onGround) ny=groundY;
-                if(_hasWall&&!onGround&&Input.KeyDown(Keys.W)) {
-                    float sy=(float)Math.Sin(_yaw),cy=(float)Math.Cos(_yaw);
-                    float facing=-(sy*_wallNormal.X+cy*_wallNormal.Z);
-                    if(facing>0.35f) {
-                        if(jumpDown) { ny=basePos.Y+120.0f*dt*_worldScale;_jumpCarry=_jumpVel=0; }
-                        else ny=Math.Max(ny,basePos.Y-40.0f*dt*_worldScale);
-                    }
-                }
-
-                if (Game.WritePlayerPosition(nx, ny, nz))
-                {
-                    _lastWritten = new Vec3(nx, ny, nz);
+                    _lastWritten = finalPos;
                     _speed = _move.Speed;
-                    gamePos = new Vec3(nx, ny, nz);   // camera follows the written position
+                    gamePos = finalPos;   // camera follows the written position
                 }
                 else
                 {
@@ -596,12 +728,12 @@ namespace HalfLifeMovement
                 _speed = 0.0f;
                 _lastWritten = gamePos;
                 _move.Reset();
-                _jumpCarry = _jumpVel = 0.0f;
+                ResetVertical();
+                _wall.Reset();
             }
 
             _lastGame = new Vec3(px, py, pz);
             _grounded = onGround;
-            _jumpHeld = jumpDown;
             Game.SetNinjaFacing(_yaw);
 
             // Telemetry ring for the speed plot in the UI.
@@ -611,6 +743,10 @@ namespace HalfLifeMovement
 
             if (_cameraEnabled)
                 ApplyCamera(gamePos);
+            if (_active && !Input.LeaseMovementKeys(_playerAddr, _movementEnabled && _replaceGameMovement)) {
+                ModLog.Warn("native WASD ownership unavailable; stopped instead of mixing movement directions");
+                Deactivate();
+            }
         }
 
         private void HandleHotkeys()
@@ -696,6 +832,8 @@ namespace HalfLifeMovement
         {
             if (open)
             {
+                Input.LeaseMovementKeys(0, false);
+                _move.Reset(); ResetVertical(); _wall.Reset(); _spaceHeld=Input.KeyDown(Keys.Space); _jumpHeld=Input.KeyDown(_jumpKey);
                 Input.ConsumeMouseDelta();
                 if (_captureOwned)
                 {
@@ -795,8 +933,8 @@ namespace HalfLifeMovement
             if (ImGui.Checkbox("Replace game movement", ref _replaceGameMovement))
                 Touch();
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("On: HL velocity completely replaces the horizontal movement\n" +
-                                 "the game scripts performed this tick.\n" +
+                ImGui.SetTooltip("On: credit native movement already made along the HL direction.\n" +
+                                 "Native corrections/platform motion are never rewound.\n" +
                                  "Off: adds HL velocity on top of the game's own movement\n" +
                                  "(double speed if the game also walks the ninja).");
 
@@ -806,7 +944,7 @@ namespace HalfLifeMovement
                 Touch();
             }
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("On: the mod integrates a HL jump arc relative to the game's floor.\n" +
+                ImGui.SetTooltip("On: collision-driven HL flight; native takeoffs have priority.\n" +
                                  "Off: vertical movement stays entirely with I-Ninja; only the\n" +
                                  "horizontal pmove is applied.");
 
@@ -824,8 +962,9 @@ namespace HalfLifeMovement
                 Touch();
             }
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("Use a key I-Ninja itself does not use for jumping (default V).\n" +
-                                 "If you pick the game's own jump key you will get two impulses.");
+                ImGui.SetTooltip("Space stays an I-Ninja wall action: first press at a wall climbs or\n" +
+                                 "runs, second press kicks away. This mod jump key is only for\n" +
+                                 "ground takeoffs with the HL impulse (default V).");
 
             // --------------------------------------------------------- physics
             ImGui.SeparatorText("Physics");
@@ -846,11 +985,11 @@ namespace HalfLifeMovement
             Slider("Stop speed", ref _tune.StopSpeed, 0.0f, 400.0f, "%.0f u/s", width);
             Slider("Gravity", ref _tune.Gravity, 0.0f, 2400.0f, "%.0f u/s2", width);
             Slider("Jump speed", ref _tune.JumpSpeed, 0.0f, 600.0f, "%.1f u/s", width);
-            Slider("Ground v threshold", ref _tune.GameVerticalThreshold, 20.0f, 600.0f, "%.0f u/s", width);
+            Slider("Native fall threshold", ref _tune.GameVerticalThreshold, 20.0f, 600.0f, "%.0f u/s", width);
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("How much vertical speed the game must produce before the mod\n" +
-                                 "stops treating the player as grounded. Raise it if stairs\n" +
-                                 "disable friction, lower it if jumps are not detected.");
+                ImGui.SetTooltip("Downward native speed cutoff while near a support surface.\n" +
+                                 "Rising native takeoffs always have priority; nearby support\n" +
+                                 "alone cannot grant jump permission. Stored under the existing setting key.");
 
             // ---------------------------------------------------------- camera
             ImGui.SeparatorText("FPS camera");
@@ -941,8 +1080,12 @@ namespace HalfLifeMovement
                 ImGui.SameLine();
                 ImGui.TextDisabled(string.Format("  {0:F1} u/s", _speed));
                 ImGui.Text(string.Format("game dy  {0:+0.000;-0.000;0.000} game u/tick   ({1:F0} HL u/s)", _gameVy * Game.TimeStep * _worldScale, _gameVy));
-                ImGui.Text(string.Format("state    {0}   jumpCarry {1:F1}   jumpVel {2:F1}",
-                    _grounded ? "GROUND" : "AIR", _jumpCarry, _jumpVel));
+                ImGui.Text(string.Format("state    {0}   flight {1}   wall {2} {3}   offset {4:F1}   jumpVel {5:F1}",
+                    _grounded ? "GROUND" : "AIR",
+                    _hlJumpActive ? "HL" : _nativeVerticalActive ? "native" : "none",
+                    _wall.Mode == WallMode.None ? "none" : _wall.Mode.ToString().ToLowerInvariant(),
+                    _wall.Active ? _wall.TicksRemaining.ToString() : "-",
+                    _jumpCarry, _jumpVel));
             }
             else
             {
@@ -967,6 +1110,8 @@ namespace HalfLifeMovement
 
             ImGui.TextDisabled("HLSDK movement port: pm_shared.c (PM_Friction / PM_Accelerate /");
             ImGui.TextDisabled("PM_AirAccelerate / PM_WalkMove / PM_AirMove / PM_Jump).");
+            ImGui.TextDisabled("I-Ninja walls: Space at contact = climb/run, Space again = kick.");
+            ImGui.TextDisabled("Steep half-pipes and slopes are followed with bounded step support.");
         }
 
         private void Slider(string label, ref float value, float min, float max, string format, float width)

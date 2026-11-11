@@ -11,13 +11,28 @@
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\dist\dinput8.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_camera_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_entity_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_interpolation_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_policy_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_ethhhpatch_projection_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_movement_input_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_player_learning_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_sha256_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_strat_identity_tests.exe</FullPath>

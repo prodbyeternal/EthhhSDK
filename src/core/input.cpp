@@ -2,6 +2,9 @@
 #include "util.h"
 #include "log.h"
 #include "config.h"
+#include "game.h"
+#include "hooks.h"
+#include "movement_input_policy.h"
 
 namespace eth::input {
 
@@ -15,11 +18,16 @@ bool  g_cursorHidden = false;
 std::mutex        g_mouseMutex;
 float             g_mouseDX = 0.0f;
 float             g_mouseDY = 0.0f;
+float             g_mouseWheel = 0.0f;
 std::array<bool, 256> g_keyNow{};
 std::array<bool, 256> g_keyPrev{};
 float g_sensitivity = 1.0f;
 LONG g_absoluteX = 0, g_absoluteY = 0;
 bool g_haveAbsolute = false;
+std::mutex g_movementMutex;
+MovementKeysLease g_movementLease;
+bool g_nativeMovementKeysOwned = false; // game-tick thread only
+std::atomic<bool> g_movementFilterFailed{false};
 
 bool Focused()
 {
@@ -47,6 +55,8 @@ void Init(HWND hwnd)
 
 void Shutdown()
 {
+    LeaseMovementKeys(0, false);
+    EndNativeTick();
     SetCapture(false);
     RAWINPUTDEVICE rid{ 0x01, 0x02, RIDEV_REMOVE, nullptr };
     if (g_rawRegistered) RegisterRawInputDevices(&rid, 1, sizeof(rid));
@@ -88,6 +98,10 @@ void OnRawInput(HWND, LPARAM lParam)
     if (raw->header.dwType != RIM_TYPEMOUSE) return;
 
     const RAWMOUSE& m = raw->data.mouse;
+    if (m.usButtonFlags & RI_MOUSE_WHEEL) {
+        std::lock_guard<std::mutex> lock(g_mouseMutex);
+        g_mouseWheel += (float)(short)m.usButtonData / (float)WHEEL_DELTA;
+    }
     if (m.usFlags & MOUSE_MOVE_ABSOLUTE) {
         bool virtualDesktop = (m.usFlags & MOUSE_VIRTUAL_DESKTOP) != 0;
         LONG x = MulDiv(m.lLastX, GetSystemMetrics(virtualDesktop ? SM_CXVIRTUALSCREEN : SM_CXSCREEN), 65535);
@@ -115,6 +129,7 @@ void OnOverlayToggled(bool overlayOpen)
     g_overlayOpen = overlayOpen;
     PumpCapture();
     ConsumeMouseDelta();
+    ConsumeMouseWheel();
 }
 
 void PumpKeys()
@@ -138,6 +153,7 @@ void PumpCapture()
             ClipCursor(nullptr);
             if (g_cursorHidden) { ShowCursor(TRUE); g_cursorHidden = false; }
             ConsumeMouseDelta();
+            ConsumeMouseWheel();
         }
     }
     if (g_capture) ApplyCaptureClip();
@@ -148,12 +164,102 @@ void ResetTransient()
     std::lock_guard<std::mutex> lock(g_mouseMutex);
     g_mouseDX = 0.0f;
     g_mouseDY = 0.0f;
+    g_mouseWheel = 0.0f;
 }
 
 bool KeyDown(int vk)
 {
     if (vk <= 0 || vk >= 256) return false;
     return Focused() && (GetAsyncKeyState(vk) & 0x8000) != 0;
+}
+
+bool LeaseMovementKeys(uintptr_t player, bool enabled)
+{
+    {
+        std::lock_guard<std::mutex> lock(g_movementMutex);
+        g_movementLease.Reset(); // failed/replaced requests revoke old consent
+    }
+    if (!enabled) {
+        return true;
+    }
+    auto& tracker = game::PlayerTracker::Get();
+    game::StratIdentity identity;
+    const char* refusal = nullptr;
+    if (g_movementFilterFailed.load())
+        refusal = "native keyboard filter failed earlier; restart required";
+    else if (tracker.Mode() != game::PlayerMode::Manual)
+        refusal = "player is not manually pinned";
+    else if (!tracker.Valid())
+        refusal = "pinned player is no longer valid";
+    else if (tracker.Addr() != player)
+        refusal = "lease player address does not match the pin";
+    else if (!game::ReadStratIdentity(player, identity))
+        refusal = "exact-Ninja identity could not be re-read";
+    else if (identity.role != game::StratRole::Ninja)
+        refusal = "pinned strat is not the exact Ninja class";
+    else if (!identity.selfHandle)
+        refusal = "pinned strat has no live handle";
+    else if (!hooks::InstallMovementInputHook())
+        refusal = "native keyboard hook unavailable";
+    if (refusal) {
+        ETH_WARN("HL WASD lease refused: %s (player %08X)", refusal, (unsigned)player);
+        return false;
+    }
+    std::lock_guard<std::mutex> lock(g_movementMutex);
+    return g_movementLease.Request(identity.addr, identity.pClass, identity.selfHandle);
+}
+
+void BeginNativeTick()
+{
+    g_nativeMovementKeysOwned = false;
+    std::lock_guard<std::mutex> lock(g_movementMutex);
+    if (!g_movementLease.Pending()) return; // inactive path does no identity read
+    auto& tracker = game::PlayerTracker::Get();
+    game::StratIdentity identity;
+    const bool valid = tracker.Valid() && game::ReadStratIdentity(tracker.Addr(), identity);
+    g_nativeMovementKeysOwned = g_movementLease.Consume(tracker.Mode() == game::PlayerMode::Manual,
+        valid, valid && identity.role == game::StratRole::Ninja, Focused(), g_overlayOpen,
+        KeyDown(VK_CONTROL) || KeyDown(VK_F2) || KeyDown(VK_F3), game::TimeStep(),
+        identity.addr, identity.pClass, identity.selfHandle);
+}
+
+void EndNativeTick() { g_nativeMovementKeysOwned = false; }
+
+namespace {
+void FailMovementFilter(const char* reason, const void* keyboard)
+{
+    if (!g_movementFilterFailed.exchange(true))
+        ETH_WARN("HL WASD filter disabled: %s (keyboard %p)", reason, keyboard);
+}
+}
+
+void FilterNativeKeyboard(void* keyboard)
+{
+    if (!g_nativeMovementKeysOwned || !Focused() || g_overlayOpen || KeyDown(VK_CONTROL)) return;
+    uintptr_t app = 0, input = 0;
+    if (!SafeRead(game::A(0x50FFA4), app) || !app || !SafeRead(app + 0x2c, input) ||
+        !input || input > UINTPTR_MAX - 8 || (uintptr_t)keyboard != input + 8) {
+        FailMovementFilter("keyboard owner path does not match the verified poll", keyboard); return;
+    }
+    // The verified poll has just written this exact 512-byte down/edge buffer.
+    // Refuse non-writable/unbounded memory, without page-protection changes.
+    MEMORY_BASIC_INFORMATION mbi{};
+    const uintptr_t addr = (uintptr_t)keyboard;
+    if (!addr || !VirtualQuery(keyboard, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT ||
+        (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS))) {
+        FailMovementFilter("keyboard buffer is not committed/readable", keyboard); return;
+    }
+    const uintptr_t end = (uintptr_t)mbi.BaseAddress + mbi.RegionSize;
+    const DWORD protection = mbi.Protect & 0xff;
+    if (addr >= end || 512 > end - addr ||
+        (protection != PAGE_READWRITE && protection != PAGE_WRITECOPY &&
+         protection != PAGE_EXECUTE_READWRITE && protection != PAGE_EXECUTE_WRITECOPY)) {
+        FailMovementFilter("keyboard buffer is not a bounded writable region", keyboard); return;
+    }
+    bool raised = false;
+    __try { FilterMovementKeys((uint8_t*)keyboard, 512, true); }
+    __except (EXCEPTION_EXECUTE_HANDLER) { raised = true; }
+    if (raised) FailMovementFilter("keyboard buffer write raised an exception", keyboard);
 }
 
 bool KeyPressed(int vk)
@@ -181,6 +287,18 @@ void ConsumeMouseDelta()
     g_mouseDX = 0.0f;
     g_mouseDY = 0.0f;
     g_haveAbsolute = false;
+}
+
+void GetMouseWheel(float& notches)
+{
+    std::lock_guard<std::mutex> lock(g_mouseMutex);
+    notches = g_mouseWheel;
+}
+
+void ConsumeMouseWheel()
+{
+    std::lock_guard<std::mutex> lock(g_mouseMutex);
+    g_mouseWheel = 0.0f;
 }
 
 bool SetCapture(bool on)

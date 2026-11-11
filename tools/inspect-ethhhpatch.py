@@ -121,6 +121,16 @@ RANGES = [
     ("collision_query_result", 0x437E90, 0x437EBF, True),
     ("collision_query_process", 0x4380F0, 0x43811E, True),
     ("native_down_trace_caller", 0x410AA0, 0x410BEF, True),
+    ("camera_matrix_to_quaternion", 0x4B3830, 0x4B3982, True),
+    ("camera_quaternion_position_to_world", 0x4B2680, 0x4B27E9, True),
+    ("entity_node_array_allocation_fragment", 0x412B84, 0x412BEB, False),
+    ("entity_node_settings_constructor", 0x42E960, 0x42EA0A, True),
+    ("entity_heap_allocate", 0x438260, 0x438325, True),
+    ("entity_animation_build_node_array", 0x42ED40, 0x42EDFF, True),
+    ("entity_animation_tick_fragment", 0x413311, 0x41337F, False),
+    ("entity_render_owner", 0x43E660, 0x43E894, True),
+    ("entity_renderer_owner_submit", 0x44A490, 0x44A759, True),
+    ("entity_renderer_copy_node_matrices", 0x449EB0, 0x44A00E, True),
 ]
 
 ANCHORS = {
@@ -235,6 +245,54 @@ ANCHORS = {
     0x410B65: "e886750200",  # native down trace process
     0x410B70: "e81b730200",  # native down trace result lookup
     0x410B75: "6639580e",    # native caller tests result+0x0E hit count
+    0x43EFEA: "f3a5",        # View+0x40..60 -> previous pose View+0x20..40
+    0x43F112: "895340",      # View current position X
+    0x43F13E: "895348",      # View current position Z
+    0x43F150: "e8db460700",  # quaternion converted from Camera world matrix
+    0x43F157: "83c350",      # View current quaternion destination +0x50
+    0x43F2E1: "d86620",      # render lerp reads previous position +0x20
+    0x43F30D: "8d4e30",      # render slerp reads previous quaternion +0x30
+    0x43F334: "e817410700",  # quaternion slerp
+    0x43F347: "e834330700",  # build world from rendered quaternion and position
+    0x43F34C: "8d7e60",      # View rendered world matrix +0x60
+    0x43F366: "e8f5360700",  # invert rendered world matrix
+    0x43F36F: "81c2a0000000", # View rendered inverse +0xA0
+    0x43F465: "81c7e0000000", # View render product +0xE0
+    0x40B854: "8bfb",        # camera update writes derived product at camera+0
+    0x4B3872: "d9e0",        # matrix->quaternion uses equivalent negative quaternion
+    0x4B27E6: "c20800",      # quaternion+position matrix builder consumes two args
+    0x412BBD: "8b02",        # model[0] is allocated matrix count
+    0x412BC1: "c1e006",      # 64 bytes per matrix
+    0x412BDB: "89833c010000",# node allocation -> owner+0x13C
+    0x412BE5: "898340010000",# node-settings count -> owner+0x140
+    0x42E97B: "897e10",      # constructor saves the same model count at settings+0x10
+    0x438300: "8916",        # allocated block flag bit 0
+    0x43830E: "897e08",      # heap owner in allocation header
+    0x43831E: "8d4610",      # returned array follows 16-byte allocation header
+    0x42ED7A: "8b4624",      # animation-control count
+    0x42EDF1: "83c740",      # animation matrix stride
+    0x413368: "8b8b6c020000",# native animation controller, NOT render-only
+    0x41337A: "e8c1b90100",  # native animation builds node matrices
+    0x43E685: "8d7e10",      # inline owner world matrix argument
+    0x43E7D0: "8b8644010000",# optional double-buffer mode
+    0x43E7E6: "898e2c010000",# swap active/alternate model instances per render
+    0x43E7EC: "898628010000",# only the existing pair, never new instance ownership
+    0x43E87F: "e80cbc0000",  # owner-aware renderer submission
+    0x44A490: "55",          # owner hook entry
+    0x44A496: "83ec24",      # owner hook stack frame
+    0x44A508: "8b903c010000",# primary pass owner nodes
+    0x44A523: "e888f9ffff",  # primary pass copies pose into renderer queue
+    0x44A6D1: "8b803c010000",# secondary pass owner nodes
+    0x44A6DF: "e8ccf7ffff",  # secondary pass copies pose into renderer queue
+    0x44A756: "c20c00",      # owner submit is thiscall with 3 stack arguments
+    0x449EB0: "55",          # node hook entry
+    0x449EB6: "81ec94000000",# node hook stack frame
+    0x449EE9: "668b403c",    # mesh WORD node index
+    0x449F05: "8b4d10",      # third stack argument is node array
+    0x449F08: "0fbfc0",      # signed node index
+    0x449FF0: "f3a5",        # only copies into renderer-owned queue
+    0x449FF6: "8b4144",      # mesh list next; no recursion
+    0x44A00B: "c20c00",      # node submit is thiscall with 3 stack arguments
 }
 
 # Explicit checked edges only; not a guessed whole-program call graph.
@@ -250,6 +308,11 @@ EDGES = [
     (0x499FCC, 0x497E10), (0x49A3A8, 0x496C50), (0x49A405, 0x497D40),
     (0x410B59, 0x437E20), (0x410B65, 0x4380F0), (0x410B70, 0x437E90),
     (0x4380F3, 0x4326A0), (0x4380FA, 0x437EC0), (0x438101, 0x4367A0),
+    (0x43D9C4, 0x43E170), (0x43F150, 0x4B3830), (0x43F334, 0x4B3450),
+    (0x43F347, 0x4B2680), (0x43F366, 0x4B2A60),
+    (0x412BB2, 0x42E960), (0x412BD2, 0x438260),
+    (0x41336E, 0x42FA50), (0x41337A, 0x42ED40),
+    (0x43E87F, 0x44A490), (0x44A523, 0x449EB0), (0x44A6DF, 0x449EB0),
 ]
 
 
@@ -331,7 +394,8 @@ def evidence(data):
                 "per_frame_callback_queue": 0x405390,
                 "activation_exposed_to_ui": True,
                 "compatibility_hooks": {"sphere_culler": 0x449420, "hud_pulse": 0x4483B0,
-                    "movie_draw": 0x497D40, "per_render_camera": 0x43F290},
+                    "movie_draw": 0x497D40, "per_render_camera": 0x43F290,
+                    "camera_frame_scope": 0x43E170, "entity_submit": 0x44A490, "node_submit": 0x449EB0},
                 "hud_identity_projection_return_vas": [0x44726B, 0x4474D6, 0x44884A]},
             "movie_scaling": {
                 "surface_creation": 0x499FCC, "surface_width": 640, "surface_height": 480,
@@ -346,6 +410,33 @@ def evidence(data):
                 "result_point_offset": 0, "result_normal_offset": 0x10,
                 "native_reference_caller": 0x410AA0,
                 "sdk_policy": "max 16 exact-Ninja segments; require empty queue before batch"},
+            "camera_render_contract": {
+                "scope": 0x43E170, "matrix_submission": 0x43F290,
+                "view_previous_position": 0x20, "view_previous_quaternion": 0x30,
+                "view_current_position": 0x40, "view_current_quaternion": 0x50,
+                "view_render_world": 0x60, "view_render_inverse": 0xA0, "view_render_product": 0xE0,
+                "camera_modified_regions": [[0, 0x40], [0x80, 0x100]],
+                "view_restored_region": [0x20, 0x120],
+                "matrix_to_quaternion": 0x4B3830, "quaternion_position_to_matrix": 0x4B2680,
+                "cutscene_flag_verified": False,
+                 "scripted_camera_policy": "geometry/lens/cut checks; temporary hold and automatic reacquisition"},
+            "entity_render_contract": {
+                "owner_submit": 0x44A490, "node_submit": 0x449EB0,
+                "owner_arguments": ["owner", "model instance", "world matrix"],
+                "node_arguments": ["mesh list", "world matrix", "node matrices"],
+                "calling_convention": "x86 thiscall, ret 12", "world_offset": 0x10,
+                "model_instance_pair_offsets": [0x128, 0x12C], "instance_swap_mode_offset": 0x144,
+                "instance_swap_site": 0x43E7E6, "instance_guard": "exact pair and mode; only verified pair reversal allowed",
+                "node_offset": 0x13C, "count_offset": 0x140,
+                "count_sources": ["model[0]", "node settings+0x10", "animation control+0x24"],
+                "matrix_bytes": 64, "mesh_node_word": 0x3C, "mesh_next": 0x44,
+                "world_only_sentinel": 0xFFFF, "node_index_sign_extended": True,
+                "queue_matrix_base": 0xDFB0, "queue_count_offset": 0x45F70,
+                "allocation_header_bytes": 16, "allocation_end_offset": -12,
+                "allocation_heap_offset": -8, "allocation_flag_offset": -16,
+                "sampling": "completed fixed ticks only; SDK-owned quaternion/scale/translation endpoints",
+                "substitution": "render arguments only; native root/bone storage never written",
+                "unsupported": "sheared/non-affine/degenerate/discontinuous poses or failed lifetime/bounds guards"},
             "static_slices": slices,
             "conclusions": [
                 "App_Run waits for due >= 1 before rendering; simply faking timer due risks simulation speedup.",
@@ -363,7 +454,10 @@ def evidence(data):
                 "The render-split implementation is reversible and exposed only through an acknowledged in-game transaction with exact Reset verification and rollback.",
                 "Movies render through a fixed 640x480 surface and originally scale X/Y independently to the backbuffer; the gated policy uses centered uniform fit.",
                 "The collision manager supports bounded 0x44-byte segment batches with point/normal/hit-count results; the SDK refuses non-Ninja or nonempty-queue calls.",
-                "Per-render mouse look runs before the verified View matrix builder and yields while the managed HL camera owns raw input.",
+                "Render uses View position/quaternion snapshots, not Camera.world alone; the orbit override updates both View endpoints and the CPU-culling camera inside the App_render_step scope.",
+                "All modified camera/View pose and derived-matrix regions are restored after the full render step, including early returns; FOV and script state are not overridden.",
+                 "In-engine cutscene detection is a geometry/lens/cut heuristic, not a verified script flag; temporary holds automatically reacquire stable native framing.",
+                 "The owner-aware renderer passes world and node inputs to an iterative queue copier; it does not advance scripts or animation and does not retain the input pointers.",
                 "The manager exposes an acknowledged transactional Apply/Restore path; offline evidence is not a live compatibility claim."]}
 
 

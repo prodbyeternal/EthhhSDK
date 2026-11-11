@@ -39,6 +39,7 @@ EXPORTS
     EthGame_CameraFovDegrees
     EthGame_SetCameraFovDegrees
     EthInput_KeyDown
+    EthInput_LeaseMovementKeys
     EthInput_GetMouseDelta
     EthInput_ConsumeMouseDelta
     EthInput_SetCapture

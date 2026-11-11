@@ -24,6 +24,29 @@ class EvidenceTests(unittest.TestCase):
         self.assertTrue(self.result["no_process_access"])
         self.assertTrue(self.result["no_binary_changes"])
 
+    def test_native_keyboard_filter_poll_and_tick_order(self):
+        from capstone import Cs, CS_ARCH_X86, CS_MODE_32
+        md = Cs(CS_ARCH_X86, CS_MODE_32)
+        def rows(start, end):
+            p = self.image.offset(start, end-start, executable=True)
+            return {i.address: (i.mnemonic, i.op_str) for i in md.disasm(self.data[p:p+end-start], start)}
+        p = self.image.offset(0x4427A0, 13, executable=True)
+        self.assertEqual(self.data[p:p+13], bytes.fromhex("a1 14 92 52 00 53 56 8b f1 80 78 0d 01"))
+        poll = rows(0x4427A0, 0x4428F2)
+        self.assertEqual(poll[0x4427FA], ("push", "0x100"))
+        self.assertEqual(poll[0x442800], ("call", "dword ptr [edx + 0x24]"))
+        self.assertEqual(poll[0x44282A], ("mov", "byte ptr [eax + 0x100], dl"))
+        self.assertEqual(poll[0x442830], ("mov", "byte ptr [eax], cl"))
+        manager = rows(0x441E60, 0x441E8C)
+        self.assertEqual(manager[0x441E63], ("lea", "ecx, [esi + 8]"))
+        self.assertEqual(manager[0x441E66], ("call", "0x4427a0"))
+        self.assertEqual(rows(0x43FEC0, 0x43FEE4)[0x43FEDF], ("call", "0x441e60"))
+        tick = rows(0x43E0A0, 0x43E114)
+        self.assertEqual(tick[0x43E0E7], ("call", "0x43fec0"))
+        self.assertEqual(tick[0x43E10F], ("call", "0x4246f0"))
+        # Poll happens inside native tick, BEFORE the script-object update.
+        self.assertLess(0x43E0E7, 0x43E10F)
+
     def test_present_callers(self):
         self.assertEqual(self.result["present_return_vas"], {"game": 0x44A485, "movie": 0x496CB6})
         hooks = (TOOL.parent.parent / "src" / "core" / "hooks.cpp").read_text(encoding="utf-8")
@@ -192,11 +215,43 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("Game.SetExternalCameraOwned(_cameraEnabled)", mod)
         self.assertIn("Game.SetExternalCameraOwned(false)", mod)
 
+    def test_render_camera_uses_view_pose_and_scoped_restore(self):
+        camera = self.result["camera_render_contract"]
+        self.assertEqual(camera["view_previous_position"], 0x20)
+        self.assertEqual(camera["view_current_quaternion"], 0x50)
+        self.assertEqual(camera["view_restored_region"], [0x20, 0x120])
+        self.assertEqual(camera["scope"], 0x43E170)
+        self.assertFalse(camera["cutscene_flag_verified"])
+        runtime = (TOOL.parent.parent / "src/core/ethhhpatch_runtime.cpp").read_text(encoding="utf-8")
+        self.assertIn("SafeWriteBytes(view + 0x20, pose, sizeof(pose))", runtime)
+        self.assertIn("__finally { RestoreRenderCamera(); g_entityFrameAlpha = 1; g_inGameRender = false; }", runtime)
+        self.assertIn("g_cameraBackup.Capture(camera, view, SafeReadBytes)", runtime)
+        self.assertIn("g_cameraBackup.Restore(camera, view, SafeReadBytes, SafeWriteBytes)", runtime)
+        hooks = (TOOL.parent.parent / "src/core/hooks.cpp").read_text(encoding="utf-8")
+        tick = hooks[hooks.index("void __fastcall TickDetour"):hooks.index("HRESULT WINAPI EndSceneDetour")]
+        self.assertLess(tick.index("RunTickCallbacks(tickIndex)"), tick.index("runtime::OnTickCompleted()"))
+
     def test_changed_executable_refused(self):
         changed = bytearray(self.data)
         changed[self.image.offset(0x43D969, 3)] ^= 1
         with self.assertRaisesRegex(ValueError, "fingerprint"):
             INSPECTOR.evidence(changed)
+
+    def test_entity_matrix_submission_is_non_mutating_and_bounded(self):
+        contract = self.result["entity_render_contract"]
+        self.assertEqual(contract["owner_arguments"], ["owner", "model instance", "world matrix"])
+        self.assertEqual(contract["node_arguments"], ["mesh list", "world matrix", "node matrices"])
+        self.assertEqual(contract["matrix_bytes"], 64)
+        self.assertEqual(contract["count_offset"], 0x140)
+        self.assertEqual(contract["world_offset"], 0x10)
+        self.assertEqual(contract["model_instance_pair_offsets"], [0x128, 0x12C])
+        self.assertEqual(contract["instance_swap_mode_offset"], 0x144)
+        self.assertTrue(contract["node_index_sign_extended"])
+        copy = next(s for s in self.result["static_slices"] if s["label"] == "entity_renderer_copy_node_matrices")
+        rows = {i["va"]: i for i in copy["instructions"]}
+        self.assertEqual(rows[0x44A00B]["operands"], "0xc")
+        self.assertEqual(rows[0x449FF6]["operands"], "eax, dword ptr [ecx + 0x44]")
+        self.assertFalse(any(i["mnemonic"] == "call" for i in copy["instructions"]))
 
     def test_invalid_pe_reads(self):
         for va, size in [(0, 1), (0x400000, 0), (0x401000, 0x4001), (0xFFFFFFFF, 4)]:

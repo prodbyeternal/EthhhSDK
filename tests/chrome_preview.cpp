@@ -21,11 +21,14 @@ static void Hr(HRESULT result, const char* label) { Check(SUCCEEDED(result), lab
 int main(int argc, char** argv)
 {
     try {
-        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage]");
+        Check(argc >= 2, "usage: eth_chrome_preview output.png [width height scale stress patchPage patchTab]");
         int width = argc > 2 ? atoi(argv[2]) : 1152, height = argc > 3 ? atoi(argv[3]) : 704;
         float scale = argc > 4 ? (float)atof(argv[4]) : 1.0f;
         bool stress = argc > 5 && atoi(argv[5]);
         bool patchPage = argc > 6 && atoi(argv[6]);
+        int patchTab = argc > 7 ? atoi(argv[7]) : 0;
+        const char* tabs[] = {"Display", "Camera", "Animation", "Diagnostics"};
+        Check(patchTab>=0 && patchTab<4,"preview tab index");
         const auto page = patchPage ? eth::ui::pages::Page::Patch : eth::ui::pages::Page::Mods;
         Check(width >= 640 && height >= 480 && width <= 4096 && height <= 2160, "preview dimensions");
         // Parse the actual trainer with vendored Lua 5.4; do not execute it or
@@ -56,6 +59,7 @@ int main(int argc, char** argv)
 
         eth::Config::Get().SetDefaults(); // in-memory only; no user settings loaded
         eth::Config::Get().SetInt("launcher","last_page",(int)page);
+        eth::Config::Get().SetBool("core","watermark",false); // obsolete setting must not hide it
         auto& mgr = eth::mods::ModManager::Get(); mgr.SetLauncherMode(true);
         eth::mods::ModInfo hl; hl.id="halflife_movement"; hl.name="Half-Life Movement + FPS Camera";
         hl.version="0.1.0"; hl.type="csharp"; hl.author="EthhhSDK"; hl.enabled=true; hl.status="Ready on game start";
@@ -88,6 +92,7 @@ int main(int argc, char** argv)
         eth::ui::LoadFonts(scale); ImGui_ImplDX9_Init(device);
         eth::ui::pages::SetCurrentPage(page);
         bool startRequested=false, exitRequested=false, open=true;
+        bool previewWatermark=false;
         auto drawFrame = [&]() {
             ImGuiIO& io=ImGui::GetIO(); io.DisplaySize=ImVec2((float)width,(float)height); io.DeltaTime=1.0f/60;
             ImGui_ImplDX9_NewFrame(); ImGui::NewFrame();
@@ -95,16 +100,10 @@ int main(int argc, char** argv)
             startRequested=false; exitRequested=false; open=true;
             if (eth::ui::BeginChromeWindow("##preview","EthhhSDK","I-Ninja / Pre-game mod manager",&open,io.DisplaySize,
                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings)) {
-                float sidebar=196*scale;
-                float contentHeight=ImGui::GetWindowHeight()-ImGui::GetCursorPosY()-54*scale;
-                eth::ui::pages::DrawSidebar(sidebar,true,&startRequested,&exitRequested);
-                ImGui::SameLine();
-                eth::ui::pages::DrawContent(ImVec2(ImGui::GetContentRegionAvail().x,contentHeight),!(patchPage && stress),page);
-                ImGui::SetCursorPos(ImVec2(sidebar,ImGui::GetWindowHeight()-44*scale));
-                ImGui::BeginChild("##status",ImVec2(0,40*scale),false);
-                eth::ui::pages::DrawStatusStrip(); ImGui::EndChild();
+                eth::ui::pages::DrawManagerLayout(true,&startRequested,&exitRequested);
                 eth::ui::EndChromeWindow();
             }
+            if (previewWatermark) eth::ui::pages::DrawWatermark();
             Check(ImGui::GetCurrentContext()->CurrentWindowStack.Size==1,"chrome window/child stack pairing");
             Check(ImGui::GetCurrentContext()->StyleVarStack.Size==0 && ImGui::GetCurrentContext()->ColorStack.Size==0,
                   "chrome style pairing");
@@ -113,6 +112,22 @@ int main(int argc, char** argv)
             Hr(device->BeginScene(),"begin scene"); ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData()); Hr(device->EndScene(),"end scene");
         };
         for(int frame=0; frame<8; ++frame) drawFrame();
+        if (patchPage) {
+            ImGuiWindow* patch=nullptr;
+            for (ImGuiWindow* w:ImGui::GetCurrentContext()->Windows) {
+                const char* leaf=strrchr(w->Name,'/');
+                if (w->Active && leaf && strncmp(leaf,"/##patch_",9)==0) patch=w;
+            }
+            Check(patch!=nullptr,"real patch window found");
+            ImGuiTabBar* bar=ImGui::GetCurrentContext()->TabBars.GetByKey(patch->GetID("##patch_tabs"));
+            Check(bar && bar->Tabs.Size==4,"all four real patch tabs exist");
+            // The pointer overload is valid outside a frame; the name overload
+            // hashes through CurrentWindow and must not be called after Render.
+            ImGui::TabBarQueueFocus(bar,&bar->Tabs[patchTab]);
+            for(int frame=0; frame<8; ++frame) drawFrame();
+            ImGuiTabItem* selected=ImGui::TabBarFindTabByID(bar,bar->SelectedTabId);
+            Check(selected && !strcmp(ImGui::TabBarGetTabName(bar,selected),tabs[patchTab]),"requested patch tab selected");
+        }
         int cards=0;
         for(ImGuiWindow* w : ImGui::GetCurrentContext()->Windows) {
             if (w->Active && strstr(w->Name,"/##card_")) {
@@ -143,6 +158,21 @@ int main(int argc, char** argv)
             Check(bitmap.Save(output.c_str(),&png,nullptr)==Gdiplus::Ok,"save PNG");
         }
         Gdiplus::GdiplusShutdown(token); readable->UnlockRect();
+
+        // Gameplay watermark contract; keep the pre-game screenshots accurate
+        // by testing the overlay only after the manager PNG has been saved.
+        previewWatermark=true;
+        for(int corner=0;corner<4;++corner) for(int detail=0;detail<3;++detail) {
+            eth::Config::Get().SetInt("core","watermark_pos",corner);
+            eth::Config::Get().SetInt("core","watermark_detail",detail);
+            for(int frame=0;frame<3;++frame) drawFrame();
+            ImGuiWindow* watermark=ImGui::FindWindowByName("##ethhh_watermark");
+            Check(watermark && watermark->Active,"always-on watermark despite persisted disable");
+            Check(watermark->ScrollMax.x<1 && watermark->ScrollMax.y<1,"watermark unclipped");
+            Check(watermark->Pos.x>=0 && watermark->Pos.y>=0 &&
+                watermark->Pos.x+watermark->Size.x<=width && watermark->Pos.y+watermark->Size.y<=height,"watermark stays on screen");
+        }
+        previewWatermark=false;
 
         // Synthetic ImGui navigation only: no keyboard/mouse events are sent to
         // Windows, no visible window, and launcher::Run is never called.
@@ -198,7 +228,7 @@ int main(int argc, char** argv)
         ImGui_ImplDX9_Shutdown(); ImGui::DestroyContext(); readable->Release(); target->Release(); device->Release(); d3d->Release();
         DestroyWindow(hwnd); UnregisterClassW(wc.lpszClassName,instance);
         printf("PASS off-screen chrome + launcher routing: %dx%d scale %.2f, %s, %d unclipped cards -> %s\n",width,height,scale,
-            patchPage ? (stress ? "EthhhPatch synthetic live-layout fixture" : "EthhhPatch") : "Mods",cards,argv[1]);
+            patchPage ? tabs[patchTab] : "Mods",cards,argv[1]);
         return 0;
     } catch(const std::exception& ex) { fprintf(stderr,"preview failed: %s\n",ex.what()); return 1; }
 }

@@ -120,7 +120,7 @@ void Config::SetDefaults()
     c.SetInt("core", "watermark_pos", 0);
     c.SetInt("core", "watermark_detail", 1);
     c.SetFloat("core", "font_scale", 1.0f);
-    c.SetString("core", "accent", "6C8CFF");
+    c.SetString("core", "accent", "6FDDC1");
     c.SetBool("core", "verbose", false);
     c.SetBool("core", "safe_mode", false);
     c.SetBool("core", "debug_console", true);

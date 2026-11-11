@@ -181,6 +181,18 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6972641C-583A-334F-8A04-98B7AA2F8EA6}</Project>
       <Name>dinput8</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_camera_tests.vcxproj">
+      <Project>{F510FF59-D2F7-3E50-87FF-50164C21A7B0}</Project>
+      <Name>eth_ethhhpatch_camera_tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_entity_tests.vcxproj">
+      <Project>{F5BF6579-0FCE-34B1-B864-8B7C0E995410}</Project>
+      <Name>eth_ethhhpatch_entity_tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_interpolation_tests.vcxproj">
+      <Project>{6382AC09-68C6-36AC-A859-C69DF0E7792F}</Project>
+      <Name>eth_ethhhpatch_interpolation_tests</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_ethhhpatch_policy_tests.vcxproj">
       <Project>{E005259A-5A28-318F-A185-8E8E6A59040F}</Project>
       <Name>eth_ethhhpatch_policy_tests</Name>
@@ -189,9 +201,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{BFE1FD6A-5FDC-32B3-A7FF-6FFAEF042EBB}</Project>
       <Name>eth_ethhhpatch_projection_tests</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_movement_input_tests.vcxproj">
+      <Project>{7A3CBE79-DB32-3825-8D2A-D80837C15D3A}</Project>
+      <Name>eth_movement_input_tests</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_player_learning_tests.vcxproj">
       <Project>{BD84C48C-446F-3FE0-9084-F0E3B937E1E8}</Project>
       <Name>eth_player_learning_tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_sha256_tests.vcxproj">
+      <Project>{D2FD7C7E-D524-3456-842D-7102119FDC2D}</Project>
+      <Name>eth_sha256_tests</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_strat_identity_tests.vcxproj">
       <Project>{4DA1051F-1444-374A-88BD-25B53AC6E3D8}</Project>

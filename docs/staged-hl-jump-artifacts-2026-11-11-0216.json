@@ -1,0 +1,41 @@
+{
+  "profile": "Release Win32",
+  "staging_root": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist",
+  "supported_executable_sha256": "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0",
+  "assistant_installed": false,
+  "game_controlled": false,
+  "source_and_preservation_evidence": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-jump-verification-20261111-0216.json",
+  "artifacts": [
+    {
+      "relative": "dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "live_matches_at_snapshot": true
+    },
+    {
+      "relative": "EthhhSDK.dll",
+      "bytes": 1250304,
+      "sha256": "ee4cdfa54df31d9c56d7d8903c7508fd83ad9a099ca7d0b95f35384a7b6630b5",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "9b84d1bac6152e4e894bcbebef25f114e8c8b230b26391585869f2747df0bfbe",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 34304,
+      "sha256": "644c6a88ec453e705b2629beecab4fc44ae726ce4b9c3d5a6188cb6da0c0e434",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\mod.json",
+      "bytes": 456,
+      "sha256": "8c6487de965d1a50fcdc05dcdae421312eaf4edacf801a1e249e1428ee930d7c",
+      "live_matches_at_snapshot": true,
+      "installation_policy": "Preserve existing live manifests; this hash does not authorize replacing them."
+    }
+  ]
+}

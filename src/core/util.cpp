@@ -405,27 +405,39 @@ std::string Sha256FileHex(const std::string& path)
     BCRYPT_ALG_HANDLE alg = nullptr;
     BCRYPT_HASH_HANDLE hash = nullptr;
     std::string result;
-    DWORD hashLen = 0, cb = 0;
+    DWORD hashLen = 0, hashCb = 0;
+    DWORD objectLen = 0, objectCb = 0;
     std::vector<uint8_t> hashObj, digest;
     if (BCryptOpenAlgorithmProvider(&alg, BCRYPT_SHA256_ALGORITHM, nullptr, 0) == 0 &&
-        BCryptGetProperty(alg, BCRYPT_HASH_LENGTH, (PUCHAR)&hashLen, sizeof(hashLen), &cb, 0) == 0) {
+        BCryptGetProperty(alg, BCRYPT_HASH_LENGTH, (PUCHAR)&hashLen, sizeof(hashLen), &hashCb, 0) == 0) {
         digest.resize(hashLen);
-        if (BCryptGetProperty(alg, BCRYPT_OBJECT_LENGTH, (PUCHAR)&cb, sizeof(cb), &cb, 0) == 0) {
-            hashObj.resize(cb);
+        // The property buffer and its returned byte count must be separate
+        // variables. Aliasing one DWORD for both lets BCryptGetProperty corrupt
+        // cbHashObject on some Windows builds; BCryptCreateHash then fails and
+        // the caller sees an empty hash (the live WASD hook silently refused).
+        if (BCryptGetProperty(alg, BCRYPT_OBJECT_LENGTH, (PUCHAR)&objectLen, sizeof(objectLen), &objectCb, 0) == 0) {
+            hashObj.resize(objectLen);
             if (BCryptCreateHash(alg, &hash, hashObj.data(), (ULONG)hashObj.size(), nullptr, 0, 0) == 0) {
                 std::vector<uint8_t> buf(64 * 1024);
-                DWORD read = 0;
-                while (ReadFile(h, buf.data(), (DWORD)buf.size(), &read, nullptr) && read > 0)
-                    BCryptHashData(hash, buf.data(), read, 0);
-                if (BCryptFinishHash(hash, digest.data(), (ULONG)digest.size(), 0) == 0) {
+                bool ok = true;
+                for (;;) {
+                    DWORD read = 0;
+                    if (!ReadFile(h, buf.data(), (DWORD)buf.size(), &read, nullptr)) {
+                        ok = GetLastError() == ERROR_HANDLE_EOF;
+                        break;
+                    }
+                    if (read == 0) break;
+                    if (BCryptHashData(hash, buf.data(), read, 0) != 0) { ok = false; break; }
+                }
+                if (ok && BCryptFinishHash(hash, digest.data(), (ULONG)digest.size(), 0) == 0) {
                     static const char* hex = "0123456789abcdef";
                     result.reserve(digest.size() * 2);
                     for (uint8_t b : digest) { result.push_back(hex[b >> 4]); result.push_back(hex[b & 15]); }
                 }
-                BCryptDestroyHash(hash);
             }
         }
     }
+    if (hash) BCryptDestroyHash(hash);
     if (alg) BCryptCloseAlgorithmProvider(alg, 0);
     CloseHandle(h);
     return result;

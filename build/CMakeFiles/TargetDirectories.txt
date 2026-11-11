@@ -10,4 +10,9 @@ C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_player
 C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_strat_identity_tests.dir
 C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_ethhhpatch_policy_tests.dir
 C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_ethhhpatch_projection_tests.dir
+C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_ethhhpatch_camera_tests.dir
+C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_ethhhpatch_interpolation_tests.dir
+C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_ethhhpatch_entity_tests.dir
+C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_movement_input_tests.dir
+C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_sha256_tests.dir
 C:/Users/Administrator/Desktop/ininja/EthhhSDK/build/tests/CMakeFiles/eth_chrome_preview.dir

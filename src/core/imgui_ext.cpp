@@ -2,11 +2,12 @@
 #include "util.h"
 #include "log.h"
 #include "config.h"
+#include <cfloat>
 
 namespace eth::ui {
 
 namespace {
-ImU32 g_accent = IM_COL32(108, 140, 255, 255);
+ImU32 g_accent = IM_COL32(111, 221, 193, 255);
 float g_scale = 1.0f;
 float g_dpi = 1.0f;
 
@@ -132,9 +133,9 @@ void LoadFonts(float scale)
     };
 
     g_regular = addFont(regularPath, 16.0f);
-    g_small   = addFont(regularPath, 14.0f);
-    g_bold    = addFont(boldPath, 17.0f);
-    g_title   = addFont(boldPath, 26.0f);
+    g_small   = addFont(regularPath, 13.0f);
+    g_bold    = addFont(boldPath, 16.0f);
+    g_title   = addFont(boldPath, 28.0f);
 
     if (!g_regular) {
         ETH_WARN("no system TTF font found, falling back to ImGui default");
@@ -157,21 +158,21 @@ void ApplyTheme()
     st = ImGuiStyle(); // no cumulative DPI scaling when the accent changes
     ImGui::StyleColorsDark(&st);
 
-    st.WindowRounding = 12.0f;
-    st.ChildRounding = 8.0f;
+    st.WindowRounding = 10.0f;
+    st.ChildRounding = 10.0f;
     st.PopupRounding = 8.0f;
-    st.FrameRounding = 5.0f;
+    st.FrameRounding = 6.0f;
     st.ScrollbarRounding = 8.0f;
     st.GrabRounding = 6.0f;
     st.TabRounding = 6.0f;
     st.WindowBorderSize = 1.0f;
     st.ChildBorderSize = 1.0f;
-    st.FrameBorderSize = 0.0f;
+    st.FrameBorderSize = 1.0f;
     st.PopupBorderSize = 1.0f;
-    st.WindowPadding = ImVec2(18, 16);
-    st.FramePadding = ImVec2(12, 7);
+    st.WindowPadding = ImVec2(20, 18);
+    st.FramePadding = ImVec2(12, 8);
     st.CellPadding = ImVec2(8, 6);
-    st.ItemSpacing = ImVec2(12, 10);
+    st.ItemSpacing = ImVec2(12, 9);
     st.ItemInnerSpacing = ImVec2(8, 6);
     st.IndentSpacing = 18.0f;
     st.ScrollbarSize = 12.0f;
@@ -188,16 +189,16 @@ void ApplyTheme()
 
     auto set = [&](ImGuiCol idx, ImU32 c) { st.Colors[idx] = ImGui::ColorConvertU32ToFloat4(c); };
 
-    set(ImGuiCol_Text,                 IM_COL32(235, 238, 244, 255));
-    set(ImGuiCol_TextDisabled,         IM_COL32(155, 164, 179, 255));
-    set(ImGuiCol_WindowBg,             IM_COL32(18, 20, 25, 255));
+    set(ImGuiCol_Text,                 IM_COL32(230, 235, 234, 255));
+    set(ImGuiCol_TextDisabled,         IM_COL32(143, 155, 154, 255));
+    set(ImGuiCol_WindowBg,             IM_COL32(15, 19, 21, 255));
     set(ImGuiCol_ChildBg,              IM_COL32(0, 0, 0, 0));
-    set(ImGuiCol_PopupBg,              IM_COL32(27, 30, 37, 255));
-    set(ImGuiCol_Border,               IM_COL32(46, 50, 60, 255));
+    set(ImGuiCol_PopupBg,              IM_COL32(25, 31, 33, 255));
+    set(ImGuiCol_Border,               IM_COL32(43, 53, 55, 255));
     set(ImGuiCol_BorderShadow,         IM_COL32(0, 0, 0, 0));
-    set(ImGuiCol_FrameBg,              IM_COL32(34, 38, 47, 255));
-    set(ImGuiCol_FrameBgHovered,       IM_COL32(44, 49, 61, 255));
-    set(ImGuiCol_FrameBgActive,        IM_COL32(51, 58, 73, 255));
+    set(ImGuiCol_FrameBg,              IM_COL32(23, 29, 31, 255));
+    set(ImGuiCol_FrameBgHovered,       IM_COL32(33, 43, 44, 255));
+    set(ImGuiCol_FrameBgActive,        IM_COL32(40, 52, 52, 255));
     set(ImGuiCol_TitleBg,              IM_COL32(16, 19, 26, 255));
     set(ImGuiCol_TitleBgActive,        IM_COL32(16, 19, 26, 255));
     set(ImGuiCol_TitleBgCollapsed,     IM_COL32(16, 19, 26, 200));
@@ -209,33 +210,33 @@ void ApplyTheme()
     set(ImGuiCol_CheckMark,            g_accent);
     set(ImGuiCol_SliderGrab,           g_accent);
     set(ImGuiCol_SliderGrabActive,     WithAlpha(g_accent, 0.85f));
-    set(ImGuiCol_Button,               IM_COL32(29, 35, 48, 255));
-    set(ImGuiCol_ButtonHovered,        IM_COL32(38, 47, 64, 255));
+    set(ImGuiCol_Button,               IM_COL32(28, 37, 39, 255));
+    set(ImGuiCol_ButtonHovered,        IM_COL32(39, 52, 52, 255));
     set(ImGuiCol_ButtonActive,         WithAlpha(g_accent, 0.55f));
-    set(ImGuiCol_Header,               IM_COL32(33, 41, 56, 255));
-    set(ImGuiCol_HeaderHovered,        IM_COL32(42, 53, 72, 255));
+    set(ImGuiCol_Header,               IM_COL32(31, 43, 43, 255));
+    set(ImGuiCol_HeaderHovered,        IM_COL32(39, 54, 53, 255));
     set(ImGuiCol_HeaderActive,         WithAlpha(g_accent, 0.45f));
-    set(ImGuiCol_Separator,            IM_COL32(34, 40, 53, 255));
+    set(ImGuiCol_Separator,            IM_COL32(39, 49, 51, 255));
     set(ImGuiCol_SeparatorHovered,     WithAlpha(g_accent, 0.6f));
     set(ImGuiCol_SeparatorActive,      g_accent);
     set(ImGuiCol_ResizeGrip,           IM_COL32(45, 53, 69, 160));
     set(ImGuiCol_ResizeGripHovered,    WithAlpha(g_accent, 0.45f));
     set(ImGuiCol_ResizeGripActive,     WithAlpha(g_accent, 0.75f));
-    set(ImGuiCol_Tab,                  IM_COL32(21, 25, 34, 255));
-    set(ImGuiCol_TabHovered,           IM_COL32(38, 47, 64, 255));
-    set(ImGuiCol_TabSelected,          IM_COL32(33, 41, 56, 255));
+    set(ImGuiCol_Tab,                  IM_COL32(22, 29, 31, 255));
+    set(ImGuiCol_TabHovered,           IM_COL32(38, 53, 51, 255));
+    set(ImGuiCol_TabSelected,          IM_COL32(34, 49, 47, 255));
     set(ImGuiCol_TabSelectedOverline,  g_accent);
-    set(ImGuiCol_TabDimmed,            IM_COL32(18, 21, 29, 255));
-    set(ImGuiCol_TabDimmedSelected,    IM_COL32(27, 33, 45, 255));
+    set(ImGuiCol_TabDimmed,            IM_COL32(19, 25, 27, 255));
+    set(ImGuiCol_TabDimmedSelected,    IM_COL32(28, 39, 39, 255));
     set(ImGuiCol_TabDimmedSelectedOverline, WithAlpha(g_accent, 0.5f));
     set(ImGuiCol_PlotLines,            WithAlpha(g_accent, 0.9f));
     set(ImGuiCol_PlotHistogram,        WithAlpha(g_accent, 0.9f));
     set(ImGuiCol_TextSelectedBg,       WithAlpha(g_accent, 0.35f));
     set(ImGuiCol_DragDropTarget,       g_accent);
     set(ImGuiCol_NavCursor,            g_accent);
-    set(ImGuiCol_TableHeaderBg,        IM_COL32(20, 24, 33, 255));
-    set(ImGuiCol_TableBorderStrong,    IM_COL32(34, 40, 53, 255));
-    set(ImGuiCol_TableBorderLight,     IM_COL32(27, 32, 43, 255));
+    set(ImGuiCol_TableHeaderBg,        IM_COL32(22, 29, 31, 255));
+    set(ImGuiCol_TableBorderStrong,    IM_COL32(39, 49, 51, 255));
+    set(ImGuiCol_TableBorderLight,     IM_COL32(29, 38, 40, 255));
     set(ImGuiCol_TableRowBg,           IM_COL32(0, 0, 0, 0));
     set(ImGuiCol_TableRowBgAlt,        IM_COL32(255, 255, 255, 4));
     set(ImGuiCol_ModalWindowDimBg,     IM_COL32(5, 7, 10, 170));
@@ -341,7 +342,7 @@ bool NavItem(const char* id, const char* label, bool selected, const char* short
 {
     ImGui::PushID(id);
     ImVec2 pos = ImGui::GetCursorScreenPos();
-    float height = 42.0f * g_scale;
+    float height = 40.0f * g_scale;
     float width = ImGui::GetContentRegionAvail().x;
     bool clicked = ImGui::InvisibleButton("##nav", ImVec2(width, height), ImGuiButtonFlags_EnableNav);
     bool hovered = ImGui::IsItemHovered();
@@ -349,16 +350,17 @@ bool NavItem(const char* id, const char* label, bool selected, const char* short
     ImDrawList* dl = ImGui::GetWindowDrawList();
     ImVec2 max(pos.x + width, pos.y + height);
     if (selected)
-        dl->AddRectFilled(pos, max, WithAlpha(g_accent, 0.15f), 6.0f * g_scale);
+        dl->AddRectFilled(pos, max, WithAlpha(g_accent, 0.10f), 6.0f * g_scale);
     else if (hovered)
-        dl->AddRectFilled(pos, max, IM_COL32(29, 33, 41, 255), 6.0f * g_scale);
+        dl->AddRectFilled(pos, max, IM_COL32(30, 39, 41, 255), 6.0f * g_scale);
     if (selected)
-        dl->AddRectFilled(ImVec2(pos.x, pos.y + height * 0.22f), ImVec2(pos.x + 3.0f * g_scale, pos.y + height * 0.78f),
-                          g_accent, 2.0f * g_scale);
+        dl->AddRect(pos, max, WithAlpha(g_accent, 0.25f), 6.0f * g_scale);
 
     float textH = ImGui::GetTextLineHeight();
-    dl->AddText(ImVec2(pos.x + 16.0f * g_scale, pos.y + (height - textH) * 0.5f),
-                selected ? IM_COL32(240, 243, 250, 255) : IM_COL32(168, 177, 195, 255), label);
+    dl->AddCircleFilled(ImVec2(pos.x + 17*g_scale,pos.y+height*.5f),3*g_scale,
+        selected ? g_accent : IM_COL32(88,106,106,255));
+    dl->AddText(ImVec2(pos.x + 31.0f * g_scale, pos.y + (height - textH) * 0.5f),
+                selected ? IM_COL32(232, 240, 237, 255) : IM_COL32(151, 166, 164, 255), label);
     if (shortcut && *shortcut) {
         ImVec2 s = ImGui::CalcTextSize(shortcut);
         dl->AddText(ImVec2(pos.x + width - s.x - 14.0f * g_scale, pos.y + (height - s.y) * 0.5f),
@@ -404,11 +406,13 @@ void EndCard()
 void DrawLogo(ImVec2 pos, float size)
 {
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    dl->AddRectFilled(pos, ImVec2(pos.x + size, pos.y + size), g_accent, size * 0.26f);
-    ImDrawList* d = dl;
-    float cx = pos.x + size * 0.5f, cy = pos.y + size * 0.5f;
-    d->AddText(ImVec2(cx - ImGui::CalcTextSize("E").x * 0.5f, cy - ImGui::GetTextLineHeight() * 0.5f),
-               IM_COL32(8, 10, 14, 255), "E");
+    dl->AddRectFilled(pos, ImVec2(pos.x+size,pos.y+size), AccentDim(.12f), size*.18f);
+    dl->AddRect(pos, ImVec2(pos.x+size,pos.y+size), AccentDim(.4f), size*.18f);
+    // A geometric E mark: no font/icon dependency and crisp at every DPI.
+    for (int i=0;i<3;++i) {
+        const float y=pos.y+size*(.28f+i*.20f), width=i==1 ? .32f : .44f;
+        dl->AddRectFilled(ImVec2(pos.x+size*.27f,y),ImVec2(pos.x+size*(.27f+width),y+size*.07f),g_accent);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -430,14 +434,14 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
 
     ImVec2 pos = ImGui::GetWindowPos();
     ImVec2 size = ImGui::GetWindowSize();
-    float headerH = 76.0f * g_scale;
+    float headerH = 64.0f * g_scale;
     float pad = 20.0f * g_scale;
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    dl->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + headerH), IM_COL32(22, 25, 31, 255), 12.0f * g_scale,
+    dl->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + headerH), IM_COL32(20, 27, 29, 255), 10.0f * g_scale,
                       ImDrawFlags_RoundCornersTop);
     dl->AddLine(ImVec2(pos.x, pos.y + headerH), ImVec2(pos.x + size.x, pos.y + headerH),
-                IM_COL32(46, 50, 60, 255), 1.0f);
+                 IM_COL32(43, 53, 55, 255), 1.0f);
 
     // A real header hit-target; dragging never steals a close-button click.
     ImGui::SetCursorScreenPos(pos);
@@ -446,19 +450,25 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
         ImVec2 delta = ImGui::GetIO().MouseDelta;
         ImGui::SetWindowPos(ImVec2(pos.x + delta.x, pos.y + delta.y));
     }
-    DrawLogo(ImVec2(pos.x + pad, pos.y + 18.0f * g_scale), 40.0f * g_scale);
-    float titleX = pos.x + pad + 54.0f * g_scale;
+    DrawLogo(ImVec2(pos.x + pad, pos.y + 16.0f * g_scale), 32.0f * g_scale);
+    float titleX = pos.x + pad + 46.0f * g_scale;
     ImVec4 textClip(titleX, pos.y, pos.x + size.x - 68.0f * g_scale, pos.y + headerH);
-    dl->AddText(FontBold(), FontBold()->FontSize, ImVec2(titleX, pos.y + 17.0f * g_scale),
+    dl->AddText(FontBold(), FontBold()->FontSize, ImVec2(titleX, pos.y + 12.0f * g_scale),
                 IM_COL32(235, 238, 244, 255), title, nullptr, 0, &textClip);
     if (subtitle && *subtitle) {
-        dl->AddText(FontSmall(), FontSmall()->FontSize, ImVec2(titleX, pos.y + 43.0f * g_scale),
+        dl->AddText(FontSmall(), FontSmall()->FontSize, ImVec2(titleX, pos.y + 35.0f * g_scale),
                     IM_COL32(155, 164, 179, 255), subtitle, nullptr, 0, &textClip);
+    }
+    if (size.x > 760*g_scale) {
+        const char* tag = "I-NINJA  /  MOD WORKSPACE";
+        const ImVec2 ts=FontSmall()->CalcTextSizeA(FontSmall()->FontSize,FLT_MAX,0,tag);
+        dl->AddText(FontSmall(),FontSmall()->FontSize,ImVec2(pos.x+size.x-ts.x-86*g_scale,pos.y+25*g_scale),
+            IM_COL32(107,131,130,255),tag);
     }
 
     // custom close button
     ImGui::PushID(id);
-    ImVec2 closePos(pos.x + size.x - 52.0f * g_scale, pos.y + 22.0f * g_scale);
+    ImVec2 closePos(pos.x + size.x - 52.0f * g_scale, pos.y + 16.0f * g_scale);
     ImGui::SetCursorScreenPos(closePos);
     bool closeClicked = ImGui::InvisibleButton("##close", ImVec2(32.0f * g_scale, 32.0f * g_scale), ImGuiButtonFlags_EnableNav);
     bool closeHovered = ImGui::IsItemHovered();
@@ -478,7 +488,7 @@ bool BeginChromeWindow(const char* id, const char* title, const char* subtitle,
 
     // content child
     ImGui::SetCursorPos(ImVec2(0, headerH));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(pad, 20.0f * g_scale));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0, 0, 0, 0));
     g_chromeOpen = true;
     g_chromePushed = true;

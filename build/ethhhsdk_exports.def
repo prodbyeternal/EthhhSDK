@@ -55,6 +55,7 @@ EXPORTS
     EthMem_ModuleBase
     EthMem_GameAddr
     EthInput_KeyDown
+    EthInput_LeaseMovementKeys
     EthInput_KeyPressed
     EthInput_MouseDown
     EthInput_GetMouseDelta

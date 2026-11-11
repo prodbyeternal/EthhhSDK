@@ -133,7 +133,7 @@ void DrawManagerWindow()
         return;
 
     float margin = 22.0f * s;
-    ImVec2 want(1180.0f * s, 744.0f * s);
+    ImVec2 want(1200.0f * s, 780.0f * s);
     ImVec2 size(std::min(want.x, io.DisplaySize.x - margin * 2.0f),
                 std::min(want.y, io.DisplaySize.y - margin * 2.0f));
     if (size.x < 520.0f * s) size.x = io.DisplaySize.x;
@@ -159,12 +159,7 @@ void DrawManagerWindow()
         return;
     }
 
-    float sidebarW = std::min(196.0f * s, ImGui::GetContentRegionAvail().x * 0.28f);
-    ui::pages::DrawSidebar(sidebarW, false, nullptr, nullptr);
-    ImGui::SameLine();
-
-    ImVec2 avail(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-    ui::pages::DrawContent(avail, false, ui::pages::CurrentPage());
+    ui::pages::DrawManagerLayout(false);
 
     ui::EndChromeWindow();
 

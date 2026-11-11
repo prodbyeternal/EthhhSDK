@@ -52,7 +52,8 @@ see [the connection API and safety contract](docs/ninja-connection.md).
 The adapter writes the selected strat's
 raw XYZ at `+0x160` after the original game tick. It does not instantiate a
 GoldSrc player hull and has no verified I-Ninja hull traces or grounded flag.
-Replacement movement can bypass collision corrections. Test in open areas.
+Bounded segment sweeps do not establish native whole-body collision or internal
+fall state. Test in open areas and use F3 if motion or respawn is wrong.
 
 Learn now ranks input-versus-idle motion and never auto-pins a winner. Camera
 helpers and followers can resemble the player. See
@@ -64,16 +65,21 @@ default `0.025` is an **estimate, not a measured world scale**. At this scale:
 | HL quantity | I-Ninja quantity |
 | --- | --- |
 | 320 units/s walking speed | 8 game units/s |
-| 55-unit eye height | 1.375 game units |
+| 69-unit eye height | 1.725 game units |
+| 24-unit forward offset | 0.6 game units |
 | ~45-unit jump apex | ~1.125 game units |
 
-Jump uses an anchored, half-gravity arc rather than repeatedly adding its
-height. Physics tests do not prove correct live collisions, camera handedness,
-world units, or character rendering.
+Jump uses explicit flight ownership and half-gravity motion with floor/ceiling
+sweeps; holding Auto-hop cannot rebase an ascending near-floor arc. Native
+takeoffs have priority. Horizontal sweeps preserve native corrections and
+re-trace wall slides rather than rewinding last tick's position. See
+[the jump/wall follow-up](docs/verification-hl-jump-2026-11-11-0216.md).
+Offline tests do not prove live collisions, out-of-bounds state, camera
+handedness, world units, or character rendering.
 
 The FPS-camera defaults are **69 HL units eye height** and **24 HL units forward
-offset**, chosen to keep the synchronized Ninja body behind the first-person
-view. Existing user settings remain authoritative.
+offset**, intended to keep the Ninja body behind the first-person view. Whole-body
+synchronization remains unverified; existing user settings remain authoritative.
 
 Manual player pinning uses cached validity plus lightweight handle/list checks;
 it no longer rebuilds the complete strat candidate list every tick. Writable
@@ -95,6 +101,13 @@ render-driven HUD pulse from completed ticks, uniformly fits 640x480 movies, and
 paces Presents to the target Hz. This staged build has not yet been installed or
 live-accepted; unsupported modes are refused rather than guessed.
 See [EthhhPatch development status](docs/ethhhpatch.md).
+
+Outside HL mode, the optional third-person mouse orbit updates the actual View
+pose every render and restores native camera/View bytes after the frame. It
+yields to movies, HL ownership and suspected scripted shots. After a suspected
+shot, use F9 **Resume orbit after scripted camera**; cutscene detection is still
+conservative, not a verified native cutscene flag. Unchecking orbit retains the
+native camera without restoring/reapplying the display patch.
 
 ## Attribution / distribution status
 

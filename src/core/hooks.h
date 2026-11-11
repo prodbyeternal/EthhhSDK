@@ -9,6 +9,7 @@ bool Init();
 
 // Fn_Tick hook - the game's fixed 60 Hz logic tick. Runs 1..4 times per frame.
 bool InstallTickHook();
+bool InstallMovementInputHook(); // lazy, exact keyboard-poll bytes only
 
 // Watches for the game window + D3D9 device and installs WndProc/EndScene hooks.
 void StartGameWatcher();

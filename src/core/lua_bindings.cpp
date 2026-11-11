@@ -382,6 +382,7 @@ int m_addr(lua_State* L) { lua_pushinteger(L, (lua_Integer)GameAddr((uintptr_t)l
 
 // ----------------------------------------------------------------- input ----
 int i_key(lua_State* L)         { lua_pushboolean(L, input::KeyDown(VkFromLua(L, 1))); return 1; }
+int i_lease_movement(lua_State* L) { lua_pushboolean(L, input::LeaseMovementKeys((uintptr_t)luaL_checkinteger(L, 1), lua_toboolean(L, 2) != 0)); return 1; }
 int i_key_pressed(lua_State* L) { lua_pushboolean(L, input::KeyPressed(VkFromLua(L, 1))); return 1; }
 int i_mouse_down(lua_State* L)  { lua_pushboolean(L, input::MouseDown((int)luaL_optinteger(L, 1, 0))); return 1; }
 int i_mouse_delta(lua_State* L)
@@ -563,6 +564,7 @@ void RegisterApi(lua_State* L, const mods::ModInfo& mod)
 
     static const luaL_Reg inputFuncs[] = {
         { "key", i_key }, { "key_pressed", i_key_pressed }, { "mouse_down", i_mouse_down },
+        { "lease_movement_keys", i_lease_movement },
         { "mouse_delta", i_mouse_delta }, { "consume_mouse", i_consume_mouse },
         { "set_capture", i_set_capture }, { "capture", i_capture },
         { "overlay_open", i_overlay_open }, { "key_name", i_key_name },

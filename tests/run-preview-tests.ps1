@@ -23,9 +23,19 @@ $cases = @(
     @('patch-hidpi',1728,1056,1.5,0,1),
     @('patch-fixture',1152,704,1,1,1),
     @('patch-fixture-narrow',900,640,1,1,1),
-    @('patch-fixture-hidpi',1728,1056,1.5,1,1)
+    @('patch-fixture-hidpi',1728,1056,1.5,1,1),
+    @('camera',1152,704,1,0,1,1),
+    @('camera-narrow',900,640,1,0,1,1),
+    @('camera-hidpi',1728,1056,1.5,0,1,1),
+    @('animation',1152,704,1,0,1,2),
+    @('animation-narrow',900,640,1,0,1,2),
+    @('animation-hidpi',1728,1056,1.5,0,1,2),
+    @('diagnostics',1152,704,1,1,1,3),
+    @('diagnostics-narrow',900,640,1,1,1,3),
+    @('diagnostics-hidpi',1728,1056,1.5,1,1,3)
 )
 foreach ($case in $cases) {
-    & $preview (Join-Path $OutputDir "ethhh-chrome-$($case[0]).png") $case[1] $case[2] $case[3] $case[4] $case[5]
+    $tab = if ($case.Length -gt 6) { $case[6] } else { 0 }
+    & $preview (Join-Path $OutputDir "ethhh-chrome-$($case[0]).png") $case[1] $case[2] $case[3] $case[4] $case[5] $tab
     if ($LASTEXITCODE -ne 0) { throw "Chrome/routing regression failed: $($case[0])" }
 }

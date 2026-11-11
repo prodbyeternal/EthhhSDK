@@ -22,6 +22,8 @@ void DrawSidebar(float width, bool launcherMode, bool* startGame, bool* exitApp)
 
 // Right content area for the given page.
 void DrawContent(const ImVec2& avail, bool launcherMode, Page page);
+// Shared responsive shell for launcher, overlay and off-screen previews.
+void DrawManagerLayout(bool launcherMode, bool* startGame = nullptr, bool* exitApp = nullptr);
 
 // Always-on game watermark (drawn by the overlay).
 void DrawWatermark();

@@ -66,6 +66,30 @@ and `role`. `game.strat_identity(addr)` returns nil on failure, otherwise
 `owner_addr`, `model`, `animation`, `node_matrices`, and `role`.
 `game.player_detection_info()` supplies human-readable status.
 
+## Native control safety follow-up — 2026-11-11
+
+`EthGame_PlayerReacquireExactNinja` now enforces prior selection in the native
+tracker, not just in its managed caller. Consent is session-local and requires an
+explicit selection of the unique exact Ninja from a complete bounded list, with
+live membership and full self-handle validation. Reacquisition still requires a
+complete list with a unique exact Ninja and manual tracking mode. Losing the
+entity preserves consent for respawn; reset, mode changes, learning, and a
+different/failed explicit selection revoke it. Persisted `active=1` cannot grant
+this permission. Selecting through an explicit SDK API is selection intent; the
+SDK does not distinguish a UI click from a caller requesting that selection.
+
+The experimental `EthGame_SetNinjaFacing` path no longer copies a fourth float
+from `StratView::angles[3]` (the snapshot has only three elements). It writes just
+the yaw scalar at `strat+0x174` and the four-component quaternion at `+0x180`,
+leaving pitch, roll, `+0x17C` padding and other neighbors untouched. Nonfinite yaw
+is refused, and finite yaw is wrapped before script-unit/quaternion conversion.
+Exact identity/full-handle checks remain. This does not establish atomic writes,
+an authoritative post-movement transform refresh, or synchronized model nodes.
+
+Offline tests exercise the shared native consent/facing policy and exact byte
+write ranges. The managed fake engine checks the interop contract separately;
+neither is a live respawn or model-facing acceptance result.
+
 ## What this deliberately does not implement
 
 HL activation still requires a manual pin and now additionally requires exact

@@ -1,0 +1,121 @@
+{
+  "profile": "Release Win32",
+  "status": "staged; installation and live acceptance pending",
+  "created_at": "2026-11-11T07:07:16+01:00",
+  "root_cause": "Sha256FileHex passed one DWORD as both the BCryptGetProperty(BCRYPT_OBJECT_LENGTH) buffer and its returned byte count. The corrupted object length made BCryptCreateHash fail, so the executable-hash gate compared an empty string and InstallMovementInputHook() silently returned false. No keyboard hook or fingerprint log was emitted.",
+  "fix": "Separate the BCrypt property buffer and returned-size variables; check hash/read errors; destroy only created hashes. Add diagnostic logs for hook creation, SHA refusal and lease refusal reasons. Add a real-BCrypt SHA-256 regression.",
+  "evidence": {
+    "live_failure": {
+      "log": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\logs\\EthhhSDK.log",
+      "lines": [
+        "06:46:50.902 [INF] [halflife_movement] activated (movement=1 camera=1)",
+        "06:46:50.907 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions",
+        "06:46:50.907 [INF] [halflife_movement] deactivated"
+      ],
+      "missing_expected_lines": [
+        "HL opt-in WASD filter installed",
+        "HL keyboard poll fingerprint mismatch"
+      ]
+    },
+    "bcrypt_probe": {
+      "compiler": "MSVC x86 (Visual Studio 2022)",
+      "buggy_result": "",
+      "fixed_result": "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0",
+      "supported_exe_sha256": "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0",
+      "keyboard_poll": "0x4427A0",
+      "keyboard_poll_fingerprint_verified": true
+    },
+    "build_log": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-build-sha-fix-20261111.log",
+      "sha256": "5ed3b7d6eb6066ce288469d7b44f4e9f54e1de148fd3037d7a2562a332992b11"
+    },
+    "test_log": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-tests-sha-fix-20261111.log",
+      "sha256": "bc357fb2e652ba22f860e8c187144308aab1828efa9ebf77470f8d8e9163b96d"
+    }
+  },
+  "source_hashes": {
+    "src\\core\\util.cpp": "8b06d3e83fdb54efde9ec3a825ebc4146b4bdab9ab3af728da6b976933b3c7fe",
+    "src\\core\\hooks.cpp": "5a7035f89b503d581994bc21dc79836d5fe39ef50b4b7518747c3d15ee7c0925",
+    "src\\core\\input.cpp": "0c811a5f1cb84b42136a0a58194026b3ff79c62d93ea3d10c40ca1a9507defb3",
+    "tests\\Sha256Tests.cpp": "7ab36ba51ebdfa2647f360ac48d624cbf089da318478fad4f048654ddb2a9737"
+  },
+  "tests": {
+    "hl_math_assertions": 23721,
+    "hl_collision_assertions": 4685,
+    "managed_interop_assertions_per_run": 331,
+    "managed_interop_runs": 6,
+    "additive_assertions": 45,
+    "camera_only_assertions": 45,
+    "player_learning_assertions": 8,
+    "strat_identity_assertions": 33,
+    "consent_facing_assertions": 669,
+    "native_movement_input_assertions": 41876,
+    "sha256_file_hashing_assertions": 4,
+    "ethhhpatch_policy_assertions": 24415,
+    "ethhhpatch_projection_assertions": 274,
+    "ethhhpatch_camera_assertions": 13947,
+    "evidence_tests": 25,
+    "hotpath_guard_tests": 14,
+    "required_exports": 219,
+    "pinvoke_bindings": 217,
+    "all_passed": true
+  },
+  "staged_artifacts": [
+    {
+      "relative": "dinput8.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "changed_since_live": false
+    },
+    {
+      "relative": "EthhhSDK.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\EthhhSDK.dll",
+      "bytes": 1258496,
+      "sha256": "b89a7734af4909c0fa544109330e97bfe4f6ca31030312125032b0d465603bf3",
+      "changed_since_live": true
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "03a9a2c8ffd9fd6c145e30435fad15d7fa4f2534ad9fc4c68c9a5854a64d6bc9",
+      "changed_since_live": true,
+      "note": "Rebuilt with unchanged source; binary hash differs from the installed host."
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 34816,
+      "sha256": "bc3c82f502bcde0830d6059b4470ba4f873eea034b6c4a1b14a5673e67b0d53a",
+      "changed_since_live": true,
+      "note": "Rebuilt with unchanged source; binary hash differs from the installed mod."
+    }
+  ],
+  "live_artifacts_at_staging": [
+    {
+      "relative": "EthhhSDK.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK.dll",
+      "bytes": 1256960,
+      "sha256": "d8dd2de319e71bf5c900fbddb131ea9ba687f6ee5f473f17d64c95dbace53ab3"
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "6044ff7a81f0bcdcfbd4fe35f396e538421780f4ced7265977e070755b72ade8"
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 34816,
+      "sha256": "073334faa78b45d26eaef7e1d5a8a2db862ac2d29d6fd23be19efecc3cd957d3"
+    }
+  ],
+  "game_processes_at_staging": 0,
+  "install_authorized": false,
+  "requires_fresh_manual_closure_confirmation": true,
+  "report": "verification-hl-keyboard-hook-2026-11-11.md",
+  "limitations": "Offline evidence only. No live proof yet of hook installation, keyboard filtering, camera-relative movement, traversal handoff, collision, animation, cutscenes, high-refresh smoothness or lag elimination. Installation and restart remain user-controlled."
+}

@@ -96,7 +96,8 @@ namespace gfx {
 // ------------------------------------------------------------- WINDOW / INPUT --
 namespace win {
     constexpr uintptr_t hWnd           = 0x50FFAC; // [V] HWND (copied from window object+8 at 0x43DDDE)
-    constexpr uintptr_t pHInstance     = 0x50FFA4; // [V] pointer to HINSTANCE
+    constexpr uintptr_t pApp           = 0x50FFA4; // [V] -> App object (alloc 0x43A4B0, ctor 0x43D800)
+    constexpr uintptr_t pHInstance     = pApp;     // App+0x00 = HINSTANCE (not a standalone pointer)
     constexpr uintptr_t pClassName     = 0x4F00F8; // [V] -> "LegoNinjaPCWindowClass"
     constexpr uintptr_t WindowMap      = 0x525874; // [V] HWND -> window object lookup (find fn 0x457240)
     constexpr uintptr_t WndProc_Static = 0x4572B0; // [V] registered WNDPROC, stdcall(hwnd,msg,wp,lp); falls back to DefWindowProcA
@@ -124,6 +125,27 @@ namespace loop {
     constexpr uintptr_t TimeStepF      = 0x51AB40; // [V] float = StratMgr.TimeScale * (1/60); set at top of StratMgr tick (0x4246F3..0x4246FF)
     constexpr uintptr_t GameTimeF      = 0x51AB44; // [V] float, GameTimeF += TimeStepF at end of Fn_Tick (0x43E14F..0x43E166)
     constexpr uintptr_t pSettings      = 0x529214; // [I] -> settings struct (bytes at +2,+4,+0xD gate render/UI)
+
+    // App fields [V] (App = *(void**)0x50FFA4; ctor 0x43D800 initialises them):
+    //   +0x00 HINSTANCE
+    //   +0x08 fixed-step timer, set to 60 Hz by Timer_SetRate (0x4010B0)
+    //   +0x28 render pose interpolation fraction (View_Render, 0x43F2E4)
+    //   +0x2C input object, +0x30 window/message object, +0x38..+0x44 lifecycle
+    namespace app {
+        constexpr uintptr_t HInstance          = 0x00; // [V]
+        constexpr uintptr_t Timer              = 0x08; // [V]
+        constexpr uintptr_t Interpolation      = 0x28; // [V] float, normally forced to 1.0 by Fn_RenderStep
+        constexpr uintptr_t Input              = 0x2C; // [V] pointer, used by input::MovementTarget
+    }
+    // Timer object (App+0x08), verified by Timer_SetRate 0x4010B0 and
+    // Timer_Update 0x401110. Timer_Update floors whole ticks and leaves a
+    // non-negative sub-tick remainder used here for render interpolation.
+    namespace timer {
+        constexpr uintptr_t MsPerTick          = 0x00; // [V] float, 1000 / rate (16.6667 at 60 Hz)
+        constexpr uintptr_t TicksPerMs         = 0x04; // [V] float, rate / 1000 (0.06 at 60 Hz)
+        constexpr uintptr_t RemainderMs        = 0x08; // [V] float, unconsumed time since the last whole tick
+        constexpr uintptr_t Clock              = 0x10; // [V] 16-byte performance-counter clock
+    }
 
     // Timing model [V]: logic is FIXED-STEP 60 Hz (constant 0x4C7E60 == 0.016666667f).
     // App_Run asks the timer (0x401160) for the number of due ticks, clamps to 4

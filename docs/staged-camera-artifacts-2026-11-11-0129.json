@@ -1,0 +1,41 @@
+{
+  "captured": "2026-11-11T01:29:14.3880944+01:00",
+  "profile": "Release Win32",
+  "staging_root": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist",
+  "supported_executable_sha256": "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0",
+  "assistant_installed": false,
+  "user_confirmed_native_copy": true,
+  "artifacts": [
+    {
+      "relative": "dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "live_matches_at_snapshot": true
+    },
+    {
+      "relative": "EthhhSDK.dll",
+      "bytes": 1250304,
+      "sha256": "ce37eca93928fb652c42a1f012b08e5fd781aebb6d40f4f20f8dfe7d841be614",
+      "live_matches_at_snapshot": true
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "bytes": 58368,
+      "sha256": "2fa94ba5b6c1d3bc10ecbb4e8016b7e12be8f2fba80706d0fd5ebcc4bb1d477f",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 30208,
+      "sha256": "bf32ab58769b4c7cda4ce43eae6455a0e529c798c92653e002d4d2c9470fc160",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\mod.json",
+      "bytes": 456,
+      "sha256": "8c6487de965d1a50fcdc05dcdae421312eaf4edacf801a1e249e1428ee930d7c",
+      "live_matches_at_snapshot": true,
+      "installation_policy": "Preserve an existing live manifest; this hash is evidence, not permission to replace it."
+    }
+  ]
+}

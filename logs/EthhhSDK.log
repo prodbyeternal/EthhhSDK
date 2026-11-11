@@ -2276,3 +2276,1649 @@
 00:58:29.390 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
 00:58:29.390 [INF] [halflife_movement] deactivated
 00:58:29.520 [WRN] player: manual strat 05289BF8 disappeared
+===== EthhhSDK 0.1.0  session 2026-11-11 01:28:29 =====
+01:28:29.665 [INF] ==========================================================
+01:28:29.665 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+01:28:29.665 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+01:28:29.666 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+01:28:29.666 [INF] launcher: opening pre-game mod manager
+01:28:29.720 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+01:28:29.740 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+01:28:40.823 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+01:28:45.571 [INF] launcher: start requested
+01:28:45.592 [INF] MinHook initialized
+01:28:45.615 [INF] Fn_Tick hooked at 0043E0A0
+01:28:45.616 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+01:28:45.616 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+01:28:45.628 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+01:28:45.700 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+01:28:45.701 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+01:28:45.701 [INF] clr: managed callbacks set (tick=04DB072E gui=04DB0756 overlay=04DB077E)
+01:28:45.701 [INF] managed: 1 mod(s) initialised, callbacks registered
+01:28:45.701 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+01:28:45.701 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+01:28:45.701 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+01:28:45.701 [INF] watcher: waiting for game window / D3D9 device
+01:28:46.132 [INF] raw mouse registered
+01:28:46.132 [INF] window hook installed (hwnd=00C00B26)
+01:28:46.164 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=028D0A40)
+01:28:46.164 [INF] watcher: all hooks installed
+01:28:46.307 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+01:28:46.307 [INF] overlay: ImGui backends ready (hwnd=00C00B26 device=028D0A40 scale 1.00)
+01:28:52.631 [INF] player: exact Ninja 05213C78 class 0E5F3FC0 handle 00000007
+01:29:02.125 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:29:02.127 [INF] overlay: opened
+01:29:06.997 [INF] overlay: game resumed (time scale 1.00)
+01:29:06.997 [INF] overlay: closed
+01:29:07.936 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:29:07.937 [INF] overlay: opened
+01:29:09.320 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+01:29:09.345 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+01:29:10.448 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+01:29:13.275 [INF] overlay: game resumed (time scale 1.00)
+01:29:13.275 [INF] overlay: closed
+01:29:18.096 [INF] player: exact Ninja 0520DD88 class 0E5F3FC0 handle 000001DB
+01:29:22.960 [INF] player: exact Ninja 05204468 class 0E5F3FC0 handle 000001F6
+01:29:27.568 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:29:27.568 [INF] overlay: opened
+01:29:31.609 [INF] player: manual selection 05204468 (class 0E5F3FC0) pos 83.91 1.00 -21.61
+01:29:32.185 [INF] overlay: game resumed (time scale 1.00)
+01:29:32.185 [INF] overlay: closed
+01:29:50.087 [WRN] player: manual strat 05204468 disappeared
+01:29:55.777 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:29:55.777 [INF] overlay: opened
+01:29:59.577 [INF] overlay: game resumed (time scale 1.00)
+01:29:59.578 [INF] overlay: closed
+01:30:00.396 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:00.396 [INF] overlay: opened
+01:30:01.697 [INF] overlay: game resumed (time scale 1.00)
+01:30:01.697 [INF] overlay: closed
+01:30:02.607 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:02.607 [INF] overlay: opened
+01:30:08.316 [INF] overlay: game resumed (time scale 1.00)
+01:30:08.316 [INF] overlay: closed
+01:30:10.997 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:10.997 [INF] overlay: opened
+01:30:15.633 [INF] player: manual selection 05204468 (class 0C51E994) pos 217.00 4.50 -94.65
+01:30:17.295 [INF] player: exact Ninja 051EF9A8 class 0E5F3FC0 handle 000002F1
+01:30:19.267 [INF] player: manual selection 051EF9A8 (class 0E5F3FC0) pos 51.83 -2.59 -18.28
+01:30:21.087 [INF] overlay: game resumed (time scale 1.00)
+01:30:21.087 [INF] overlay: closed
+01:30:22.947 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:22.947 [INF] overlay: opened
+01:30:24.797 [INF] overlay: game resumed (time scale 1.00)
+01:30:24.797 [INF] overlay: closed
+01:30:26.828 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:26.828 [INF] overlay: opened
+01:30:27.116 [INF] overlay: game resumed (time scale 1.00)
+01:30:27.116 [INF] overlay: closed
+01:30:27.318 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:27.318 [INF] overlay: opened
+01:30:27.597 [INF] overlay: game resumed (time scale 1.00)
+01:30:27.597 [INF] overlay: closed
+01:30:28.138 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:28.138 [INF] overlay: opened
+01:30:32.178 [INF] overlay: game resumed (time scale 1.00)
+01:30:32.178 [INF] overlay: closed
+01:30:36.727 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:30:36.727 [INF] overlay: opened
+01:30:46.438 [INF] overlay: game resumed (time scale 1.00)
+01:30:46.438 [INF] overlay: closed
+01:30:47.179 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:31:05.821 [INF] [halflife_movement] deactivated
+01:31:10.858 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:32:05.082 [INF] [halflife_movement] deactivated
+01:32:08.561 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:32:09.961 [INF] [halflife_movement] deactivated
+01:32:10.812 [WRN] player: manual strat 051EF9A8 disappeared
+01:32:11.311 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:32:14.263 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:32:14.512 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:32:14.713 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:32:15.481 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:32:15.481 [INF] overlay: opened
+01:32:21.874 [INF] player: exact Ninja 05203518 class 0E5F3FC0 handle 00000489
+01:32:22.834 [INF] player: manual selection 05203518 (class 0E5F3FC0) pos 50.50 -2.59 -20.18
+01:32:24.151 [INF] overlay: game resumed (time scale 1.00)
+01:32:24.151 [INF] overlay: closed
+01:32:25.922 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:33:00.633 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:33:00.633 [INF] overlay: opened
+01:33:04.802 [INF] overlay: game resumed (time scale 1.00)
+01:33:04.802 [INF] overlay: closed
+01:33:11.083 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:33:11.083 [INF] overlay: opened
+01:33:51.993 [INF] overlay: game resumed (time scale 1.00)
+01:33:51.994 [INF] overlay: closed
+01:34:01.558 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+01:34:01.559 [INF] [halflife_movement] deactivated
+01:34:01.667 [WRN] player: manual strat 05203518 disappeared
+01:34:05.485 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:34:05.485 [INF] overlay: opened
+01:34:09.041 [INF] player: exact Ninja 05200D48 class 0E5F3FC0 handle 000005D2
+01:34:09.708 [INF] player: manual selection 05200D48 (class 0E5F3FC0) pos 50.50 -2.59 -20.18
+01:34:10.046 [INF] overlay: game resumed (time scale 1.00)
+01:34:10.046 [INF] overlay: closed
+01:34:12.317 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:34:24.272 [WRN] [halflife_movement] tracked player changed; stopped to avoid writing to another strat
+01:34:24.272 [INF] [halflife_movement] deactivated
+01:34:24.497 [WRN] player: manual strat 05200D48 disappeared
+===== EthhhSDK 0.1.0  session 2026-11-11 01:37:33 =====
+01:37:33.077 [INF] ==========================================================
+01:37:33.077 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+01:37:33.077 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+01:37:33.077 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+01:37:33.077 [INF] launcher: opening pre-game mod manager
+01:37:33.130 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+01:37:33.152 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+01:37:45.710 [INF] launcher: start requested
+01:37:45.731 [INF] MinHook initialized
+01:37:45.752 [INF] Fn_Tick hooked at 0043E0A0
+01:37:45.753 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+01:37:45.753 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+01:37:45.764 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+01:37:45.823 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+01:37:45.823 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+01:37:45.824 [INF] clr: managed callbacks set (tick=04DC072E gui=04DC0756 overlay=04DC077E)
+01:37:45.824 [INF] managed: 1 mod(s) initialised, callbacks registered
+01:37:45.824 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+01:37:45.824 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+01:37:45.824 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+01:37:45.824 [INF] watcher: waiting for game window / D3D9 device
+01:37:46.252 [INF] raw mouse registered
+01:37:46.252 [INF] window hook installed (hwnd=001208C6)
+01:37:46.279 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=007B9040)
+01:37:46.279 [INF] watcher: all hooks installed
+01:37:46.511 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+01:37:46.511 [INF] overlay: ImGui backends ready (hwnd=001208C6 device=007B9040 scale 1.00)
+01:37:53.483 [INF] player: exact Ninja 0AD33C78 class 0E460FC0 handle 00000007
+01:37:56.144 [INF] player: exact Ninja 0AD2DD88 class 0E460FC0 handle 0000006C
+01:37:59.193 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:37:59.195 [INF] overlay: opened
+01:38:01.505 [INF] player: exact Ninja 0AD24D98 class 0E460FC0 handle 00000087
+01:38:01.960 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+01:38:01.982 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+01:38:02.350 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+01:38:05.788 [INF] overlay: game resumed (time scale 1.00)
+01:38:05.788 [INF] overlay: closed
+01:38:08.296 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:38:08.296 [INF] overlay: opened
+01:38:13.168 [INF] player: manual selection 0AD24D98 (class 0E460FC0) pos 83.91 1.00 -21.61
+01:38:13.545 [INF] overlay: game resumed (time scale 1.00)
+01:38:13.545 [INF] overlay: closed
+01:38:30.657 [WRN] player: manual strat 0AD24D98 disappeared
+01:38:35.560 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:38:36.288 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:38:36.908 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:38:36.908 [INF] overlay: opened
+01:38:39.219 [INF] player: exact Ninja 0AD0F9A8 class 0E460FC0 handle 00000180
+01:38:40.102 [INF] player: manual selection 0AD0F9A8 (class 0E460FC0) pos 50.50 -2.59 -20.18
+01:38:47.361 [INF] overlay: game resumed (time scale 1.00)
+01:38:47.361 [INF] overlay: closed
+01:38:47.694 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:39:03.360 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:39:03.362 [INF] overlay: opened
+01:39:13.111 [INF] overlay: game resumed (time scale 1.00)
+01:39:13.111 [INF] overlay: closed
+01:39:18.371 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:39:18.371 [INF] overlay: opened
+01:39:20.121 [INF] overlay: game resumed (time scale 1.00)
+01:39:20.121 [INF] overlay: closed
+01:39:30.371 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:39:30.371 [INF] overlay: opened
+01:39:40.281 [INF] overlay: game resumed (time scale 1.00)
+01:39:40.281 [INF] overlay: closed
+01:39:41.202 [INF] [halflife_movement] deactivated
+01:39:42.452 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:39:48.162 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:39:48.162 [INF] overlay: opened
+01:39:51.801 [INF] overlay: game resumed (time scale 1.00)
+01:39:51.801 [INF] overlay: closed
+01:40:23.174 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+01:40:23.174 [INF] [halflife_movement] deactivated
+01:40:23.342 [WRN] player: manual strat 0AD0F9A8 disappeared
+01:40:42.002 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:40:42.592 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:40:42.592 [INF] overlay: opened
+01:40:46.115 [INF] player: exact Ninja 0AD27258 class 0E460FC0 handle 000002E7
+01:40:47.262 [INF] player: manual selection 0AD27258 (class 0E460FC0) pos 58.20 -2.59 -20.22
+01:40:47.852 [INF] overlay: game resumed (time scale 1.00)
+01:40:47.852 [INF] overlay: closed
+01:40:48.694 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:41:05.607 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+01:41:05.607 [INF] [halflife_movement] deactivated
+01:41:05.783 [WRN] player: manual strat 0AD27258 disappeared
+01:42:16.836 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:42:17.365 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:42:17.365 [INF] overlay: opened
+01:42:19.050 [INF] player: exact Ninja 0AD26618 class 0E460FC0 handle 000005F4
+01:42:20.741 [INF] player: manual selection 0AD26618 (class 0E460FC0) pos 50.50 -2.59 -20.18
+01:42:24.142 [INF] overlay: game resumed (time scale 1.00)
+01:42:24.142 [INF] overlay: closed
+01:42:24.503 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:42:45.312 [INF] [halflife_movement] deactivated
+01:42:46.962 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:42:46.962 [INF] overlay: opened
+01:42:50.732 [INF] overlay: game resumed (time scale 1.00)
+01:42:50.732 [INF] overlay: closed
+01:42:54.431 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:42:54.431 [INF] overlay: opened
+01:43:02.322 [INF] overlay: game resumed (time scale 1.00)
+01:43:02.322 [INF] overlay: closed
+01:43:19.952 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:43:19.952 [INF] overlay: opened
+01:43:20.911 [INF] overlay: game resumed (time scale 1.00)
+01:43:20.911 [INF] overlay: closed
+01:43:21.942 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:43:21.942 [INF] overlay: opened
+01:43:24.571 [INF] overlay: game resumed (time scale 1.00)
+01:43:24.571 [INF] overlay: closed
+01:43:34.857 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:43:34.857 [INF] overlay: opened
+01:43:39.873 [INF] EthhhPatch compatibility hooks removed
+01:43:43.654 [INF] EthhhPatch: future fullscreen display plan 3840x2160 @ 100 Hz (saved); NOT applied, simulation untouched
+01:43:47.291 [INF] EthhhPatch: future fullscreen display plan 3840x2160 @ 100 Hz (saved); NOT applied, simulation untouched
+01:43:59.504 [INF] EthhhPatch: future fullscreen display plan 1280x1024 @ 100 Hz (saved); NOT applied, simulation untouched
+01:44:00.906 [INF] EthhhPatch: future fullscreen display plan 1280x1024 @ 100 Hz (saved); NOT applied, simulation untouched
+01:44:00.925 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+01:44:01.252 [INF] EthhhPatch render split activated internally (aspect 1.250000); display application still gated
+01:44:05.893 [INF] overlay: game resumed (time scale 1.00)
+01:44:05.893 [INF] overlay: closed
+01:44:44.576 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:44:44.576 [INF] overlay: opened
+01:44:47.255 [INF] overlay: game resumed (time scale 1.00)
+01:44:47.256 [INF] overlay: closed
+01:44:50.655 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:44:50.656 [INF] overlay: opened
+01:45:18.573 [INF] overlay: game resumed (time scale 1.00)
+01:45:18.573 [INF] overlay: closed
+01:45:18.875 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:45:53.373 [INF] [halflife_movement] deactivated
+01:45:54.604 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:46:55.644 [INF] [halflife_movement] deactivated
+01:46:59.844 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:47:22.424 [INF] [halflife_movement] deactivated
+01:47:23.174 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:47:26.874 [INF] [halflife_movement] deactivated
+01:47:42.254 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:48:11.904 [INF] [halflife_movement] deactivated
+01:48:27.014 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:49:12.976 [INF] [halflife_movement] deactivated
+01:49:17.476 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:49:18.487 [INF] [halflife_movement] deactivated
+01:49:20.597 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:50:09.107 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:50:09.108 [INF] overlay: opened
+01:50:12.848 [INF] overlay: game resumed (time scale 1.00)
+01:50:12.852 [INF] overlay: closed
+01:50:19.958 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:50:19.958 [INF] overlay: opened
+01:50:28.358 [INF] overlay: game resumed (time scale 1.00)
+01:50:28.362 [INF] overlay: closed
+01:50:53.531 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+01:50:53.531 [INF] [halflife_movement] deactivated
+01:50:53.579 [WRN] player: manual strat 0AD26618 disappeared
+01:50:54.980 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:50:55.200 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:50:55.709 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:50:55.709 [INF] overlay: opened
+01:51:00.391 [INF] player: exact Ninja 0AD2D148 class 0E460FC0 handle 000017DD
+01:52:46.339 [INF] player: manual selection 0AD2D148 (class 0E460FC0) pos 168.32 6.76 -6.52
+01:52:47.075 [INF] overlay: game resumed (time scale 1.00)
+01:52:47.075 [INF] overlay: closed
+01:52:48.322 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:53:22.964 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+01:53:22.964 [INF] [halflife_movement] deactivated
+01:53:22.992 [WRN] player: manual strat 0AD2D148 disappeared
+01:53:24.831 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:53:25.461 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:53:25.911 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:53:26.131 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:53:26.331 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:53:26.630 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:53:26.630 [INF] overlay: opened
+01:53:28.787 [INF] player: exact Ninja 0AD07F28 class 0E460FC0 handle 000019B4
+01:53:30.037 [INF] player: manual selection 0AD07F28 (class 0E460FC0) pos 168.32 6.76 -6.52
+01:53:31.498 [INF] overlay: game resumed (time scale 1.00)
+01:53:31.498 [INF] overlay: closed
+01:53:32.748 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:54:47.628 [INF] [halflife_movement] deactivated
+01:54:51.859 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:54:52.779 [INF] [halflife_movement] deactivated
+01:54:56.440 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:55:36.357 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+01:55:36.358 [INF] [halflife_movement] deactivated
+01:55:36.470 [WRN] player: manual strat 0AD07F28 disappeared
+01:56:09.002 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+01:56:10.231 [INF] overlay: game paused (time scale 1.00, camera frozen)
+01:56:10.231 [INF] overlay: opened
+01:56:12.305 [INF] player: exact Ninja 0AD2AC88 class 0E460FC0 handle 00001F83
+01:56:13.127 [INF] player: manual selection 0AD2AC88 (class 0E460FC0) pos 220.62 2.81 -89.66
+01:56:14.698 [INF] overlay: game resumed (time scale 1.00)
+01:56:14.699 [INF] overlay: closed
+01:56:16.280 [INF] [halflife_movement] activated (movement=1 camera=1)
+01:57:00.864 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-11 02:22:39 =====
+02:22:39.951 [INF] ==========================================================
+02:22:39.951 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+02:22:39.951 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+02:22:39.952 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+02:22:39.952 [INF] launcher: opening pre-game mod manager
+02:22:40.001 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+02:22:40.022 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+02:22:50.068 [INF] launcher: start requested
+02:22:50.090 [INF] MinHook initialized
+02:22:50.110 [INF] Fn_Tick hooked at 0043E0A0
+02:22:50.112 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+02:22:50.112 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+02:22:50.124 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+02:22:50.187 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+02:22:50.187 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+02:22:50.187 [INF] clr: managed callbacks set (tick=04D40776 gui=04D4079E overlay=04D407C6)
+02:22:50.187 [INF] managed: 1 mod(s) initialised, callbacks registered
+02:22:50.187 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+02:22:50.187 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+02:22:50.187 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+02:22:50.187 [INF] watcher: waiting for game window / D3D9 device
+02:22:50.617 [INF] raw mouse registered
+02:22:50.617 [INF] window hook installed (hwnd=009A10F4)
+02:22:50.642 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=007037C0)
+02:22:50.642 [INF] watcher: all hooks installed
+02:22:51.686 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+02:22:51.687 [INF] overlay: ImGui backends ready (hwnd=009A10F4 device=007037C0 scale 1.00)
+02:22:58.742 [INF] player: exact Ninja 052A3C78 class 0E45AFC0 handle 00000007
+02:23:02.467 [INF] player: exact Ninja 0529DD88 class 0E45AFC0 handle 00000078
+02:23:08.094 [INF] player: exact Ninja 05295CE8 class 0E45AFC0 handle 00000093
+02:23:12.443 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:23:12.445 [INF] overlay: opened
+02:23:15.514 [INF] EthhhPatch: future fullscreen display plan 1280x1024 @ 100 Hz (saved); NOT applied, simulation untouched
+02:23:16.498 [INF] EthhhPatch: future fullscreen display plan 1280x1024 @ 100 Hz (saved); NOT applied, simulation untouched
+02:23:16.520 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+02:23:16.881 [INF] EthhhPatch render split activated internally (aspect 1.250000); display application still gated
+02:23:21.014 [INF] overlay: game resumed (time scale 1.00)
+02:23:21.014 [INF] overlay: closed
+02:23:22.582 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:23:22.583 [INF] overlay: opened
+02:23:32.425 [INF] overlay: game resumed (time scale 1.00)
+02:23:32.425 [INF] overlay: closed
+02:23:53.816 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:23:53.816 [INF] overlay: opened
+02:23:55.355 [INF] player: exact Ninja 0527F9A8 class 0E45AFC0 handle 0000018C
+02:23:56.751 [INF] player: manual selection 0527F9A8 (class 0E45AFC0) pos 50.50 -2.59 -20.18
+02:24:08.515 [INF] overlay: game resumed (time scale 1.00)
+02:24:08.516 [INF] overlay: closed
+02:24:15.181 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:25:11.067 [INF] [halflife_movement] deactivated
+02:25:11.186 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:26:14.820 [INF] [halflife_movement] deactivated
+02:26:17.389 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:26:31.170 [INF] [halflife_movement] deactivated
+02:26:34.120 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:26:38.901 [INF] [halflife_movement] deactivated
+02:26:41.551 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:26:47.501 [INF] [halflife_movement] deactivated
+02:26:49.781 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:26:56.181 [INF] [halflife_movement] deactivated
+02:26:59.301 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:28:21.045 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:28:21.045 [INF] overlay: opened
+02:28:25.684 [INF] overlay: game resumed (time scale 1.00)
+02:28:25.684 [INF] overlay: closed
+02:30:02.269 [INF] [halflife_movement] deactivated
+02:30:04.519 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:30:05.068 [INF] [halflife_movement] deactivated
+02:30:05.890 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:30:06.039 [INF] [halflife_movement] deactivated
+02:30:06.169 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:30:06.289 [INF] [halflife_movement] deactivated
+02:30:06.420 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:30:06.869 [INF] [halflife_movement] deactivated
+02:30:11.819 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:30:21.419 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:30:21.419 [INF] overlay: opened
+02:30:35.578 [INF] overlay: game resumed (time scale 1.00)
+02:30:35.579 [INF] overlay: closed
+02:30:39.048 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:30:39.048 [INF] overlay: opened
+02:30:39.940 [INF] overlay: game resumed (time scale 1.00)
+02:30:39.940 [INF] overlay: closed
+02:30:42.498 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:30:42.498 [INF] overlay: opened
+02:30:43.229 [INF] overlay: game resumed (time scale 1.00)
+02:30:43.233 [INF] overlay: closed
+02:30:47.089 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:30:47.090 [INF] overlay: opened
+02:30:48.080 [INF] overlay: game resumed (time scale 1.00)
+02:30:48.084 [INF] overlay: closed
+02:31:46.031 [INF] [halflife_movement] deactivated
+02:31:51.852 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:32:00.863 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:00.863 [INF] overlay: opened
+02:32:02.362 [INF] overlay: game resumed (time scale 1.00)
+02:32:02.366 [INF] overlay: closed
+02:32:06.681 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:06.682 [INF] overlay: opened
+02:32:08.881 [INF] overlay: game resumed (time scale 1.00)
+02:32:08.881 [INF] overlay: closed
+02:32:20.033 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:20.034 [INF] overlay: opened
+02:32:22.723 [INF] overlay: game resumed (time scale 1.00)
+02:32:22.728 [INF] overlay: closed
+02:32:23.972 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:23.973 [INF] overlay: opened
+02:32:25.573 [INF] overlay: game resumed (time scale 1.00)
+02:32:25.577 [INF] overlay: closed
+02:32:26.172 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:26.172 [INF] overlay: opened
+02:32:27.023 [INF] overlay: game resumed (time scale 1.00)
+02:32:27.027 [INF] overlay: closed
+02:32:41.114 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:41.114 [INF] overlay: opened
+02:32:43.835 [INF] overlay: game resumed (time scale 1.00)
+02:32:43.835 [INF] overlay: closed
+02:32:44.353 [INF] overlay: game paused (time scale 1.00, camera frozen)
+02:32:44.353 [INF] overlay: opened
+02:32:45.144 [INF] overlay: game resumed (time scale 1.00)
+02:32:45.147 [INF] overlay: closed
+02:33:57.487 [INF] [halflife_movement] deactivated
+02:33:59.928 [INF] [halflife_movement] activated (movement=1 camera=1)
+02:34:01.317 [INF] [halflife_movement] deactivated
+02:34:13.648 [INF] [halflife_movement] activated (movement=1 camera=1)
+===== EthhhSDK 0.1.0  session 2026-11-11 06:40:29 =====
+06:40:29.882 [INF] ==========================================================
+06:40:29.882 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+06:40:29.882 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+06:40:29.882 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+06:40:29.882 [INF] launcher: opening pre-game mod manager
+06:40:29.944 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:40:29.969 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+06:41:06.392 [INF] launcher: exit requested
+06:41:06.418 [INF] launcher: exit requested
+===== session end =====
+===== EthhhSDK 0.1.0  session 2026-11-11 06:44:32 =====
+06:44:32.704 [INF] ==========================================================
+06:44:32.704 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+06:44:32.704 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+06:44:32.705 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+06:44:32.705 [INF] launcher: opening pre-game mod manager
+06:44:32.756 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:44:32.778 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+06:44:41.037 [INF] launcher: start requested
+06:44:41.058 [INF] MinHook initialized
+06:44:41.077 [INF] Fn_Tick hooked at 0043E0A0
+06:44:41.078 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+06:44:41.079 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+06:44:41.090 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+06:44:41.164 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+06:44:41.164 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+06:44:41.165 [INF] clr: managed callbacks set (tick=04D80776 gui=04D8079E overlay=04D807C6)
+06:44:41.165 [INF] managed: 1 mod(s) initialised, callbacks registered
+06:44:41.165 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+06:44:41.165 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+06:44:41.165 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+06:44:41.165 [INF] watcher: waiting for game window / D3D9 device
+06:44:41.607 [INF] raw mouse registered
+06:44:41.607 [INF] window hook installed (hwnd=00B908E4)
+06:44:41.642 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=08AE0640)
+06:44:41.642 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+06:44:41.642 [INF] watcher: all hooks installed
+06:44:42.639 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:44:42.640 [INF] overlay: ImGui backends ready (hwnd=00B908E4 device=08AE0640 scale 1.00)
+06:44:49.309 [INF] player: exact Ninja 052E3C78 class 0E5D9FC0 handle 00000007
+06:44:50.023 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:44:50.025 [INF] overlay: opened
+===== EthhhSDK 0.1.0  session 2026-11-11 06:44:53 =====
+06:44:53.220 [INF] ==========================================================
+06:44:53.220 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+06:44:53.220 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+06:44:53.220 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+06:44:53.220 [INF] launcher: opening pre-game mod manager
+06:44:53.274 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:44:53.295 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+06:44:54.321 [INF] launcher: start requested
+06:44:54.340 [INF] MinHook initialized
+06:44:54.360 [INF] Fn_Tick hooked at 0043E0A0
+06:44:54.362 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+06:44:54.362 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+06:44:54.373 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+06:44:54.437 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+06:44:54.438 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+06:44:54.438 [INF] clr: managed callbacks set (tick=04CF0776 gui=04CF079E overlay=04CF07C6)
+06:44:54.438 [INF] managed: 1 mod(s) initialised, callbacks registered
+06:44:54.438 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+06:44:54.438 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+06:44:54.438 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+06:44:54.438 [INF] watcher: waiting for game window / D3D9 device
+06:44:54.868 [INF] raw mouse registered
+06:44:54.868 [INF] window hook installed (hwnd=01B8072E)
+06:44:54.902 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=073C7DC0)
+06:44:54.902 [INF] camera ready: pos=(0.00, 0.00, 0.00) fov=1.047 rad
+06:44:54.902 [INF] watcher: all hooks installed
+06:44:54.978 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:44:54.978 [INF] overlay: ImGui backends ready (hwnd=01B8072E device=073C7DC0 scale 1.00)
+06:45:01.670 [INF] player: exact Ninja 05153C78 class 0E444FC0 handle 00000007
+06:45:04.603 [INF] player: exact Ninja 0514DD88 class 0E444FC0 handle 00000072
+06:45:16.101 [INF] player: exact Ninja 05144D98 class 0E444FC0 handle 0000008D
+06:45:28.203 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:45:28.205 [INF] overlay: opened
+06:45:37.819 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 60 Hz (saved); NOT applied, simulation untouched
+06:45:42.367 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 60 Hz (saved); NOT applied, simulation untouched
+06:45:42.390 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+06:45:42.422 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+06:46:18.296 [INF] overlay: game resumed (time scale 1.00)
+06:46:18.296 [INF] overlay: closed
+06:46:31.949 [INF] player: exact Ninja 0512F9A8 class 0E444FC0 handle 00000186
+06:46:42.274 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:46:42.274 [INF] overlay: opened
+06:46:45.241 [INF] player: manual selection 0512F9A8 (class 0E444FC0) pos 50.50 -2.59 -20.18
+06:46:46.883 [INF] overlay: game resumed (time scale 1.00)
+06:46:46.883 [INF] overlay: closed
+06:46:50.902 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:50.907 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:50.907 [INF] [halflife_movement] deactivated
+06:46:51.328 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:51.329 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:51.329 [INF] [halflife_movement] deactivated
+06:46:51.947 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:51.949 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:51.949 [INF] [halflife_movement] deactivated
+06:46:53.080 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:53.081 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:53.081 [INF] [halflife_movement] deactivated
+06:46:53.280 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:53.281 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:53.281 [INF] [halflife_movement] deactivated
+06:46:53.431 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:53.432 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:53.432 [INF] [halflife_movement] deactivated
+06:46:53.579 [INF] [halflife_movement] activated (movement=1 camera=1)
+06:46:53.580 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+06:46:53.580 [INF] [halflife_movement] deactivated
+06:47:28.326 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:47:28.326 [INF] overlay: opened
+06:47:37.544 [INF] overlay: game resumed (time scale 1.00)
+06:47:37.544 [INF] overlay: closed
+06:47:54.664 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:47:54.664 [INF] overlay: opened
+06:48:02.589 [INF] overlay: game resumed (time scale 1.00)
+06:48:02.589 [INF] overlay: closed
+06:48:04.241 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:48:04.241 [INF] overlay: opened
+06:48:05.872 [INF] overlay: game resumed (time scale 1.00)
+06:48:05.872 [INF] overlay: closed
+06:52:05.866 [WRN] player: manual strat 0512F9A8 disappeared
+===== EthhhSDK 0.1.0  session 2026-11-11 06:59:20 =====
+06:59:20.246 [INF] ==========================================================
+06:59:20.246 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+06:59:20.246 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+06:59:20.247 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+06:59:20.247 [INF] launcher: opening pre-game mod manager
+06:59:20.302 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:59:20.323 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+06:59:21.742 [INF] launcher: start requested
+06:59:21.763 [INF] MinHook initialized
+06:59:21.787 [INF] Fn_Tick hooked at 0043E0A0
+06:59:21.789 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+06:59:21.789 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+06:59:21.802 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+06:59:21.865 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+06:59:21.865 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+06:59:21.865 [INF] clr: managed callbacks set (tick=04EA0776 gui=04EA079E overlay=04EA07C6)
+06:59:21.865 [INF] managed: 1 mod(s) initialised, callbacks registered
+06:59:21.865 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+06:59:21.865 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+06:59:21.865 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+06:59:21.865 [INF] watcher: waiting for game window / D3D9 device
+06:59:22.297 [INF] raw mouse registered
+06:59:22.297 [INF] window hook installed (hwnd=00F70EB6)
+06:59:22.324 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=00646E60)
+06:59:22.325 [INF] watcher: all hooks installed
+06:59:22.550 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+06:59:22.550 [INF] overlay: ImGui backends ready (hwnd=00F70EB6 device=00646E60 scale 1.00)
+06:59:28.931 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:59:28.933 [INF] overlay: opened
+06:59:29.539 [INF] player: exact Ninja 05303C78 class 0E491FC0 handle 00000007
+06:59:31.146 [INF] overlay: game resumed (time scale 1.00)
+06:59:31.146 [INF] overlay: closed
+06:59:31.616 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:59:31.616 [INF] overlay: opened
+06:59:34.449 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 60 Hz (saved); NOT applied, simulation untouched
+06:59:34.470 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+06:59:34.732 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+06:59:38.192 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+06:59:39.369 [INF] EthhhPatch compatibility hooks removed
+06:59:40.814 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+06:59:40.847 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+06:59:41.257 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+06:59:49.053 [INF] overlay: game resumed (time scale 1.00)
+06:59:49.053 [INF] overlay: closed
+06:59:52.046 [INF] player: exact Ninja 052FDD88 class 0E491FC0 handle 000000AE
+06:59:56.088 [INF] player: exact Ninja 052F1FA8 class 0E491FC0 handle 000000C9
+06:59:58.623 [INF] overlay: game paused (time scale 1.00, camera frozen)
+06:59:58.623 [INF] overlay: opened
+07:00:04.526 [INF] player: manual selection 052F1FA8 (class 0E491FC0) pos 83.91 1.00 -21.61
+07:00:06.606 [INF] overlay: game resumed (time scale 1.00)
+07:00:06.606 [INF] overlay: closed
+07:00:16.839 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:16.844 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:16.844 [INF] [halflife_movement] deactivated
+07:00:17.315 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:17.315 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:17.315 [INF] [halflife_movement] deactivated
+07:00:17.515 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:17.516 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:17.516 [INF] [halflife_movement] deactivated
+07:00:21.135 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:21.135 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:21.135 [INF] [halflife_movement] deactivated
+07:00:21.286 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:21.286 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:21.286 [INF] [halflife_movement] deactivated
+07:00:21.446 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:21.447 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:21.447 [INF] [halflife_movement] deactivated
+07:00:27.565 [WRN] player: manual strat 052F1FA8 disappeared
+07:00:31.565 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+07:00:32.116 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+07:00:32.694 [INF] overlay: game paused (time scale 1.00, camera frozen)
+07:00:32.695 [INF] overlay: opened
+07:00:34.590 [INF] player: exact Ninja 052DF9A8 class 0E491FC0 handle 000001C1
+07:00:35.829 [INF] player: manual selection 052DF9A8 (class 0E491FC0) pos 50.50 -2.59 -20.18
+07:00:36.785 [INF] overlay: game resumed (time scale 1.00)
+07:00:36.785 [INF] overlay: closed
+07:00:37.067 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:37.069 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:37.069 [INF] [halflife_movement] deactivated
+07:00:37.426 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:37.427 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:37.427 [INF] [halflife_movement] deactivated
+07:00:37.576 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:37.578 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:37.578 [INF] [halflife_movement] deactivated
+07:00:37.746 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:37.747 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:37.747 [INF] [halflife_movement] deactivated
+07:00:38.276 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.277 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.277 [INF] [halflife_movement] deactivated
+07:00:38.416 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.417 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.417 [INF] [halflife_movement] deactivated
+07:00:38.546 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.547 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.547 [INF] [halflife_movement] deactivated
+07:00:38.666 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.667 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.667 [INF] [halflife_movement] deactivated
+07:00:38.777 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.777 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.777 [INF] [halflife_movement] deactivated
+07:00:38.896 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:38.897 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:38.897 [INF] [halflife_movement] deactivated
+07:00:39.016 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:39.016 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:39.016 [INF] [halflife_movement] deactivated
+07:00:39.126 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:00:39.126 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:00:39.126 [INF] [halflife_movement] deactivated
+07:00:39.425 [INF] overlay: game paused (time scale 1.00, camera frozen)
+07:00:39.425 [INF] overlay: opened
+07:00:47.635 [INF] overlay: game resumed (time scale 1.00)
+07:00:47.635 [INF] overlay: closed
+07:02:55.892 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:02:55.893 [WRN] [halflife_movement] native WASD ownership unavailable; stopped instead of mixing movement directions
+07:02:55.894 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-11 07:16:05 =====
+07:16:05.538 [INF] ==========================================================
+07:16:05.538 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+07:16:05.538 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+07:16:05.538 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+07:16:05.538 [INF] launcher: opening pre-game mod manager
+07:16:05.592 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+07:16:05.613 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+07:16:10.797 [INF] launcher: start requested
+07:16:10.819 [INF] MinHook initialized
+07:16:10.840 [INF] Fn_Tick hooked at 0043E0A0
+07:16:10.841 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+07:16:10.841 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+07:16:10.850 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+07:16:10.903 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+07:16:10.903 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+07:16:10.903 [INF] clr: managed callbacks set (tick=04E70776 gui=04E7079E overlay=04E707C6)
+07:16:10.903 [INF] managed: 1 mod(s) initialised, callbacks registered
+07:16:10.903 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+07:16:10.903 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+07:16:10.903 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+07:16:10.903 [INF] watcher: waiting for game window / D3D9 device
+07:16:11.329 [INF] raw mouse registered
+07:16:11.329 [INF] window hook installed (hwnd=00CE0EA4)
+07:16:11.355 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=00977700)
+07:16:11.355 [INF] watcher: all hooks installed
+07:16:11.536 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+07:16:11.536 [INF] overlay: ImGui backends ready (hwnd=00CE0EA4 device=00977700 scale 1.00)
+07:16:18.536 [INF] player: exact Ninja 052D3C78 class 0E47EFC0 handle 00000007
+07:16:21.195 [INF] player: exact Ninja 052CDD88 class 0E47EFC0 handle 0000006C
+07:16:25.490 [INF] player: exact Ninja 052C4D98 class 0E47EFC0 handle 00000087
+07:16:49.242 [INF] player: exact Ninja 052AF9A8 class 0E47EFC0 handle 00000180
+07:16:52.867 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+07:16:54.046 [INF] overlay: game paused (time scale 1.00, camera frozen)
+07:16:54.047 [INF] overlay: opened
+07:16:59.909 [INF] player: manual selection 052AF9A8 (class 0E47EFC0) pos 50.50 -2.59 -20.18
+07:17:13.737 [INF] overlay: game resumed (time scale 1.00)
+07:17:13.737 [INF] overlay: closed
+07:17:14.575 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:17:14.605 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
+07:18:41.295 [INF] [halflife_movement] deactivated
+07:18:42.831 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:18:55.609 [INF] [halflife_movement] deactivated
+07:18:57.311 [INF] [halflife_movement] activated (movement=1 camera=1)
+07:19:03.700 [INF] [halflife_movement] deactivated
+07:19:05.286 [INF] [halflife_movement] activated (movement=1 camera=1)
+===== EthhhSDK 0.1.0  session 2026-11-11 13:44:20 =====
+13:44:20.708 [INF] ==========================================================
+13:44:20.709 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+13:44:20.709 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+13:44:20.711 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+13:44:20.711 [INF] launcher: opening pre-game mod manager
+13:44:20.822 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+13:44:20.860 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+13:44:34.120 [INF] launcher: start requested
+13:44:34.164 [INF] MinHook initialized
+13:44:34.202 [INF] Fn_Tick hooked at 0043E0A0
+13:44:34.207 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+13:44:34.207 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+13:44:34.247 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+13:44:34.359 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+13:44:34.359 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+13:44:34.360 [INF] clr: managed callbacks set (tick=04A70776 gui=04A7079E overlay=04A707C6)
+13:44:34.360 [INF] managed: 1 mod(s) initialised, callbacks registered
+13:44:34.360 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+13:44:34.360 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+13:44:34.360 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+13:44:34.360 [INF] watcher: waiting for game window / D3D9 device
+13:44:34.909 [INF] raw mouse registered
+13:44:34.909 [INF] window hook installed (hwnd=00020830)
+13:44:34.953 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=028E9D80)
+13:44:34.953 [INF] watcher: all hooks installed
+13:44:36.129 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+13:44:36.129 [INF] overlay: ImGui backends ready (hwnd=00020830 device=028E9D80 scale 1.00)
+13:44:43.523 [INF] player: exact Ninja 053C3C78 class 0E62FFC0 handle 00000007
+13:44:45.229 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:44:45.232 [INF] overlay: opened
+13:44:49.942 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+13:44:49.971 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+13:44:50.374 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+13:45:20.412 [INF] player: exact Ninja 053BDD88 class 0E62FFC0 handle 00000063
+13:46:56.577 [INF] overlay: game resumed (time scale 1.00)
+13:46:56.577 [INF] overlay: closed
+13:46:57.733 [INF] player: exact Ninja 053A1E68 class 0E62FFC0 handle 00000263
+13:47:01.892 [INF] player: exact Ninja 053A6E08 class 0E62FFC0 handle 000002FB
+13:47:25.966 [INF] player: exact Ninja 053B90F8 class 0E62FFC0 handle 000003F4
+13:47:30.164 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:47:30.164 [INF] overlay: opened
+13:47:41.020 [INF] player: manual selection 053B90F8 (class 0E62FFC0) pos 50.50 -2.59 -20.18
+13:47:41.631 [INF] overlay: game resumed (time scale 1.00)
+13:47:41.631 [INF] overlay: closed
+13:47:43.131 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:47:43.168 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
+13:47:49.877 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:47:49.877 [INF] overlay: opened
+13:48:04.048 [INF] overlay: game resumed (time scale 1.00)
+13:48:04.054 [INF] overlay: closed
+13:48:09.588 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:48:09.589 [INF] overlay: opened
+13:48:15.308 [INF] overlay: game resumed (time scale 1.00)
+13:48:15.309 [INF] overlay: closed
+13:48:26.119 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:48:26.119 [INF] overlay: opened
+13:48:31.205 [INF] overlay: game resumed (time scale 1.00)
+13:48:31.210 [INF] overlay: closed
+13:48:34.364 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:48:34.364 [INF] overlay: opened
+13:48:35.574 [INF] overlay: game resumed (time scale 1.00)
+13:48:35.580 [INF] overlay: closed
+13:48:37.855 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:48:37.855 [INF] overlay: opened
+13:48:38.725 [INF] overlay: game resumed (time scale 1.00)
+13:48:38.730 [INF] overlay: closed
+13:49:03.184 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:49:03.184 [INF] overlay: opened
+13:49:05.234 [INF] overlay: game resumed (time scale 1.00)
+13:49:05.239 [INF] overlay: closed
+13:49:07.315 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:49:07.316 [INF] overlay: opened
+13:49:14.804 [INF] overlay: game resumed (time scale 1.00)
+13:49:14.809 [INF] overlay: closed
+13:50:18.598 [INF] [halflife_movement] deactivated
+13:50:30.789 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:50:48.969 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:50:48.969 [INF] overlay: opened
+13:50:54.178 [INF] overlay: game resumed (time scale 1.00)
+13:50:54.178 [INF] overlay: closed
+13:50:55.779 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:50:55.779 [INF] overlay: opened
+13:50:56.298 [INF] overlay: game resumed (time scale 1.00)
+13:50:56.298 [INF] overlay: closed
+13:50:59.488 [INF] [halflife_movement] deactivated
+13:51:01.060 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:51:04.108 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:51:04.108 [INF] overlay: opened
+13:51:04.278 [INF] overlay: game resumed (time scale 1.00)
+13:51:04.278 [INF] overlay: closed
+13:51:05.869 [INF] [halflife_movement] deactivated
+13:51:05.970 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:51:10.169 [INF] [halflife_movement] deactivated
+13:51:10.319 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:51:17.869 [INF] [halflife_movement] deactivated
+13:51:18.900 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:51:23.920 [INF] [halflife_movement] deactivated
+13:51:27.620 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:51:42.192 [INF] [halflife_movement] deactivated
+13:51:43.781 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:52:33.183 [INF] [halflife_movement] deactivated
+13:52:44.353 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:52:59.873 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:52:59.874 [INF] overlay: opened
+13:53:04.834 [INF] overlay: game resumed (time scale 1.00)
+13:53:04.834 [INF] overlay: closed
+13:53:05.694 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:53:05.694 [INF] overlay: opened
+13:53:07.574 [INF] overlay: game resumed (time scale 1.00)
+13:53:07.577 [INF] overlay: closed
+13:53:08.044 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:53:08.044 [INF] overlay: opened
+13:53:08.994 [INF] overlay: game resumed (time scale 1.00)
+13:53:08.998 [INF] overlay: closed
+13:53:16.094 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:53:16.094 [INF] overlay: opened
+13:53:18.544 [INF] overlay: game resumed (time scale 1.00)
+13:53:18.547 [INF] overlay: closed
+13:53:21.404 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:53:21.404 [INF] overlay: opened
+13:53:23.364 [INF] overlay: game resumed (time scale 1.00)
+13:53:23.367 [INF] overlay: closed
+13:54:25.176 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:54:25.176 [INF] overlay: opened
+13:54:27.177 [INF] overlay: game resumed (time scale 1.00)
+13:54:27.180 [INF] overlay: closed
+13:54:28.046 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:54:28.046 [INF] overlay: opened
+13:54:29.316 [INF] overlay: game resumed (time scale 1.00)
+13:54:29.320 [INF] overlay: closed
+13:54:29.666 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:54:29.666 [INF] overlay: opened
+13:54:30.936 [INF] overlay: game resumed (time scale 1.00)
+13:54:30.936 [INF] overlay: closed
+13:54:31.307 [INF] overlay: game paused (time scale 1.00, camera frozen)
+13:54:31.307 [INF] overlay: opened
+13:54:31.905 [INF] overlay: game resumed (time scale 1.00)
+13:54:31.909 [INF] overlay: closed
+13:55:03.978 [INF] [halflife_movement] deactivated
+13:55:48.410 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:55:56.838 [INF] [halflife_movement] deactivated
+13:55:56.933 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:56:47.434 [INF] [halflife_movement] deactivated
+13:57:02.093 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:57:12.473 [INF] [halflife_movement] deactivated
+13:57:21.774 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:57:58.196 [INF] [halflife_movement] deactivated
+13:57:59.496 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:58:02.294 [INF] [halflife_movement] deactivated
+13:58:04.996 [INF] [halflife_movement] activated (movement=1 camera=1)
+13:58:05.836 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-11 14:14:48 =====
+14:14:48.088 [INF] ==========================================================
+14:14:48.088 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+14:14:48.088 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+14:14:48.089 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+14:14:48.089 [INF] launcher: opening pre-game mod manager
+14:14:48.154 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+14:14:48.182 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+14:14:59.968 [INF] launcher: start requested
+14:14:59.990 [INF] MinHook initialized
+14:15:00.018 [INF] Fn_Tick hooked at 0043E0A0
+14:15:00.019 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+14:15:00.019 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+14:15:00.040 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+14:15:00.135 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+14:15:00.135 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+14:15:00.135 [INF] clr: managed callbacks set (tick=04E10776 gui=04E1079E overlay=04E107C6)
+14:15:00.135 [INF] managed: 1 mod(s) initialised, callbacks registered
+14:15:00.135 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+14:15:00.135 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+14:15:00.135 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+14:15:00.136 [INF] watcher: waiting for game window / D3D9 device
+14:15:00.576 [INF] raw mouse registered
+14:15:00.577 [INF] window hook installed (hwnd=0005061C)
+14:15:00.618 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=02897EA0)
+14:15:00.618 [INF] watcher: all hooks installed
+14:15:00.831 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+14:15:00.831 [INF] overlay: ImGui backends ready (hwnd=0005061C device=02897EA0 scale 1.00)
+14:15:07.833 [INF] player: exact Ninja 05273C78 class 0E468FC0 handle 00000007
+14:15:29.340 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:15:29.342 [INF] overlay: opened
+14:15:37.388 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+14:15:37.409 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+14:15:37.787 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+14:15:48.388 [INF] overlay: game resumed (time scale 1.00)
+14:15:48.388 [INF] overlay: closed
+14:15:56.352 [INF] player: exact Ninja 0526DD88 class 0E468FC0 handle 0000036C
+14:16:08.731 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:16:08.731 [INF] overlay: opened
+14:16:11.861 [INF] overlay: game resumed (time scale 1.50)
+14:16:11.861 [INF] overlay: closed
+14:16:12.267 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:16:12.267 [INF] overlay: opened
+14:16:14.534 [INF] overlay: game resumed (time scale 1.10)
+14:16:14.535 [INF] overlay: closed
+14:16:15.150 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:16:15.151 [INF] overlay: opened
+14:16:15.924 [INF] overlay: game resumed (time scale 1.00)
+14:16:15.924 [INF] overlay: closed
+14:16:39.926 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:16:39.926 [INF] overlay: opened
+14:16:54.461 [INF] player: manual selection 0526DD88 (class 0E468FC0) pos 40.30 1.33 39.03
+14:16:56.907 [INF] overlay: game resumed (time scale 1.00)
+14:16:56.907 [INF] overlay: closed
+14:16:57.900 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:16:57.900 [INF] overlay: opened
+14:16:58.714 [INF] overlay: game resumed (time scale 1.00)
+14:16:58.714 [INF] overlay: closed
+14:16:59.328 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:16:59.357 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
+14:17:24.812 [INF] [halflife_movement] deactivated
+14:17:29.313 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:17:35.181 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:17:35.181 [INF] overlay: opened
+14:17:37.275 [INF] player: manual selection 0526E3A8 (class 0BCC30B0) pos 24.58 3.83 30.37
+14:17:37.554 [INF] overlay: game resumed (time scale 1.00)
+14:17:37.554 [INF] overlay: closed
+14:17:37.556 [WRN] [halflife_movement] tracked player identity changed; stopped to avoid reuse
+14:17:37.556 [INF] [halflife_movement] deactivated
+14:17:38.293 [WRN] [halflife_movement] HL requires exact class Ninja; attachments, camera, speech and unreadable identities are refused
+14:17:39.073 [WRN] [halflife_movement] HL requires exact class Ninja; attachments, camera, speech and unreadable identities are refused
+14:17:39.542 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:17:39.542 [INF] overlay: opened
+14:17:41.009 [INF] player: manual selection 052536E8 (class 0DB8B140) pos 40.90 1.34 39.31
+14:17:41.498 [INF] overlay: game resumed (time scale 1.00)
+14:17:41.498 [INF] overlay: closed
+14:17:42.069 [WRN] [halflife_movement] HL requires exact class Ninja; attachments, camera, speech and unreadable identities are refused
+14:17:42.660 [WRN] [halflife_movement] HL requires exact class Ninja; attachments, camera, speech and unreadable identities are refused
+14:17:42.838 [WRN] [halflife_movement] HL requires exact class Ninja; attachments, camera, speech and unreadable identities are refused
+14:17:43.347 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:17:43.347 [INF] overlay: opened
+14:17:51.256 [INF] overlay: game resumed (time scale 1.00)
+14:17:51.256 [INF] overlay: closed
+14:17:52.735 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:17:52.735 [INF] overlay: opened
+14:17:55.899 [INF] overlay: game resumed (time scale 1.00)
+14:17:55.899 [INF] overlay: closed
+14:18:05.781 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:05.781 [INF] overlay: opened
+14:18:27.403 [INF] overlay: game resumed (time scale 1.00)
+14:18:27.407 [INF] overlay: closed
+14:18:28.623 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:28.623 [INF] overlay: opened
+14:18:30.784 [INF] player: manual selection 0526DD88 (class 0E468FC0) pos 17.02 1.32 28.12
+14:18:30.956 [INF] overlay: game resumed (time scale 1.00)
+14:18:30.957 [INF] overlay: closed
+14:18:31.796 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:18:33.843 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:33.843 [INF] overlay: opened
+14:18:36.993 [INF] overlay: game resumed (time scale 1.00)
+14:18:36.996 [INF] overlay: closed
+14:18:38.643 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:38.643 [INF] overlay: opened
+14:18:39.513 [INF] overlay: game resumed (time scale 1.00)
+14:18:39.517 [INF] overlay: closed
+14:18:40.483 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:40.483 [INF] overlay: opened
+14:18:42.534 [INF] overlay: game resumed (time scale 1.00)
+14:18:42.537 [INF] overlay: closed
+14:18:47.483 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:18:47.483 [INF] overlay: opened
+14:18:48.634 [INF] overlay: game resumed (time scale 1.00)
+14:18:48.639 [INF] overlay: closed
+14:20:32.298 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:20:32.298 [INF] overlay: opened
+14:20:45.329 [INF] overlay: game resumed (time scale 1.00)
+14:20:45.329 [INF] overlay: closed
+14:21:17.368 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:21:17.368 [INF] overlay: opened
+14:21:49.561 [INF] overlay: game resumed (time scale 1.00)
+14:21:49.561 [INF] overlay: closed
+14:21:52.780 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:21:52.781 [INF] overlay: opened
+14:22:08.575 [INF] overlay: game resumed (time scale 1.00)
+14:22:08.576 [INF] overlay: closed
+14:22:45.786 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:22:45.786 [INF] overlay: opened
+14:22:51.633 [INF] overlay: game resumed (time scale 1.00)
+14:22:51.634 [INF] overlay: closed
+14:24:11.333 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:24:11.333 [INF] overlay: opened
+14:24:14.864 [INF] overlay: game resumed (time scale 1.00)
+14:24:14.864 [INF] overlay: closed
+14:25:40.822 [INF] [halflife_movement] deactivated
+===== EthhhSDK 0.1.0  session 2026-11-11 14:47:57 =====
+14:47:57.414 [INF] ==========================================================
+14:47:57.414 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+14:47:57.414 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+14:47:57.415 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+14:47:57.415 [INF] launcher: opening pre-game mod manager
+14:47:57.487 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+14:47:57.514 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+14:48:00.645 [INF] launcher: start requested
+14:48:00.676 [INF] MinHook initialized
+14:48:00.710 [INF] Fn_Tick hooked at 0043E0A0
+14:48:00.712 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+14:48:00.713 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+14:48:00.739 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+14:48:00.852 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+14:48:00.852 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+14:48:00.852 [INF] clr: managed callbacks set (tick=04F00776 gui=04F0079E overlay=04F007C6)
+14:48:00.853 [INF] managed: 1 mod(s) initialised, callbacks registered
+14:48:00.853 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+14:48:00.853 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+14:48:00.853 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+14:48:00.853 [INF] watcher: waiting for game window / D3D9 device
+14:48:01.329 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=07882BE0)
+14:48:01.443 [INF] raw mouse registered
+14:48:01.443 [INF] window hook installed (hwnd=0030073A)
+14:48:01.443 [INF] watcher: all hooks installed
+14:48:01.647 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+14:48:01.647 [INF] overlay: ImGui backends ready (hwnd=0030073A device=07882BE0 scale 1.00)
+14:48:08.820 [INF] player: exact Ninja 05363C78 class 0E43DFC0 handle 00000007
+14:48:10.724 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:48:10.727 [INF] overlay: opened
+14:48:19.921 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+14:48:20.774 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+14:48:20.803 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit); render split inactive
+14:48:21.216 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+14:48:21.562 [INF] EthhhPatch render interpolation active (16.667 ms/tick, 0.9977 alpha)
+14:48:25.877 [INF] overlay: game resumed (time scale 1.00)
+14:48:25.877 [INF] overlay: closed
+14:48:40.789 [INF] player: exact Ninja 0535DD88 class 0E43DFC0 handle 00000255
+14:48:45.136 [INF] player: exact Ninja 053556C8 class 0E43DFC0 handle 00000270
+14:48:50.856 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:48:50.856 [INF] overlay: opened
+14:49:06.923 [INF] overlay: game resumed (time scale 1.00)
+14:49:06.923 [INF] overlay: closed
+14:49:09.186 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:49:09.186 [INF] overlay: opened
+14:49:16.021 [INF] player: manual selection 053556C8 (class 0E43DFC0) pos 83.91 1.00 -21.61
+14:49:17.657 [INF] overlay: game resumed (time scale 1.00)
+14:49:17.657 [INF] overlay: closed
+14:49:32.610 [WRN] player: manual strat 053556C8 disappeared
+14:49:53.429 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+14:49:54.376 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:49:54.376 [INF] overlay: opened
+14:49:55.761 [INF] player: manual selection 053556C8 (class 0C368994) pos 217.00 4.50 -94.65
+14:50:05.558 [INF] player: manual selection 053556C8 (class 0C368994) pos 217.00 4.50 -94.65
+14:50:09.379 [INF] player: candidate learning started (225 strats). Idle/move/stop; paused time is excluded.
+14:50:10.996 [INF] overlay: game resumed (time scale 1.00)
+14:50:10.996 [INF] overlay: closed
+14:50:24.400 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:50:24.400 [INF] overlay: opened
+14:50:28.763 [INF] player: manual selection 053556C8 (class 0C368994) pos 217.00 4.50 -94.65
+14:50:32.151 [INF] player: exact Ninja 0533F9A8 class 0E43DFC0 handle 00000369
+14:50:34.595 [INF] overlay: game resumed (time scale 1.00)
+14:50:34.595 [INF] overlay: closed
+14:50:36.326 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+14:50:37.668 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:50:37.669 [INF] overlay: opened
+14:50:43.558 [INF] player: manual selection 0533F9A8 (class 0E43DFC0) pos 57.87 -2.59 -19.52
+14:50:44.108 [INF] overlay: game resumed (time scale 1.00)
+14:50:44.109 [INF] overlay: closed
+14:50:46.061 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:50:46.116 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
+14:51:07.120 [INF] [halflife_movement] deactivated
+14:51:08.600 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:51:14.871 [INF] [halflife_movement] deactivated
+14:51:17.044 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:51:55.041 [INF] [halflife_movement] deactivated
+14:53:40.925 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:53:48.587 [INF] [halflife_movement] deactivated
+14:53:53.334 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:53:53.334 [INF] overlay: opened
+14:54:04.234 [INF] overlay: game resumed (time scale 1.00)
+14:54:04.234 [INF] overlay: closed
+14:55:10.622 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:55:24.978 [INF] [halflife_movement] deactivated
+14:56:03.026 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:56.083 [INF] [halflife_movement] deactivated
+14:56:56.234 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:56.345 [INF] [halflife_movement] deactivated
+14:56:56.494 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:56.644 [INF] [halflife_movement] deactivated
+14:56:56.795 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:56.965 [INF] [halflife_movement] deactivated
+14:56:57.545 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:57.864 [INF] [halflife_movement] deactivated
+14:56:58.015 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:58.926 [INF] [halflife_movement] deactivated
+14:56:59.066 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:56:59.952 [INF] [halflife_movement] deactivated
+14:57:00.065 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:57:00.878 [INF] [halflife_movement] deactivated
+14:57:01.013 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:57:12.313 [INF] [halflife_movement] deactivated
+14:57:13.045 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:57:26.205 [INF] [halflife_movement] deactivated
+14:57:30.394 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:04.433 [INF] [halflife_movement] deactivated
+14:58:04.615 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:04.804 [INF] [halflife_movement] deactivated
+14:58:04.983 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:05.135 [INF] [halflife_movement] deactivated
+14:58:05.314 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:05.484 [INF] [halflife_movement] deactivated
+14:58:05.656 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:05.845 [INF] [halflife_movement] deactivated
+14:58:06.016 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:06.154 [INF] [halflife_movement] deactivated
+14:58:06.285 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:06.454 [INF] [halflife_movement] deactivated
+14:58:06.597 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:06.733 [INF] [halflife_movement] deactivated
+14:58:06.855 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:06.984 [INF] [halflife_movement] deactivated
+14:58:07.115 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:07.283 [INF] [halflife_movement] deactivated
+14:58:07.402 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:07.554 [INF] [halflife_movement] deactivated
+14:58:07.684 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:07.813 [INF] [halflife_movement] deactivated
+14:58:07.964 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:08.094 [INF] [halflife_movement] deactivated
+14:58:09.173 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:58:09.173 [INF] overlay: opened
+14:58:15.508 [INF] overlay: game resumed (time scale 1.00)
+14:58:15.509 [INF] overlay: closed
+14:58:16.179 [INF] [lua] trainer: player teleported to camera
+14:58:16.650 [INF] [lua] trainer: player teleported to camera
+14:58:17.030 [INF] [lua] trainer: player teleported to camera
+14:58:17.349 [INF] [lua] trainer: player teleported to camera
+14:58:17.701 [INF] [lua] trainer: player teleported to camera
+14:58:17.899 [INF] [lua] trainer: player teleported to camera
+14:58:18.061 [INF] [lua] trainer: player teleported to camera
+14:58:18.313 [WRN] player: manual strat 0533F9A8 disappeared
+14:58:21.758 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:58:21.759 [INF] overlay: opened
+14:58:28.628 [INF] overlay: game resumed (time scale 1.00)
+14:58:28.629 [INF] overlay: closed
+14:58:41.256 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+14:58:42.265 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:58:42.265 [INF] overlay: opened
+14:58:43.154 [INF] overlay: game resumed (time scale 1.00)
+14:58:43.154 [INF] overlay: closed
+14:58:43.525 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+14:58:44.234 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:58:44.234 [INF] overlay: opened
+14:58:48.983 [INF] player: manual selection 0533F9A8 (class 0D972310) pos 258.00 3.50 16.15
+14:58:51.629 [INF] player: exact Ninja 05341E68 class 0E43DFC0 handle 000013E7
+14:58:52.512 [INF] player: manual selection 05341E68 (class 0E43DFC0) pos 267.00 5.46 40.49
+14:58:52.944 [INF] overlay: game resumed (time scale 1.00)
+14:58:52.944 [INF] overlay: closed
+14:58:53.746 [INF] [halflife_movement] activated (movement=1 camera=1)
+14:58:57.135 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:58:57.135 [INF] overlay: opened
+14:59:08.220 [INF] overlay: game resumed (time scale 1.00)
+14:59:08.221 [INF] overlay: closed
+14:59:08.819 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:59:08.819 [INF] overlay: opened
+14:59:09.705 [INF] overlay: game resumed (time scale 1.00)
+14:59:09.705 [INF] overlay: closed
+14:59:10.135 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:59:10.135 [INF] overlay: opened
+14:59:14.537 [INF] overlay: game resumed (time scale 1.00)
+14:59:14.537 [INF] overlay: closed
+14:59:15.065 [INF] overlay: game paused (time scale 1.00, camera frozen)
+14:59:15.066 [INF] overlay: opened
+14:59:16.926 [INF] overlay: game resumed (time scale 1.00)
+14:59:16.926 [INF] overlay: closed
+14:59:20.615 [INF] overlay: game paused (time scale 0.82, camera frozen)
+14:59:20.616 [INF] overlay: opened
+14:59:22.575 [INF] overlay: game resumed (time scale 0.82)
+14:59:22.576 [INF] overlay: closed
+14:59:24.685 [INF] [halflife_movement] deactivated
+14:59:29.736 [INF] overlay: game paused (time scale 0.31, camera frozen)
+14:59:29.736 [INF] overlay: opened
+14:59:30.909 [INF] overlay: game resumed (time scale 0.31)
+14:59:30.909 [INF] overlay: closed
+14:59:37.937 [INF] overlay: game paused (time scale 0.17, camera frozen)
+14:59:37.937 [INF] overlay: opened
+14:59:38.707 [INF] overlay: game resumed (time scale 0.17)
+14:59:38.707 [INF] overlay: closed
+14:59:54.807 [INF] overlay: game paused (time scale 0.05, camera frozen)
+14:59:54.807 [INF] overlay: opened
+14:59:56.678 [INF] overlay: game resumed (time scale 0.05)
+14:59:56.678 [INF] overlay: closed
+15:00:10.366 [INF] overlay: game paused (time scale 2.12, camera frozen)
+15:00:10.366 [INF] overlay: opened
+15:00:11.122 [INF] overlay: game resumed (time scale 2.12)
+15:00:11.122 [INF] overlay: closed
+15:00:12.373 [WRN] player: manual strat 05341E68 disappeared
+15:00:12.812 [INF] overlay: game paused (time scale 2.98, camera frozen)
+15:00:12.812 [INF] overlay: opened
+15:00:23.578 [INF] overlay: game resumed (time scale 1.00)
+15:00:23.578 [INF] overlay: closed
+15:00:36.708 [INF] overlay: game paused (time scale 1.00, camera frozen)
+15:00:36.708 [INF] overlay: opened
+15:00:40.253 [INF] overlay: game resumed (time scale 1.00)
+15:00:40.253 [INF] overlay: closed
+15:00:43.159 [INF] overlay: game paused (time scale 1.00, camera frozen)
+15:00:43.160 [INF] overlay: opened
+15:00:44.419 [INF] overlay: game resumed (time scale 1.00)
+15:00:44.419 [INF] overlay: closed
+===== EthhhSDK 0.1.0  session 2026-11-11 16:23:18 =====
+16:23:18.028 [INF] ==========================================================
+16:23:18.028 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+16:23:18.028 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+16:23:18.028 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+16:23:18.028 [INF] launcher: opening pre-game mod manager
+16:23:18.080 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+16:23:18.099 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+16:23:41.837 [INF] launcher: start requested
+16:23:41.859 [INF] MinHook initialized
+16:23:41.882 [INF] Fn_Tick hooked at 0043E0A0
+16:23:41.884 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+16:23:41.884 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+16:23:41.900 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+16:23:41.966 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+16:23:41.967 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+16:23:41.967 [INF] clr: managed callbacks set (tick=04AD0776 gui=04AD079E overlay=04AD07C6)
+16:23:41.967 [INF] managed: 1 mod(s) initialised, callbacks registered
+16:23:41.967 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+16:23:41.967 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+16:23:41.967 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+16:23:41.967 [INF] watcher: waiting for game window / D3D9 device
+16:23:42.396 [INF] raw mouse registered
+16:23:42.396 [INF] window hook installed (hwnd=003207F4)
+16:23:42.424 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=02894580)
+16:23:42.425 [INF] watcher: all hooks installed
+16:23:42.612 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+16:23:42.613 [INF] overlay: ImGui backends ready (hwnd=003207F4 device=02894580 scale 1.00)
+16:23:49.841 [INF] player: exact Ninja 052F3C78 class 0E42FFC0 handle 00000007
+16:24:10.407 [INF] player: exact Ninja 052EDD88 class 0E42FFC0 handle 0000024D
+16:24:10.668 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:24:10.670 [INF] overlay: opened
+16:24:17.640 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:24:17.663 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/entity poses); render split inactive
+16:24:18.022 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+16:24:22.743 [INF] overlay: game resumed (time scale 1.00)
+16:24:22.743 [INF] overlay: closed
+16:24:22.826 [INF] EthhhPatch render interpolation active (60-Hz simulation, 0.0247 alpha)
+16:24:25.318 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:24:25.319 [INF] overlay: opened
+16:24:30.597 [INF] overlay: game resumed (time scale 1.00)
+16:24:30.597 [INF] overlay: closed
+16:24:32.913 [WRN] [halflife_movement] select/pin the ninja strat in the Trainer or Player tracking before activating
+16:24:35.018 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:24:35.018 [INF] overlay: opened
+16:24:41.663 [INF] EthhhPatch compatibility hooks removed
+16:24:44.997 [INF] overlay: game resumed (time scale 1.00)
+16:24:44.997 [INF] overlay: closed
+16:25:03.484 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:03.484 [INF] overlay: opened
+16:25:09.928 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:11.856 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:13.090 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:13.115 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/entity poses); render split inactive
+16:25:13.493 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+16:25:17.032 [INF] overlay: game resumed (time scale 1.00)
+16:25:17.032 [INF] overlay: closed
+16:25:20.560 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:20.560 [INF] overlay: opened
+16:25:24.663 [INF] player: manual selection 052EDD88 (class 0E42FFC0) pos 55.11 5.09 47.89
+16:25:25.135 [INF] overlay: game resumed (time scale 1.00)
+16:25:25.135 [INF] overlay: closed
+16:25:28.143 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:28.143 [INF] overlay: opened
+16:25:34.713 [INF] overlay: game resumed (time scale 1.00)
+16:25:34.713 [INF] overlay: closed
+16:25:39.213 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:39.213 [INF] overlay: opened
+16:25:40.627 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:40.644 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 0.00 u, orbit 6.00 u, capture off)
+16:25:40.863 [INF] overlay: game resumed (time scale 1.00)
+16:25:40.863 [INF] overlay: closed
+16:25:40.874 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.97 u, orbit 6.00 u, capture off)
+16:25:40.905 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.96 u, orbit 5.96 u, capture off)
+16:25:40.906 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:40.924 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:40.955 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.96 u, orbit 5.96 u, capture off)
+16:25:40.956 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:40.973 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:41.004 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.96 u, orbit 5.96 u, capture off)
+16:25:41.005 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:41.023 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.96 u, orbit 5.96 u, capture off)
+16:25:41.053 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.055 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.074 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.104 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.105 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.124 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.154 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.155 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.174 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.204 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.206 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.95 u, orbit 5.95 u, capture off)
+16:25:41.224 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.94 u, orbit 5.95 u, capture off)
+16:25:41.254 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.256 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.275 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.304 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.306 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.326 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.354 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.356 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.374 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.405 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.406 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:41.424 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.94 u, capture off)
+16:25:41.455 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.456 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.476 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.506 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.507 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.525 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.555 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.556 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.575 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.604 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.606 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.625 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.655 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.656 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.93 u, orbit 5.93 u, capture off)
+16:25:41.676 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.93 u, capture off)
+16:25:41.705 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.706 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.725 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.755 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.756 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.775 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.805 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.806 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.825 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.855 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.856 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.874 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.908 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.909 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.924 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:41.955 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.91 u, orbit 5.91 u, capture off)
+16:25:41.956 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.91 u, orbit 5.91 u, capture off)
+16:25:41.975 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.91 u, orbit 5.91 u, capture off)
+16:25:42.003 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:42.003 [INF] overlay: opened
+16:25:42.005 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 5.91 u, orbit 5.91 u, capture off)
+16:25:44.194 [INF] overlay: game resumed (time scale 1.00)
+16:25:44.194 [INF] overlay: closed
+16:25:44.204 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.88 u, orbit 5.91 u, capture off)
+16:25:44.234 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.235 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.253 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.294 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.295 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.303 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.343 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.344 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.354 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.393 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.394 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.406 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.435 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.435 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.455 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.485 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.486 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.505 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.535 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.536 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.554 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.585 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.586 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.603 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.634 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.635 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.654 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.686 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.687 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.705 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.736 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.737 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.755 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.785 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.786 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.804 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.835 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.836 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.855 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.887 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.887 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.905 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.935 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.936 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.955 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.985 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:44.986 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:45.004 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:45.035 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:45.036 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:45.054 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:45.084 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.89 u, orbit 5.89 u, capture off)
+16:25:45.085 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.89 u, orbit 5.89 u, capture off)
+16:25:45.104 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.91 u, orbit 5.89 u, capture off)
+16:25:45.134 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.97 u, orbit 5.97 u, capture off)
+16:25:45.135 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.97 u, orbit 5.97 u, capture off)
+16:25:45.153 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.01 u, orbit 5.97 u, capture off)
+16:25:45.184 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.11 u, orbit 6.11 u, capture off)
+16:25:45.185 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.11 u, orbit 6.11 u, capture off)
+16:25:45.204 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.16 u, orbit 6.11 u, capture off)
+16:25:45.235 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.27 u, orbit 6.27 u, capture off)
+16:25:45.236 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.27 u, orbit 6.27 u, capture off)
+16:25:45.255 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.32 u, orbit 6.27 u, capture off)
+16:25:45.286 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.42 u, orbit 6.42 u, capture off)
+16:25:45.287 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.42 u, orbit 6.42 u, capture off)
+16:25:45.304 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.47 u, orbit 6.42 u, capture off)
+16:25:45.336 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.54 u, orbit 6.54 u, capture off)
+16:25:45.337 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.54 u, orbit 6.54 u, capture off)
+16:25:45.354 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.57 u, orbit 6.54 u, capture off)
+16:25:45.386 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.61 u, orbit 6.61 u, capture off)
+16:25:45.387 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.61 u, orbit 6.61 u, capture off)
+16:25:45.404 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.63 u, orbit 6.61 u, capture off)
+16:25:45.436 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.66 u, orbit 6.66 u, capture off)
+16:25:45.437 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.66 u, orbit 6.66 u, capture off)
+16:25:45.455 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.68 u, orbit 6.66 u, capture off)
+16:25:45.485 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.69 u, orbit 6.69 u, capture off)
+16:25:45.486 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.69 u, orbit 6.69 u, capture off)
+16:25:45.504 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.70 u, orbit 6.69 u, capture off)
+16:25:45.535 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.72 u, orbit 6.72 u, capture off)
+16:25:45.536 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.72 u, orbit 6.72 u, capture off)
+16:25:45.555 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.72 u, orbit 6.72 u, capture off)
+16:25:45.586 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.73 u, orbit 6.73 u, capture off)
+16:25:45.587 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.73 u, orbit 6.73 u, capture off)
+16:25:45.607 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.73 u, orbit 6.73 u, capture off)
+16:25:45.636 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.74 u, orbit 6.74 u, capture off)
+16:25:45.637 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.74 u, orbit 6.74 u, capture off)
+16:25:45.654 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.74 u, orbit 6.74 u, capture off)
+16:25:45.685 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.72 u, orbit 6.72 u, capture off)
+16:25:45.686 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.72 u, orbit 6.72 u, capture off)
+16:25:45.705 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.71 u, orbit 6.72 u, capture off)
+16:25:45.734 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.66 u, orbit 6.66 u, capture off)
+16:25:45.735 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.66 u, orbit 6.66 u, capture off)
+16:25:45.754 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.63 u, orbit 6.66 u, capture off)
+16:25:45.784 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.54 u, orbit 6.54 u, capture off)
+16:25:45.785 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.54 u, orbit 6.54 u, capture off)
+16:25:45.804 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.49 u, orbit 6.54 u, capture off)
+16:25:45.835 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.38 u, orbit 6.38 u, capture off)
+16:25:45.836 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.38 u, orbit 6.38 u, capture off)
+16:25:45.855 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.32 u, orbit 6.38 u, capture off)
+16:25:45.884 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.22 u, orbit 6.22 u, capture off)
+16:25:45.885 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.22 u, orbit 6.22 u, capture off)
+16:25:45.905 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.18 u, orbit 6.22 u, capture off)
+16:25:45.935 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.11 u, orbit 6.11 u, capture off)
+16:25:45.936 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.11 u, orbit 6.11 u, capture off)
+16:25:45.954 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.08 u, orbit 6.11 u, capture off)
+16:25:45.985 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 6.03 u, orbit 6.03 u, capture off)
+16:25:45.986 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.03 u, orbit 6.03 u, capture off)
+16:25:46.004 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 6.01 u, orbit 6.03 u, capture off)
+16:25:46.035 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.97 u, orbit 5.97 u, capture off)
+16:25:46.036 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.97 u, orbit 5.97 u, capture off)
+16:25:46.054 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.96 u, orbit 5.97 u, capture off)
+16:25:46.085 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.94 u, orbit 5.94 u, capture off)
+16:25:46.086 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.94 u, orbit 5.94 u, capture off)
+16:25:46.104 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.93 u, orbit 5.94 u, capture off)
+16:25:46.135 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.92 u, orbit 5.92 u, capture off)
+16:25:46.136 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.92 u, orbit 5.92 u, capture off)
+16:25:46.154 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.91 u, orbit 5.92 u, capture off)
+16:25:46.184 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.90 u, orbit 5.90 u, capture off)
+16:25:46.185 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.90 u, orbit 5.90 u, capture off)
+16:25:46.203 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.90 u, orbit 5.90 u, capture off)
+16:25:46.235 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.89 u, orbit 5.89 u, capture off)
+16:25:46.236 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.89 u, orbit 5.89 u, capture off)
+16:25:46.254 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.89 u, orbit 5.89 u, capture off)
+16:25:46.285 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.89 u, orbit 5.89 u, capture off)
+16:25:46.286 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.89 u, orbit 5.89 u, capture off)
+16:25:46.304 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.89 u, capture off)
+16:25:46.335 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.336 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.354 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.386 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.387 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.404 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.436 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.437 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.455 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.485 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.486 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.504 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.535 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.536 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.553 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.584 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.585 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.604 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.635 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.636 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.654 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.685 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.686 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.705 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.734 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.735 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.754 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.785 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.786 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.807 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.836 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.836 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.855 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.885 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.886 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.904 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.934 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.935 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.954 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.985 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:46.986 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.003 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.035 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.036 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.054 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.085 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.086 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.104 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.136 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.137 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.154 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.184 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.185 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.203 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.88 u, orbit 5.88 u, capture off)
+16:25:47.223 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:47.223 [INF] overlay: opened
+16:25:47.224 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 5.88 u, orbit 5.88 u, capture off)
+16:25:48.136 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:48.136 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off)
+16:25:50.295 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:50.304 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 0.00 u, orbit 6.00 u, capture off)
+16:25:50.434 [INF] overlay: game resumed (time scale 1.00)
+16:25:50.434 [INF] overlay: closed
+16:25:50.435 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 6.00 u, capture off)
+16:25:50.473 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.474 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.483 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.524 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.525 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.534 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.573 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.574 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.584 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.623 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.625 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.634 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.674 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.675 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.684 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.724 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.724 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.734 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.773 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.774 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.784 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.823 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.824 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.834 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.873 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.874 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.884 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.924 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.925 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.934 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.973 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.974 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:50.983 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.024 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.025 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.034 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.074 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.075 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.084 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.123 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.125 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.135 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.174 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.176 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.184 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.224 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.225 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.235 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.275 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.277 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.284 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.324 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.325 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.335 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.374 [INF] EthhhPatch orbit: waiting for a playable camera -> mouse orbit following (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.375 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.385 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.423 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:25:51.423 [INF] overlay: opened
+16:25:51.424 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off)
+16:25:51.836 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+16:25:51.836 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off)
+16:26:10.284 [INF] overlay: game resumed (time scale 1.00)
+16:26:10.285 [INF] overlay: closed
+16:26:16.307 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:26:16.307 [INF] overlay: opened
+16:26:26.549 [INF] overlay: game resumed (time scale 1.00)
+16:26:26.550 [INF] overlay: closed
+16:27:09.826 [INF] overlay: game paused (time scale 1.00, camera frozen)
+16:27:09.826 [INF] overlay: opened
+16:27:11.646 [INF] overlay: game resumed (time scale 1.00)
+16:27:11.646 [INF] overlay: closed
+16:27:28.431 [INF] [halflife_movement] activated (movement=1 camera=1)
+16:27:28.461 [INF] HL opt-in WASD filter installed at 004427A0 (one-tick exact-Ninja lease)
+16:27:28.461 [INF] EthhhPatch orbit: waiting for a playable camera -> HL / external camera owns control (native 0.00 u, orbit 6.00 u, capture off)

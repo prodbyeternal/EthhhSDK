@@ -395,15 +395,9 @@ bool WriteNinjaFacing(uintptr_t exactNinja, float yawRadians)
 {
     if (!std::isfinite(yawRadians)) return false;
     StratIdentity identity;
-    StratView current;
-    if (!ReadStratIdentity(exactNinja, identity) || identity.role != StratRole::Ninja ||
-        !ReadStrat(exactNinja, current) || current.selfHandle != identity.selfHandle) return false;
-    float angles[4] = { current.angles[0], current.angles[1], current.angles[2], current.angles[3] };
-    angles[1] = yawRadians * (4096.0f / (2.0f * 3.14159265358979323846f));
-    const float half = yawRadians * 0.5f;
-    const float quat[4] = { 0.0f, sinf(half), 0.0f, cosf(half) };
-    return SafeWriteBytes(exactNinja + off::StratAngles, angles, sizeof(angles)) &&
-        SafeWriteBytes(exactNinja + off::StratQuat, quat, sizeof(quat)) &&
+    if (!ReadStratIdentity(exactNinja, identity) || identity.role != StratRole::Ninja) return false;
+    return WriteNinjaFacingPose(exactNinja + off::StratAngles, exactNinja + off::StratQuat,
+        yawRadians, SafeWriteBytes) &&
         ResolveOwnerHandle(A(off::StratMgrObject), identity.selfHandle, SafeReadBytes) == exactNinja;
 }
 
@@ -467,6 +461,7 @@ PlayerTracker& PlayerTracker::Get()
 
 void PlayerTracker::Reset()
 {
+    pinConsent_.Revoke();
     manual_ = 0;
     auto_ = 0;
     knownClass_ = nullptr;
@@ -486,6 +481,7 @@ void PlayerTracker::Reset()
 void PlayerTracker::SetMode(PlayerMode m)
 {
     if (m != PlayerMode::Auto && m != PlayerMode::Manual && m != PlayerMode::Learning) return;
+    if (m != PlayerMode::Manual || mode_ != m) pinConsent_.Revoke();
     if (mode_ != m) { auto_ = 0; manualValid_ = false; updateTimer_ = 0; }
     mode_ = m;
     if (m == PlayerMode::Learning) BeginLearning();
@@ -493,15 +489,19 @@ void PlayerTracker::SetMode(PlayerMode m)
 
 void PlayerTracker::Select(uintptr_t addr)
 {
+    pinConsent_.Revoke();
     StratView s;
-    auto live = SnapshotStrats();
+    bool complete = false;
+    auto live = SnapshotStrats(8192, &complete);
     const auto found = std::find_if(live.begin(), live.end(), [&](const StratView& item) { return item.addr == addr; });
-    if (found != live.end() && ReadStrat(addr, s) && s.pClass == found->pClass && s.selfHandle == found->selfHandle) {
+    if (found != live.end() && ReadStrat(addr, s) && s.pClass == found->pClass && s.selfHandle == found->selfHandle &&
+        LiveAddressMatches(addr, s.pClass, s.selfHandle)) {
         manual_ = addr;
         mode_ = PlayerMode::Manual;
         knownClass_ = s.pClass;
         knownHandle_ = s.selfHandle;
         manualValid_ = true;
+        pinConsent_.Selected(complete && UniqueNinja(live) == addr);
         info_ = Format("pinned %s %08X; %s", s.className[0] ? s.className : "unknown class", (unsigned)addr,
             ClassRole(s.className) == StratRole::Ninja ? "whole-body movement still requires visual confirmation" : "not exact Ninja; HL activation blocked");
         ETH_INFO("player: manual selection %08X (class %p) pos %.2f %.2f %.2f",
@@ -511,6 +511,7 @@ void PlayerTracker::Select(uintptr_t addr)
 
 void PlayerTracker::BeginLearning()
 {
+    pinConsent_.Revoke();
     learnStart_.clear();
     learnDone_ = false;
     learnRanked_ = false;
@@ -527,13 +528,16 @@ void PlayerTracker::BeginLearning()
 
 bool PlayerTracker::ReacquireExactNinja()
 {
+    // A native caller cannot turn automatic detection or a fresh session into a
+    // manual pin. Only an earlier explicit unique-Ninja selection authorizes this.
+    if (!pinConsent_.AllowsReacquire(mode_ == PlayerMode::Manual)) return false;
     bool complete = false;
     const auto live = SnapshotStrats(8192, &complete);
     if (!complete) return false;
     const uintptr_t exact = UniqueNinja(live);
     if (!exact) return false;
     Select(exact);
-    return mode_ == PlayerMode::Manual && manual_ == exact && manualValid_;
+    return pinConsent_.AllowsReacquire(mode_ == PlayerMode::Manual) && manual_ == exact && manualValid_;
 }
 
 void PlayerTracker::RefreshCandidates()

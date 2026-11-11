@@ -2,6 +2,7 @@
 #include "precomp.h"
 #include "player_learning.h"
 #include "strat_identity.h"
+#include "ninja_control_policy.h"
 #include "util.h"
 
 namespace eth::game {
@@ -23,6 +24,12 @@ constexpr uintptr_t TimeStepF       = 0x51AB40;
 constexpr uintptr_t GameTimeF       = 0x51AB44;
 constexpr uintptr_t pCamera         = 0x51AB4C;
 constexpr uintptr_t pView           = 0x51AB64;
+constexpr uintptr_t pApp            = 0x50FFA4; // -> App object (ctor 0x43D800)
+constexpr uintptr_t AppTimer        = 0x08;     // fixed-step timer inside App
+constexpr uintptr_t AppInterpolation= 0x28;     // render pose fraction consumed by View_Render
+constexpr uintptr_t TimerMsPerTick  = 0x00;     // float, 1000/60 at the default rate
+constexpr uintptr_t TimerTicksPerMs = 0x04;     // float, 0.06 at 60 Hz
+constexpr uintptr_t TimerRemainderMs= 0x08;     // float, sub-tick remainder, floored by Timer_Update
 constexpr uintptr_t DebugFlags      = 0x51AB30;
 constexpr uintptr_t StratMgrObject  = 0x51019C;
 constexpr uintptr_t StratListHead   = 0x51019C + 0x189C;
@@ -58,6 +65,8 @@ constexpr uintptr_t StratOwnerHandle= 0x238;  // only known owner-consuming clas
 constexpr uintptr_t StratModel     = 0x268;
 constexpr uintptr_t StratAnimation = 0x26C;
 constexpr uintptr_t StratNodeMatrices=0x13C;
+constexpr uintptr_t StratNodeCount  = 0x140; // equals model[0] and animation-control+0x24
+constexpr uintptr_t StratRenderWorld= 0x10;  // inline world consumed by 0x43E660 / 0x44A490
 constexpr uintptr_t StratHashVec    = 0x2B0;
 constexpr uintptr_t StratFrameA     = 0x158;
 constexpr uintptr_t StratFrameB     = 0x15C;
@@ -197,6 +206,7 @@ private:
     void*      knownClass_ = nullptr;
     uint32_t   knownHandle_ = 0;
     bool       manualValid_ = false;
+    NinjaPinConsent pinConsent_;
     float      updateTimer_ = 0.0f;
 
     // learning

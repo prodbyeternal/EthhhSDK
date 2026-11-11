@@ -1,0 +1,150 @@
+{
+  "profile": "Release Win32",
+  "status": "staged; not installed or live accepted",
+  "staging_root": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist",
+  "supported_executable_sha256": "49099fef26610e84f94f1aa2dd33aa9e83413ee24ff87fed63a8a98cc4f3daf0",
+  "evidence_captured": "2026-11-11T03:00:01.4543527+01:00",
+  "hashes_rechecked": "2026-11-11T03:02:44.4724980+01:00",
+  "assistant_installed": false,
+  "game_controlled": false,
+  "manual_closure_confirmed_for_this_update": false,
+  "live_accepted": false,
+  "report": "verification-hl-direction-2026-11-11.md",
+  "source_and_preservation_evidence": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-verification-20261111-0300.json",
+  "source_and_preservation_evidence_sha256": "9a579074e84a42443cddb505767720cfd31578d4d9e806701100e1f6a52c88ff",
+  "preservation": {
+    "baseline_files": 68,
+    "intentional_existing_file_edits_in_baseline": 8,
+    "remaining_files_unchanged": 60,
+    "remaining_files_total": 60,
+    "unexpected_changes": 0,
+    "recorded_source_hashes_rechecked": 17,
+    "baseline": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-baseline-20261111-023336.json",
+    "baseline_sha256": "dc2a64896d2632d0667c81f60881f9f3d59cf673c7a9ed74d46364864b94e18b",
+    "source_backup": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-hl-direction-source-backup-20261111-023729",
+    "installation_policy": "Obtain fresh manual-closure confirmation and rebaseline before deployment. Preserve settings, saves, original executable/Data, user offsets and existing manifests. Never use install.ps1 -Force. Leave game restart manual."
+  },
+  "matching_deployment_required": [
+    "EthhhSDK.dll",
+    "EthhhSDK.Managed.dll",
+    "mods\\HalfLifeMovement\\Mod.dll"
+  ],
+  "artifacts": [
+    {
+      "relative": "dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "live_path": "C:\\Users\\Administrator\\Desktop\\ininja\\dinput8.dll",
+      "live_sha256_at_snapshot": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "live_matches_at_snapshot": true,
+      "installation_policy": "No proxy content change required."
+    },
+    {
+      "relative": "EthhhSDK.dll",
+      "bytes": 1256960,
+      "sha256": "d8dd2de319e71bf5c900fbddb131ea9ba687f6ee5f473f17d64c95dbace53ab3",
+      "live_path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK.dll",
+      "live_sha256_at_snapshot": "ee4cdfa54df31d9c56d7d8903c7508fd83ad9a099ca7d0b95f35384a7b6630b5",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "6044ff7a81f0bcdcfbd4fe35f396e538421780f4ced7265977e070755b72ade8",
+      "live_path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\EthhhSDK.Managed.dll",
+      "live_sha256_at_snapshot": "9b84d1bac6152e4e894bcbebef25f114e8c8b230b26391585869f2747df0bfbe",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 34816,
+      "sha256": "073334faa78b45d26eaef7e1d5a8a2db862ac2d29d6fd23be19efecc3cd957d3",
+      "live_path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\Mod.dll",
+      "live_sha256_at_snapshot": "644c6a88ec453e705b2629beecab4fc44ae726ce4b9c3d5a6188cb6da0c0e434",
+      "live_matches_at_snapshot": false
+    },
+    {
+      "relative": "mods\\HalfLifeMovement\\mod.json",
+      "bytes": 456,
+      "sha256": "8c6487de965d1a50fcdc05dcdae421312eaf4edacf801a1e249e1428ee930d7c",
+      "live_path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\mod.json",
+      "live_sha256_at_snapshot": "8c6487de965d1a50fcdc05dcdae421312eaf4edacf801a1e249e1428ee930d7c",
+      "live_matches_at_snapshot": true,
+      "installation_policy": "Preserve existing live manifests; this hash does not authorize replacing them."
+    }
+  ],
+  "evidence_root": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode",
+  "logs": [
+    {
+      "relative": "ethhh-hl-direction-build-20261111-025454.log",
+      "bytes": 2925,
+      "sha256": "387074fd6679c6404e9cb79e8765c8ee8c138d667e6c51664f3dd5b717869fcb",
+      "result": "pass"
+    },
+    {
+      "relative": "ethhh-hl-direction-regression-20261111-025738.log",
+      "bytes": 22524,
+      "sha256": "0343a34628bb48e0714c8684c4d0995e9b830a277116b9fd0c8de5b9ddf2eb1f",
+      "result": "pass; fake-engine and offline policy tests, not live acceptance"
+    },
+    {
+      "relative": "ethhh-hl-direction-preview-20261111-025900.log",
+      "bytes": 2710,
+      "sha256": "d3ac3a7f9569a8376306ec7482e165f80dcbb8e93752b6e9fdee359cf831abe3",
+      "result": "11/11 off-screen profiles pass"
+    }
+  ],
+  "installed_old_mod_reproduction": {
+    "relative": "ethhh-hl-direction-old-repro-20261111-0242\\evidence.json",
+    "bytes": 792,
+    "sha256": "7011382831f15b8a0e56019a46fd9df4ac236312c6d063b005403ef999e5357a",
+    "mod_sha256": "644c6a88ec453e705b2629beecab4fc44ae726ce4b9c3d5a6188cb6da0c0e434",
+    "direction_only_exit_code": 1,
+    "traversal_only_exit_code": 1,
+    "scope": "Read-only copy of the installed mod executed in an isolated fake-engine sandbox; no original game process control."
+  },
+  "offline_results": {
+    "hl_math_assertions": 23721,
+    "segment_collision_assertions": 4685,
+    "managed_assertions_per_run": 331,
+    "managed_runs": 6,
+    "additive_assertions": 45,
+    "camera_only_assertions": 45,
+    "native_movement_input_assertions": 41876,
+    "player_learning_assertions": 8,
+    "strat_identity_assertions": 33,
+    "ninja_consent_facing_assertions": 669,
+    "cadence_assertions": 24415,
+    "projection_assertions": 274,
+    "camera_restore_assertions": 13947,
+    "static_evidence_tests": 25,
+    "source_guard_tests": 14,
+    "required_native_exports": 219,
+    "resolved_pinvoke_bindings": 217,
+    "offscreen_profiles_passed": 11,
+    "offscreen_profiles_total": 11
+  },
+  "preserved_settings_snapshot": {
+    "eye_height_hl_units": 101,
+    "forward_offset_hl_units": 5,
+    "fov": 130,
+    "autohop": true,
+    "bunny_cap": false,
+    "world_units_per_hl_unit": 0.025,
+    "jump_key": "X",
+    "gravity": 531,
+    "airaccelerate": 40,
+    "jumpspeed": 268.33,
+    "game_vertical_threshold": 134,
+    "saved_active_is_not_activation_consent": true,
+    "camera_defaults_eye_forward_hl_units": [69, 24],
+    "display_plan_from_unchanged_ini": {
+      "width": 1280,
+      "height": 1024,
+      "render_hz": 100,
+      "windowed": false,
+      "is_live_mode_or_smoothness_proof": false
+    }
+  },
+  "limitations": "No live keyboard-hook, movement, traversal, collision, animation, cutscene, performance or high-refresh smoothness acceptance. Collision remains a segment-bundle approximation; native state flags and safe model refresh are unverified. Final Valve agreement/attribution packaging remains pending."
+}

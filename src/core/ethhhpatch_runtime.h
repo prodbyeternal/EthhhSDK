@@ -1,12 +1,11 @@
 #pragma once
 #include "precomp.h"
 #include "ethhhpatch_policy.h"
+#include "ethhhpatch_camera_policy.h"
 
 namespace eth::patch::runtime {
 
-// Hooks are installed in pass-through mode. Activation is deliberately separate
-// and is not currently exposed by the manager while the remaining HUD/movie and
-// rollback gates are unfinished.
+// Hooks are installed lazily for the acknowledged Apply/Restore transaction.
 bool InstallHooks();
 void Shutdown();
 bool HooksReady();
@@ -25,13 +24,36 @@ struct ApplyStatus {
     std::string detail;
 };
 
-// Internal display transaction foundation. The manager intentionally does not
-// call this until HUD/movie compatibility and user-facing confirmation are done.
+// Requests run on the game window/render thread, through the engine Reset path.
 bool RequestDisplayPlan(const DisplayPlan& plan, int monitorHz, std::string& error);
 bool RequestRestore(std::string& error);
 void OnResetResult(const D3DPRESENT_PARAMETERS* parameters, HRESULT result);
 ApplyStatus ReadApplyStatus();
 void SetExternalCameraOwned(bool owned);
 void NotifyMoviePresent();
+void SetOrbitEnabled(bool enabled);
+void ResumeOrbit();
+OrbitState ReadOrbitState();
+
+struct OrbitTuning { float sensitivity = 1.0f; bool invertY = false; };
+struct OrbitTelemetry {
+    bool enabled = false, following = false, capture = false;
+    OrbitState state = OrbitState::Waiting;
+    float nativeDistance = 0, orbitDistance = 0, yawDegrees = 0, pitchDegrees = 0;
+    uint64_t transitions = 0;
+};
+OrbitTuning ReadOrbitTuning();
+void SetOrbitTuning(float sensitivity, bool invertY);
+OrbitTelemetry ReadOrbitTelemetry();
+void SetOrbitDistance(float distance);
+void ZoomOrbit(float notches);
+
+struct EntityTelemetry {
+    bool enabled = true;
+    size_t sampled = 0, paired = 0;
+    uint64_t interpolatedSubmissions = 0, nativeSubmissions = 0;
+};
+EntityTelemetry ReadEntityTelemetry();
+void SetEntityInterpolationEnabled(bool enabled);
 
 } // namespace eth::patch::runtime

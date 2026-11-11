@@ -1,4 +1,4 @@
-# EthhhPatch — experimental resolution and high-refresh patch
+# EthhhPatch — display, free-look camera and animation interpolation
 
 ## Current behavior
 
@@ -163,14 +163,127 @@ The active policies also:
 - advance the verified HUD pulse from completed ticks while drawing every render;
 - replace independent 640x480 movie stretching with centered uniform fit;
 - pace game Presents to the exact selected/monitor target;
+- optionally provide render-only third-person mouse orbit outside HL mode;
 - disable compatibility changes if a later successful Reset no longer matches
   the verified active mode.
 
-Compatibility hooks for culling, HUD pulse, and movie fit are installed lazily
+Compatibility hooks for culling, HUD pulse, movie fit, camera and entity submissions are installed lazily
 only when an Apply transaction begins and are removed after restore/failure.
 Inactive EthhhPatch therefore adds no pass-through detour to the hot sphere-cull
 path. Projection-matrix validation is sampled once per 30 engine frames rather
 than performing protected memory validation on every render.
+
+### Third-person orbit and scripted cameras
+
+The F9 **EthhhPatch > Camera > Third-person mouse orbit outside HL mode** option maintains an orbit
+around the exact Ninja, initialized from the native camera's distance and angle.
+The target is the Ninja position plus an estimated 1.3 game-unit height. Target
+translation interpolates the last two completed ticks with one tick of latency;
+raw mouse orientation updates every render. The pitch is bounded and yaw wraps.
+This changes camera samples, not animation/entity update frequency or simulation.
+The wheel adjusts preferred orbit distance from 2.5 to 15 game units. Sensitivity
+and invert-Y are persistent; capture failures retry on subsequent frames rather
+than permanently disabling mouse movement. Normal native orbits that keep aiming
+at Ninja are not classified as off-target scripted pans.
+
+The renderer does **not** take its displayed pose directly from `Camera+0x80`.
+`View_tick` snapshots previous/current positions at `View+0x20/+0x40` and
+quaternions at `+0x30/+0x50`. `0x43F290` interpolates those and builds the rendered
+matrix at `+0x60`, inverse at `+0xA0`, and product at `+0xE0`. Updating Camera alone
+could therefore give CPU culling and the visible viewpoint different poses.
+
+The orbit updates both View endpoints and the camera's world/inverse/product
+only inside the verified complete `App_render_step` (`0x43E170`) scope. At the
+end of the full frame, including early returns/exception unwinding, it restores:
+
+- camera `[0,0x40)` and `[0x80,0x100)`;
+- View `[0x20,0x120)` (pose endpoints and derived render matrices).
+
+FOV, projection, player position, animation and script state are not overridden.
+Replaced objects are not restored through stale pointers. If a script/mod
+changes the installed pose during the frame, its edits are preserved and the
+orbit disables itself rather than overwriting the new owner.
+
+Movies immediately yield capture through the exact movie Present site. HL's
+explicit camera owner always has priority. An in-engine **cutscene flag is not
+verified**: native-camera distance, aim, roll, lens-change, cut and sustained
+off-target-pan checks yield to suspected scripted shots, including nearby shots.
+Each suspicion starts a 1.5-second native-camera hold. After that hold, three
+distinct stable simulation samples reacquire gameplay automatically. **Resume
+orbit after scripted camera** clears the remaining hold but still requires stable
+samples; the button stays available while orbit is enabled but suspended.
+Replacing the player/camera/View discards target history while preserving the
+active hold deadline and preferred zoom. Every matrix component and its affine,
+orthonormal basis are checked before acquisition.
+Unchecking orbit switches back to the native camera without a display Reset.
+False positives and indistinguishable gameplay-shaped cinematic shots remain
+possible; live cutscene acceptance is required, not implied by offline tests.
+
+A five-ray padded camera query is capped at at most 60 batches per second,
+retracts immediately for obstructions and eases back outward. It is not a verified
+camera hull; it can miss geometry between directions/samples. Failed/unreadable
+queries retain the native camera instead of assuming a clear path. The full
+exact-Ninja identity/list check runs once per completed tick, not every render.
+
+### Camera and entity render interpolation
+
+The engine forces `App+0x28` to 1 before rendering. Around original `View_Render`
+(`0x43F290`) only, EthhhPatch substitutes the verified timer's remainder divided
+by one fixed tick. The original camera quaternion/position interpolation then
+runs, and the saved fraction is restored even during exception unwinding. This
+uses previous/current poses with one tick of latency; it does not extrapolate or
+run extra simulation. Free-look orbit supplies its own render endpoints instead.
+Paused/zero-step and F9 frames keep native poses.
+
+**EthhhPatch > Animation** enables render-only entity root and bone blending.
+After a completed native tick and all mod callbacks, the SDK samples a complete
+bounded strat list. Eligible owners keep previous/current root and node matrices
+in SDK-owned memory. The two verified renderer boundaries are:
+
+| Site | x86 thiscall arguments after `this` |
+| --- | --- |
+| `0x44A490` | owner, model instance, world matrix |
+| `0x449EB0` | mesh list, world matrix, node matrices |
+
+Both return `ret 12`. The node routine iterates mesh `+0x44` and copies matrix
+inputs into renderer-owned queue storage (`+0xDFB0`, count `+0x45F70`); it neither
+retains those inputs nor advances animation. The SDK substitutes only renderer
+arguments, never native root/bone storage. `0x413B30` and `0x4132D0` are never
+called by the new render hooks; the latter advances native animation with
+`TimeStepF` and builds the completed node array.
+
+Guards check owner/class/handle-manager generation, model/controller, node count,
+allocation header and instance identity. Node count at owner `+0x140` must agree
+with `model[0]` and controller `+0x24`; matrices begin at owner `+0x13C`. The
+16-byte allocation header must be allocated and have a sufficient end boundary
+and a non-null heap owner. Limits are 512 entities, 512 nodes/entity and 16,384
+total nodes. Mesh chains are limited to 512 links; native sign-extended node
+indices outside the array are refused (`0xFFFF` means world-only).
+
+For double-buffered model instances, only the exact existing `+0x128/+0x12C`
+pair reversal under unchanged nonzero `+0x144` mode is allowed. This matches the
+verified native per-render swap at `0x43E7E6`; replacement instances do not inherit
+old endpoints. Root and bones must still match their completed-tick snapshots
+at submission, so intervening writes are preserved. Nested submissions lose the
+outer substitution scope temporarily and always restore it on exit.
+
+Rotation uses shortest-arc quaternion slerp, with translation and signed scale
+interpolation. Sheared, degenerate, non-affine, unreadable and discontinuous poses,
+missed ticks, changed owners/allocations and teleports use native rendering.
+Both mesh passes are bounded before root substitution. Unsupported paths such
+as custom vertex deformers and particles are not claimed as interpolated; actual
+live entity coverage and visual smoothness must be checked in-game.
+
+### Redesigned workspace
+
+Launcher, F9 overlay and previews share `DrawManagerLayout`: compact 64-unit
+chrome, graphite/mint theme, navigation rail, library metrics and content-sized
+mod cards, and a consistent footer. The library scrolls as a whole so tall
+loader-error cards remain reachable on narrow displays. The EthhhPatch page has
+**Display**, **Camera**, **Animation** and **Diagnostics** tabs. Existing saved
+page IDs and accent values remain valid; the mint accent is only the default.
+The gameplay **EthhhSDK** watermark is always visible, ignoring the obsolete
+`core.watermark=false` setting; corner/detail preferences remain supported.
 
 ## Policy tests and live acceptance
 
@@ -190,6 +303,12 @@ live-accepted in this build**. Live acceptance must confirm exact 1080p/4K Reset
 100-Hz game Presents with 60 active ticks/s, edge visibility, HUD containment,
 movie fit, pause/focus/load behavior, and successful manual restore. Unsupported
 or mismatched modes are refused or rolled back rather than silently accepted.
+Camera acceptance must also cover close and distant in-engine cutscenes, movies,
+wall proximity, respawn, explicit resume, F9/focus transitions and HL handoff.
+Animation acceptance must compare enabled/disabled blending at 100 render Hz
+while active simulation remains 60 Hz, with visible Ninja/enemy/attachment poses,
+pause/load/respawn, teleports and double-buffered models. UI acceptance includes
+launcher Start/Exit, F9 navigation, narrow/4K layouts and live Lua/C# interfaces.
 
 ## Reproduction
 
@@ -199,9 +318,9 @@ python .\tools\inspect-ethhhpatch.py --out "$env:LOCALAPPDATA\Temp\opencode\ethh
 .\tests\run-preview-tests.ps1
 ```
 
-The inspector checks 95 instruction anchors, thirty-three bounded disassembly
-slices, twenty-three explicit render/lifecycle edges, PE import/section mapping,
-the projection/movie submissions and both Present return sites. Twenty-one evidence tests
+The inspector checks 159 instruction anchors, 47 bounded disassembly slices,
+41 explicit render/lifecycle/collision/camera/entity edges, PE import/section mapping,
+the projection/movie/entity submissions and both Present return sites. Twenty-six evidence tests
 exercise those checks. It refuses altered executable
 fingerprints, output outside the approved temporary directory, and overwrite.
 It never opens a process or modifies executable/archive bytes. Off-screen
@@ -209,3 +328,17 @@ preview tests cover the new page without starting or controlling the game.
 They also exercise synthetic live-data layouts at standard/narrow/high-DPI
 sizes; those screenshots explicitly say **OFF-SCREEN FIXTURE**. Their example
 100-Present/60-tick readings are test data, not observed game performance.
+
+`EthhhPatchEntityTests.cpp` tests all-axis and composed quaternion rotations,
+reflected/nonuniform scale, zero native writes across repeated renders, instance
+swaps, intervening writes, lifetime/allocation/mesh bounds, tick wrap and resource
+ceilings. The twenty preview cases use the real shared layout and all four tabs,
+check balanced ImGui stacks and launcher routing, and exercise the always-on
+watermark at all four corners and three detail levels.
+
+`EthhhPatchCameraTests.cpp` tests the runtime-shared orbit policy, quaternion
+convention and fake-memory restoration behavior. It does not execute the original
+engine rendering or prove cutscene detection/camera collision in a live level.
+
+The latest dated offline verification and staged artifact hashes are in
+[the 2026-11-11 UI/animation report](verification-ui-animation-2026-11-11.md).
