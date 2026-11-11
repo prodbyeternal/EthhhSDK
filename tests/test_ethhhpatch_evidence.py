@@ -284,6 +284,41 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(contract["held_pressure_read"], 0x442FE7)
         self.assertFalse(contract["windows_input_synthesis"])
 
+    def test_native_camera_relative_heading_units_scope_and_calling_convention(self):
+        contract=self.result["camera_relative_movement_contract"]
+        self.assertEqual(contract["getter"],0x421680)
+        self.assertEqual(contract["getter_return"],0x4252EA)
+        self.assertEqual(contract["next_ASL_instruction_register"],"ESI")
+        self.assertEqual(contract["angle_units_per_turn"],4096)
+        self.assertEqual(contract["script_camera_yaw_offset"],0x174)
+        self.assertEqual(contract["field_table"],{0x0E:0x421822,0x6A:0x422239,0x91:0x4225F6})
+        rows={i["va"]:i for s in self.result["static_slices"] for i in s["instructions"]}
+        self.assertEqual(rows[0x424BDE]["operands"],"eax, dword ptr [edi + 0x1b4]")
+        self.assertEqual(rows[0x424C41]["operands"],"esi, 4")
+        self.assertEqual(rows[0x4252E5]["operands"],"0x421680")
+        self.assertEqual(rows[0x422249]["operands"],"0xc")
+        self.assertEqual(rows[0x421822]["operands"],"eax, dword ptr [esi + 0x174]")
+        self.assertFalse(contract["live_gameplay_accepted"])
+
+    def test_fingerprinted_Ninja_ASL_heading_sequence_and_copy_refusal(self):
+        tool=TOOL.with_name("inspect-camera-relative-movement.py")
+        spec=importlib.util.spec_from_file_location("movement_evidence",tool)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        decoded=module.DECODED
+        first=module.bounded(decoded/"09.vol/9-95.LCS/block1.bin")
+        second=module.bounded(decoded/"09.vol/9-95.LCS/block2.bin")
+        manifest=json.loads(module.bounded(decoded/"manifest.json"))
+        result=module.decoded_evidence(first,second,manifest)
+        self.assertEqual(result["heading_sites_package_offsets"],[0x4B6464])
+        self.assertEqual(result["runtime_sequence_words"],self.result["camera_relative_movement_contract"]["runtime_sequence_words"])
+        self.assertTrue(result["no_live_address_assumption"])
+        self.assertFalse(result["live_gameplay_accepted"])
+        for original,index in ((first,0),(second,1)):
+            changed=bytearray(original);changed[0]^=1
+            args=[first,second];args[index]=changed
+            with self.assertRaisesRegex(ValueError,"fingerprint"):
+                module.decoded_evidence(*args,manifest)
+
     def test_changed_control_archive_refused(self):
         changed = bytearray(INSPECTOR.GENERAL.read_bytes())
         changed[0x3800] ^= 1

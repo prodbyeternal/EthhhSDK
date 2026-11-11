@@ -2,6 +2,8 @@
 #include "ethhhpatch_runtime_policy.h"
 #include "ethhhpatch_interpolation.h"
 #include "ethhhpatch_entity_reader.h"
+#include "camera_relative_heading.h"
+#include "camera_relative_heading_thunk.h"
 #include "game.h"
 #include "config.h"
 #include "log.h"
@@ -25,6 +27,9 @@ constexpr uintptr_t kPrimaryViewReturn = 0x43E230;
 constexpr uintptr_t kAppRender = 0x43E170;
 constexpr uintptr_t kEntitySubmit = 0x44A490;
 constexpr uintptr_t kNodeSubmit = 0x449EB0;
+constexpr uintptr_t kBuiltinFieldGetter = 0x421680;
+constexpr uintptr_t kBuiltinFieldReturn = 0x4252EA;
+constexpr uintptr_t kNativeCameraOwner = 0x5119B8;
 constexpr float kOriginalAspect = 4.0f / 3.0f;
 
 using SphereCullFn = bool(__stdcall*)(const float*, const float*);
@@ -33,6 +38,7 @@ using MovieDrawFn = void(__cdecl*)(void*, float, float, int, float, float, float
 using ViewRenderFn = void(__thiscall*)(void*);
 using EntitySubmitFn = void(__thiscall*)(void*, void*, void*, const entity::Matrix*);
 using NodeSubmitFn = void(__thiscall*)(void*, void*, const entity::Matrix*, const entity::Matrix*);
+using BuiltinFieldFn = uint32_t(__thiscall*)(void*, void*, void*, uint32_t);
 SphereCullFn g_sphereCullOrig = nullptr;
 HudPulseFn g_hudPulseOrig = nullptr;
 MovieDrawFn g_movieDrawOrig = nullptr;
@@ -40,6 +46,10 @@ ViewRenderFn g_viewRenderOrig = nullptr;
 ViewRenderFn g_appRenderOrig = nullptr;
 EntitySubmitFn g_entitySubmitOrig = nullptr;
 NodeSubmitFn g_nodeSubmitOrig = nullptr;
+BuiltinFieldFn g_builtinFieldOrig = nullptr;
+movement::RoutingPolicy g_headingPolicy;
+movement::Owner g_headingCameraOwner;
+uint64_t g_headingRouted = 0, g_headingRefused = 0;
 entity::Cache g_entityPoses;
 entity::OwnerList g_entityOwners;
 entity::ReadScope g_entitySampleReads, g_entityRenderReads;
@@ -289,6 +299,8 @@ void PublishOrbitTelemetry()
     next.pitchDegrees = g_orbit.pitch * 57.29577951308232f;
     next.renderGuardFailures = g_orbitRenderGuardFailures;
     next.renderGuardMask = g_orbitRenderGuardMask;
+    next.headingRouted = g_headingRouted;
+    next.headingRefused = g_headingRefused;
     OrbitState previous = OrbitState::Waiting;
     uint64_t transitions = 0;
     {
@@ -325,6 +337,7 @@ void LoadOrbitTuning()
 
 void ReleaseOrbitCapture()
 {
+    g_headingPolicy.Invalidate();
     if (g_mouseCaptureOwned && !g_externalCameraOwned.load()) input::SetCapture(false);
     g_mouseCaptureOwned = false;
 }
@@ -377,9 +390,26 @@ void SampleOrbitCamera()
     if (changed) { g_orbit.OwnerChanged(); ReleaseOrbitCapture(); g_lastCameraTraceCounter = 0; }
     g_orbitPlayer = player; g_orbitClass = identity.pClass; g_orbitHandle = identity.selfHandle;
     g_orbitCamera = camera.addr; g_orbitView = view;
+    // Resolve the script Camera strat, NOT the separate render Camera object.
+    // Full class/live-list checks stay on the completed-tick sample, never on
+    // the shared field getter's many unrelated VM reads.
+    uintptr_t owner = 0;
     if (!g_orbit.Sample(game::TickCount(), double(counter) / g_counterFrequency,
-        {position[0], position[1] + 1.3f, position[2]}, camera.world, camera.fov, false))
+        {position[0], position[1] + 1.3f, position[2]}, camera.world, camera.fov, false)) {
         ReleaseOrbitCapture();
+    } else if (g_mouseLookEnabled && SafeRead(game::A(kNativeCameraOwner), owner) && owner) {
+        // A fully identified owner can be reused under unchanged class/handle
+        // generation. Do not add a live-list walk to every 60-Hz sample.
+        if (g_headingCameraOwner.addr != owner ||
+            !movement::LiveOwner(g_headingCameraOwner, game::A(game::off::StratMgrObject), SafeReadBytes)) {
+            g_headingCameraOwner = {};
+            game::StratIdentity ownerIdentity;
+            char ownerName[game::kClassNameCapacity]{};
+            if (game::ReadStratIdentity(owner, ownerIdentity) &&
+                game::ReadClassName(ownerIdentity.pClass, ownerName, SafeReadBytes) && !strcmp(ownerName, "Camera"))
+                g_headingCameraOwner = {owner, ownerIdentity.pClass, ownerIdentity.selfHandle};
+        }
+    } else g_headingCameraOwner = {};
     PublishOrbitTelemetry();
 }
 
@@ -476,9 +506,63 @@ void ApplyRenderMouseLook()
     // camera+0x80/+0xC0 keep CPU culling coherent for this frame only.
     if (!game::SetCameraWorld(adjusted) || !SafeWriteBytes(view + 0x20, pose, sizeof(pose))) {
         RestoreRenderCamera(); g_orbit.Suspend(OrbitState::Unavailable); ReleaseOrbitCapture();
-    } else g_cameraBackup.MarkInstalled(adjusted, pose);
+    } else {
+        g_cameraBackup.MarkInstalled(adjusted, pose);
+        g_headingPolicy.Rendered({{g_orbitPlayer, g_orbitClass, g_orbitHandle}, g_headingCameraOwner,
+            camera, view, game::TickCount(), now, g_orbit.yaw});
+    }
     PublishOrbitTelemetry();
 }
+
+bool WriteHeadingScratch(uintptr_t address, const void* value, size_t bytes)
+{
+    if (!address || !value || bytes != sizeof(float)) return false;
+    // The original getter has just written this verified VM register. Never
+    // change page protection or use SafeWrite's executable-memory fallback.
+    __try { memcpy((void*)address, value, bytes); return true; }
+    __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+}
+
+bool NativeOrbitStillPlayable(void* self)
+{
+    float world[16]{}, position[3]{}, fov = 0;
+    const auto& visible = g_headingPolicy.Visible();
+    if (!SafeReadBytes(visible.camera + game::off::CamMat, world, sizeof(world)) ||
+        !SafeReadBytes(uintptr_t(self) + game::off::StratPos, position, sizeof(position)) ||
+        !SafeRead(visible.camera + game::off::CamFov, fov)) return false;
+    // Observe a newly changed native shot in the getter too, before the next
+    // completed-tick publication. A copy cannot advance the real orbit state.
+    OrbitPolicy probe = g_orbit;
+    const int64_t counter = CameraCounter();
+    return counter && probe.Sample(game::TickCount() + 1, double(counter) / g_counterFrequency,
+        {position[0], position[1] + 1.3f, position[2]}, world, fov, false);
+}
+
+uint32_t __fastcall BuiltinFieldScoped(void* self, void*, void* output, void* other,
+    uint32_t field, uintptr_t caller, uintptr_t nextInstruction)
+{
+    // Preserve native behavior/return value for EVERY field and caller, including
+    // this one. Only its single scratch result may be compensated afterwards.
+    const uint32_t result = g_builtinFieldOrig ? g_builtinFieldOrig(self, output, other, field) : 0;
+    if (field != 0x6A || caller != game::A(kBuiltinFieldReturn) || uintptr_t(self) != g_orbitPlayer ||
+        other != self || !g_headingPolicy.Eligible()) return result;
+    const bool focused = input::Window() && GetForegroundWindow() == input::Window();
+    if (!g_active.load() || !g_mouseLookEnabled || g_orbit.state != OrbitState::Following ||
+        !g_orbit.initialized || game::PlayerTracker::Get().Addr() != g_orbitPlayer ||
+        !focused || input::OverlayOpen() || input::KeyDown(VK_F9) ||
+        input::KeyDown(VK_CONTROL) || g_externalCameraOwned.load() || input::NativeMovementKeysOwned() ||
+        g_cameraRestoreFailed || !NativeOrbitStillPlayable(self)) {
+        g_headingPolicy.Invalidate(); ++g_headingRefused; return result;
+    }
+    movement::Context context{true, g_headingPolicy.Visible(), game::A(game::off::StratMgrObject),
+        game::A(kNativeCameraOwner), game::A(game::off::pCamera), game::A(game::off::pView), game::A(kBuiltinFieldReturn)};
+    const movement::Call call{uintptr_t(self), uintptr_t(other), uintptr_t(output), caller, nextInstruction, field};
+    if (movement::Route(context, call, SafeReadBytes, WriteHeadingScratch)) ++g_headingRouted;
+    else { ++g_headingRefused; g_headingPolicy.Invalidate(); }
+    return result;
+}
+
+ETH_HEADING_THUNK(BuiltinFieldDetour, BuiltinFieldScoped)
 
 float CurrentRenderFraction()
 {
@@ -730,6 +814,14 @@ bool InstallHooks()
     uint8_t current[12]{};
     const uint8_t primaryCall[] = {0xE8,0xD0,0xBB,0,0}; // 0x43E22B -> 0x449E00
     const uint8_t primaryTail[] = {0xE9,0x61,0x54,0xFF,0xFF}; // 0x449E2A -> 0x43F290
+    const uint8_t fieldEntry[] = {0x55,0x8B,0xEC,0x83,0xE4,0xF0,0x83,0xEC,0x48};
+    const uint8_t fieldCall[] = {0xE8,0x96,0xC3,0xFF,0xFF}; // selector 0x10, thiscall ret 0xC
+    if (!SafeReadBytes(game::A(kBuiltinFieldGetter), current, sizeof(fieldEntry)) ||
+        memcmp(current, fieldEntry, sizeof(fieldEntry)) ||
+        !SafeReadBytes(game::A(kBuiltinFieldReturn - 5), current, sizeof(fieldCall)) ||
+        memcmp(current, fieldCall, sizeof(fieldCall))) {
+        ETH_ERROR("EthhhPatch refused heading hook: built-in field contract changed"); return false;
+    }
     if (!SafeReadBytes(game::A(kPrimaryViewReturn - 5), current, sizeof(primaryCall)) ||
         memcmp(current, primaryCall, sizeof(primaryCall)) ||
         !SafeReadBytes(game::A(0x449E2A), current, sizeof(primaryTail)) ||
@@ -748,7 +840,8 @@ bool InstallHooks()
         {kViewRender,(void*)&ViewRenderDetour,(void**)&g_viewRenderOrig},
         {kAppRender,(void*)&AppRenderDetour,(void**)&g_appRenderOrig},
         {kEntitySubmit,(void*)&EntitySubmitDetour,(void**)&g_entitySubmitOrig},
-        {kNodeSubmit,(void*)&NodeSubmitDetour,(void**)&g_nodeSubmitOrig}};
+        {kNodeSubmit,(void*)&NodeSubmitDetour,(void**)&g_nodeSubmitOrig},
+        {kBuiltinFieldGetter,(void*)&BuiltinFieldDetour,(void**)&g_builtinFieldOrig}};
     size_t created = 0;
     bool enabled = true;
     for (const auto& hook : hooks) {
@@ -770,7 +863,7 @@ bool InstallHooks()
         return false;
     }
     g_hooksReady.store(true);
-    ETH_INFO("EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/entity poses); render split inactive");
+    ETH_INFO("EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/heading/entity poses); render split inactive");
     return true;
 }
 
@@ -779,13 +872,15 @@ void UninstallHooks()
     if (!g_hooksReady.exchange(false)) return;
     DeactivateRenderSplit();
     void* targets[] = { (void*)game::A(kSphereCull), (void*)game::A(kHudPulse), (void*)game::A(kMovieDraw),
-        (void*)game::A(kViewRender), (void*)game::A(kAppRender), (void*)game::A(kEntitySubmit), (void*)game::A(kNodeSubmit) };
+        (void*)game::A(kViewRender), (void*)game::A(kAppRender), (void*)game::A(kEntitySubmit), (void*)game::A(kNodeSubmit),
+        (void*)game::A(kBuiltinFieldGetter) };
     for (void* target : targets) {
         MH_DisableHook(target);
         MH_RemoveHook(target);
     }
     g_sphereCullOrig = nullptr; g_hudPulseOrig = nullptr; g_movieDrawOrig = nullptr; g_viewRenderOrig=nullptr; g_appRenderOrig=nullptr;
     g_entitySubmitOrig = nullptr; g_nodeSubmitOrig = nullptr;
+    g_builtinFieldOrig = nullptr;
     ETH_INFO("EthhhPatch compatibility hooks removed");
 }
 
@@ -801,6 +896,7 @@ bool ActivateRenderSplit(float aspect, unsigned width, unsigned height, int targ
     g_nextPresentCounter = 0;
     g_pulseClock = {};
     g_orbit.Reset(); g_cameraRestoreFailed = false; g_lastCameraTraceCounter = 0;
+    g_headingPolicy.Reset(); g_headingCameraOwner = {}; g_headingRouted = g_headingRefused = 0;
     LoadOrbitTuning();
     g_entityPoses.Reset();
     g_orbitRenderGuardFailures = g_orbitRenderGuardMask = 0;
@@ -830,6 +926,7 @@ void DeactivateRenderSplit()
     RestoreRenderCamera(); ReleaseOrbitCapture();
     g_mouseLookEnabled = false;
     g_orbit.Reset(); g_orbitPlayer = g_orbitClass = g_orbitCamera = g_orbitView = 0; g_orbitHandle = 0;
+    g_headingPolicy.Reset(); g_headingCameraOwner = {};
     g_pulseClock = {};
     g_entityPoses.Reset(); g_submittedPose = nullptr;
     { std::lock_guard<std::mutex> lock(g_entityTelemetryMutex); g_entityTelemetry = {}; }
@@ -849,6 +946,26 @@ void OnTickCompleted()
     SampleOrbitCamera();
     SampleEntityPoses();
 }
+
+void BeginNativeMovementTick()
+{
+    if (!g_active.load(std::memory_order_relaxed)) { g_headingPolicy.Invalidate(); return; }
+    const int64_t counter = CameraCounter();
+    movement::Gates gates;
+    gates.active = g_mouseLookEnabled;
+    gates.following = g_orbit.initialized && g_orbit.state == OrbitState::Following;
+    gates.focused = input::Window() && GetForegroundWindow() == input::Window();
+    gates.overlay = input::OverlayOpen() || input::KeyDown(VK_F9);
+    gates.externalCamera = g_externalCameraOwned.load();
+    gates.leasedKeys = input::NativeMovementKeysOwned();
+    gates.movie = !counter || counter < g_movieUntilCounter.load();
+    gates.restoreFailed = g_cameraRestoreFailed || g_cameraBackup.pending || g_lensBackup.pending;
+    gates.control = input::KeyDown(VK_CONTROL);
+    gates.timeStep = game::TimeStep();
+    g_headingPolicy.Begin(game::TickCount(), counter ? double(counter) / g_counterFrequency : 0, gates);
+}
+
+void EndNativeMovementTick() { g_headingPolicy.End(); }
 
 void BeforeGamePresent()
 {

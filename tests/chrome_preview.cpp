@@ -153,7 +153,10 @@ int main(int argc, char** argv)
             bool found=false;
             for(ImGuiWindow* w : ImGui::GetCurrentContext()->Windows) {
                 if(w->Active && strstr(w->Name,"/##patch_")) {
-                    found=true; Check(w->ScrollMax.x<1,"EthhhPatch page clipped horizontally");
+                    found=true;
+                    if (w->ScrollMax.x>=1) fprintf(stderr,"patch overflow: %s, size %.1f, content %.1f, inner %.1f, scroll x %.1f\n",
+                        w->Name,w->Size.x,w->ContentSize.x,w->InnerRect.GetWidth(),w->ScrollMax.x);
+                    Check(w->ScrollMax.x<1,"EthhhPatch page clipped horizontally");
                 }
             }
             Check(found,"real EthhhPatch page rendered");

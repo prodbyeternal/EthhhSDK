@@ -1,0 +1,197 @@
+{
+  "profile": "Release Win32",
+  "status": "historical 19:22 tested staged snapshot; newer staged/installed files later observed outside this continuation; live acceptance pending",
+  "created_at": "2026-11-11T19:22:29.459445+01:00",
+  "report": "verification-camera-relative-movement-2026-11-11.md",
+  "install_authorized": false,
+  "requires_fresh_manual_closure_confirmation": true,
+  "no_game_process_control": true,
+  "game_processes_inspected": false,
+  "historical_snapshot": true,
+  "source_hash_scope": "Recorded 19:22 tested snapshot; subsequent documentation correction is not represented by the historical docs/ethhhpatch.md hash.",
+  "deployment_scope": "Matching core, managed host and HalfLifeMovement assembly after fresh manual closure confirmation; back up changed targets; preserve settings/manifests/logs and unchanged dinput8.dll proxy; never install.ps1 -Force.",
+  "tests": {
+    "build_and_complete_suite_exit_code": 0,
+    "preview_suite_exit_code": 0,
+    "camera_relative_heading_and_production_thunk_assertions": 150929,
+    "mouse_attack_assertions": 1004,
+    "primary_render_and_lens_assertions": 1418,
+    "camera_policy_assertions": 14208,
+    "native_wasd_lease_assertions": 41876,
+    "entity_policy_assertions": 130991,
+    "static_evidence_tests": 32,
+    "hotpath_guard_tests": 21,
+    "required_exports": 219,
+    "pinvoke_bindings": 217,
+    "final_preview_cases": 25,
+    "additional_camera_bottom_previews": 3,
+    "native_instruction_anchors": 235,
+    "native_bounded_slices": 73,
+    "native_explicit_edges": 57,
+    "decoded_Ninja_heading_sites": 1,
+    "all_passed": true,
+    "live_gameplay_accepted": false
+  },
+  "staged_artifacts": [
+    {
+      "relative": "EthhhSDK.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\EthhhSDK.dll",
+      "install_target": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK.dll",
+      "bytes": 1312256,
+      "sha256": "06bcdbae20c42be82df3df869709b75d07c6e056c5a858306024f6e6aa27ca21",
+      "last_write_time": "2026-11-11T19:13:53.319313+01:00",
+      "changed_since_installed": true
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\EthhhSDK.Managed.dll",
+      "install_target": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "c04b7982ac6ebc12221440572e95f265c4d1b09bd4891ac4329ca13035d241ae",
+      "last_write_time": "2026-11-11T19:14:00.712962+01:00",
+      "changed_since_installed": true
+    },
+    {
+      "relative": "mods/HalfLifeMovement/Mod.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\mods\\HalfLifeMovement\\Mod.dll",
+      "install_target": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 42496,
+      "sha256": "e36e7424a2b36ffd40628b6f459bd0f40843f72b186b7661064d3d23937920d0",
+      "last_write_time": "2026-11-11T19:14:06.952127+01:00",
+      "changed_since_installed": true
+    },
+    {
+      "relative": "dinput8.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\build\\dist\\dinput8.dll",
+      "install_target": "C:\\Users\\Administrator\\Desktop\\ininja\\dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "last_write_time": "2026-11-11T01:03:11.624671+01:00",
+      "changed_since_installed": false,
+      "replace_on_deployment": false
+    }
+  ],
+  "installed_artifacts_observed": [
+    {
+      "relative": "EthhhSDK.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK.dll",
+      "bytes": 1306112,
+      "sha256": "a9e36d339653a06f206479f8fc215e9e42f9e9c1a7e0d33283eaca390ab21027",
+      "last_write_time": "2026-11-11T17:23:02.609259+01:00"
+    },
+    {
+      "relative": "EthhhSDK.Managed.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\EthhhSDK.Managed.dll",
+      "bytes": 58880,
+      "sha256": "6e55d11c727b121df48090ff7b924a4518b16083f149ae374ba93911db52c189",
+      "last_write_time": "2026-11-11T17:17:53.546863+01:00"
+    },
+    {
+      "relative": "mods/HalfLifeMovement/Mod.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\EthhhSDK\\mods\\HalfLifeMovement\\Mod.dll",
+      "bytes": 42496,
+      "sha256": "7be362784dc5b19e5dfc43da6202a5b8f86c87ac75fd384bc7a0643e6d63467b",
+      "last_write_time": "2026-11-11T17:17:58.409725+01:00"
+    },
+    {
+      "relative": "dinput8.dll",
+      "path": "C:\\Users\\Administrator\\Desktop\\ininja\\dinput8.dll",
+      "bytes": 90624,
+      "sha256": "b20f48212c610edacddd1b36c96e428f333741db28b10deb0d0df76b098cbf57",
+      "last_write_time": "2026-11-11T01:03:11.624671+01:00"
+    }
+  ],
+  "source_hashes": {
+    "src/core/camera_relative_heading.h": "8790c5045b99e7dd4e5b324cb372a1b6024edcf874a1f37ed780bf7967ba95b4",
+    "src/core/camera_relative_heading_thunk.h": "a2b1f8852daf9d199cab97930716250b3c0565d65c1d2dde01e76a4b4fce423f",
+    "src/core/ethhhpatch_runtime.cpp": "58da6c27b1cbbe89aa9385e0e54b6021bb1674edbae5fba97aacaad828303a16",
+    "src/core/ethhhpatch_runtime.h": "f6d0c28e9242a47a17a1bbd7286d995e0845cb6be69cad27e27fc660bae31379",
+    "src/core/hooks.cpp": "e66596737ab5c2e4bf5ca9dd2021bbbcefd82cabae7249c581db1270b3608b0a",
+    "src/core/input.cpp": "c58b8a991137d475625b36b800932496c04ab8d87291eeca4795e6e98a989aaf",
+    "src/core/input.h": "7c6e8feeda764d956617fb7f5827c6c1a33e6c01901fdfcf2cb3e835d0f887d2",
+    "src/core/ui_pages.cpp": "96f6f41a84250020777c64cc936d4659742aa42258ee7e24a2d67f2e2de4b87b",
+    "src/core/game.cpp": "7fc7802f74ddd9ff56b916942ed8486b39e1d6c5a290eadd10ba923adce2347a",
+    "mods/HalfLifeMovement/src/HalfLifeMovementMod.cs": "e5cdd1045a56a62536e971a50b393f485e69afd0db6f27abf79bc10110ee090e",
+    "tests/CameraRelativeHeadingTests.cpp": "f174a0f2e65a096a27db0f492f441163135d5c05d98a79ef82837364ed87fcd0",
+    "tests/chrome_preview.cpp": "5c23b1315604961dc8b681b003f220f2ff8f0208e3a92071012c40b179c0b7d2",
+    "tools/inspect-ethhhpatch.py": "b4aa2be104a0cf8038095e261aec5d0cd88f041ad88ee584c64f6d2a4aa4e3f8",
+    "tools/inspect-camera-relative-movement.py": "3309e6fbc8af020c6dee7961014ec9201beb2bdbbab1c4c0be1d7d990d76cd93",
+    "docs/ethhhpatch.md": "040c15143239e0a1c5f82bd122bee45f2777c1f7902f0b40a3054f203271f454"
+  },
+  "evidence_files": [
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-release-20261111.log",
+      "sha256": "06d8e2e75b589a3753646fbe54a552764bfb1856dbf3a25f59fe2006ce129d67"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-suite-20261111.log",
+      "sha256": "6886da271343508e807e59a0bb22f5604baaaaaf907631e4b4ff2a60af047d0b"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-ui-20261111-final.log",
+      "sha256": "fee5a2bfd5cc554c9214287602bf57f65d42a6d4607ed39c33ce11466c595b4f"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-native-evidence-20261111-final.json",
+      "sha256": "ed05ae9e8c37b624aac62a1bf85f7c614fc8df3236840952cee0398fca49442b"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-ASL-evidence-20261111-final.json",
+      "sha256": "2573d358d0acf62a2ca1ec874f4f4862fc8c89b4f7b656952c69c0649cba0677"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-preservation-20261111-final.json",
+      "sha256": "d905440a13eedeae18e5424924d064c4adfa79188ce8b32faaa2cebb063aa4d8"
+    }
+  ],
+  "preview_directory": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-ui-20261111-final",
+  "preservation": {
+    "compared": 67,
+    "unchanged": 61,
+    "retained_differences": [
+      "EthhhSDK.dll",
+      "EthhhSDK/config/EthhhSDK.ini",
+      "EthhhSDK/docs/ethhhpatch.md",
+      "EthhhSDK/EthhhSDK.Managed.dll",
+      "EthhhSDK/mods/HalfLifeMovement/Mod.dll",
+      "EthhhSDK/tests/chrome_preview.cpp"
+    ]
+  },
+  "later_observation": {
+    "status": "Preserved newer files; origin/authorization unknown; no installation by this continuation; clarification required before further deployment.",
+    "preservation_evidence": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\opencode\\ethhh-camera-relative-later-observation-20261111.json",
+    "staged_and_installed_match": true,
+    "complete_suite_rerun_for_newer_binaries": false,
+    "recorded_implementation_test_tool_source_hashes_unchanged": 14,
+    "read_only_new_core_export_check": "PASS 219 required exports / 217 P/Invoke bindings",
+    "new_backup_observed": "_backup/20261111-192502",
+    "matching_newer_binaries": [
+      {
+        "relative": "EthhhSDK.dll",
+        "bytes": 1312256,
+        "sha256": "1756d8bc57255382b5d1c55a9bcdb705c5d598e7c1eb2d92f84c13959993a2f5",
+        "last_write_time": "2026-11-11T19:24:41.843104+01:00"
+      },
+      {
+        "relative": "EthhhSDK.Managed.dll",
+        "bytes": 58880,
+        "sha256": "5f078e8115c71ba7d3299381f4bb9f6e3c90bd4186a0f3a5afe55eb1d61103ab",
+        "last_write_time": "2026-11-11T19:24:49.154315+01:00"
+      },
+      {
+        "relative": "mods/HalfLifeMovement/Mod.dll",
+        "bytes": 42496,
+        "sha256": "8c88294fb97f5ca179f7f955faa14bafc9fdd171952ae914d6994a1616057668",
+        "last_write_time": "2026-11-11T19:24:54.402577+01:00"
+      }
+    ],
+    "retained_user_tuning": {
+      "path": "config/EthhhSDK.ini",
+      "sha256": "f584e2b7452fd70546f732e2da9687bdccff6b925020a1bc6f613bf19ad53e8c",
+      "last_write_time": "2026-11-11T19:26:45.224550+01:00",
+      "font_scale": 1.1,
+      "watermark_pos": 1
+    }
+  },
+  "limitations": "Offline verification only. Camera-relative direction, recovered engine FPS, cutscenes, attack naming/held hover, FOV, death and traversal/HL handoff remain live-unaccepted. No verified native death/cutscene/rail/chain/traversal flag exists. Newer externally changed binaries are not covered by the historical full-suite binary snapshot. Final Valve agreement/attribution packaging is pending."
+}

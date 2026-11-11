@@ -77,8 +77,9 @@ void __fastcall TickDetour(void* self, void* /*edx*/, int tickIndex)
     input::PumpKeys();
     input::PumpCapture();
     input::BeginNativeTick();
+    patch::runtime::BeginNativeMovementTick();
     __try { if (g_tickOrig) g_tickOrig(self, tickIndex); }
-    __finally { input::EndNativeTick(); }
+    __finally { patch::runtime::EndNativeMovementTick(); input::EndNativeTick(); }
 
     patch::OnTick(game::TimeStep());
 

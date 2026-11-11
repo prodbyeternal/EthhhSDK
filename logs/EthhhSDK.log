@@ -4012,3 +4012,282 @@
 16:47:33.511 [INF] [halflife_movement] activated (movement=1 camera=1)
 16:48:41.073 [INF] [halflife_movement] deactivated
 16:48:51.610 [INF] [halflife_movement] activated (movement=1 camera=1)
+===== EthhhSDK 0.1.0  session 2026-11-11 17:25:04 =====
+17:25:04.110 [INF] ==========================================================
+17:25:04.110 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+17:25:04.110 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+17:25:04.110 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+17:25:04.110 [INF] launcher: opening pre-game mod manager
+17:25:04.164 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+17:25:04.185 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+17:25:07.695 [INF] launcher: start requested
+17:25:07.719 [INF] MinHook initialized
+17:25:07.744 [INF] Fn_Tick hooked at 0043E0A0
+17:25:07.746 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+17:25:07.746 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+17:25:07.774 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+17:25:07.841 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+17:25:07.842 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+17:25:07.842 [INF] clr: managed callbacks set (tick=04960776 gui=0496079E overlay=049607C6)
+17:25:07.842 [INF] managed: 1 mod(s) initialised, callbacks registered
+17:25:07.842 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+17:25:07.842 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+17:25:07.842 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+17:25:07.842 [INF] watcher: waiting for game window / D3D9 device
+17:25:08.282 [INF] raw mouse registered
+17:25:08.282 [INF] window hook installed (hwnd=000E09EA)
+17:25:08.325 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=0280AA00)
+17:25:08.325 [INF] watcher: all hooks installed
+17:25:08.489 [INF] Native keyboard bridge installed at 004427A0 (mouse attacks / opt-in one-tick HL WASD lease)
+17:25:08.508 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+17:25:08.508 [INF] overlay: ImGui backends ready (hwnd=000E09EA device=0280AA00 scale 1.00)
+17:25:15.449 [INF] player: exact Ninja 051F3C78 class 0E431FC0 handle 00000007
+17:25:17.764 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:25:17.766 [INF] overlay: opened
+17:25:18.564 [INF] overlay: game resumed (time scale 1.00)
+17:25:18.564 [INF] overlay: closed
+17:25:21.803 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:25:21.803 [INF] overlay: opened
+17:25:21.872 [INF] player: exact Ninja 051EDD88 class 0E431FC0 handle 0000006C
+17:25:29.136 [INF] overlay: game resumed (time scale 1.00)
+17:25:29.136 [INF] overlay: closed
+17:25:30.444 [INF] overlay: game paused (time scale 2.55, camera frozen)
+17:25:30.444 [INF] overlay: opened
+17:25:34.874 [INF] overlay: game resumed (time scale 2.55)
+17:25:34.875 [INF] overlay: closed
+17:25:40.072 [INF] overlay: game paused (time scale 3.00, camera frozen)
+17:25:40.072 [INF] overlay: opened
+17:25:42.903 [INF] overlay: game resumed (time scale 1.00)
+17:25:42.903 [INF] overlay: closed
+17:25:59.142 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:25:59.142 [INF] overlay: opened
+17:26:22.765 [INF] overlay: game resumed (time scale 1.00)
+17:26:22.765 [INF] overlay: closed
+17:26:25.802 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:26:25.803 [INF] overlay: opened
+17:26:29.895 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:26:29.918 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/entity poses); render split inactive
+17:26:30.293 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+17:26:33.910 [INF] overlay: game resumed (time scale 1.00)
+17:26:33.910 [INF] overlay: closed
+17:26:33.912 [INF] EthhhPatch render interpolation active (60-Hz simulation, 0.1163 alpha)
+17:26:47.219 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:26:47.219 [INF] overlay: opened
+17:26:57.092 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:26:58.850 [INF] overlay: game resumed (time scale 1.00)
+17:26:58.850 [INF] overlay: closed
+17:26:58.861 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:27:00.041 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:27:00.041 [INF] overlay: opened
+17:27:00.041 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:27:01.998 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:27:01.999 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:27:03.342 [INF] overlay: game resumed (time scale 1.00)
+17:27:03.342 [INF] overlay: closed
+17:27:03.342 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:27:29.101 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:27:29.101 [INF] overlay: opened
+17:27:29.102 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:27:36.938 [INF] overlay: game resumed (time scale 1.00)
+17:27:36.938 [INF] overlay: closed
+17:27:36.939 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:27:42.977 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:27:42.977 [INF] overlay: opened
+17:27:42.987 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:27:50.495 [INF] overlay: game resumed (time scale 1.00)
+17:27:50.495 [INF] overlay: closed
+17:27:50.496 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:27:53.200 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:27:53.200 [INF] overlay: opened
+17:27:53.201 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:27:57.595 [INF] player: manual selection 051EDD88 (class 0E431FC0) pos 28.50 1.33 37.50
+17:27:59.035 [INF] overlay: game resumed (time scale 1.00)
+17:27:59.036 [INF] overlay: closed
+17:27:59.036 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:28:00.296 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:28:00.296 [INF] overlay: opened
+17:28:00.306 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:28:01.665 [INF] overlay: game resumed (time scale 1.00)
+17:28:01.666 [INF] overlay: closed
+17:28:01.667 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:28:02.620 [INF] [halflife_movement] activated (movement=1 camera=1)
+17:28:04.099 [INF] [halflife_movement] deactivated
+17:28:04.104 [INF] EthhhPatch orbit: HL / external camera owns control -> waiting for a playable camera (native 5.96 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 2 transitions coalesced)
+17:28:04.537 [INF] [halflife_movement] activated (movement=1 camera=1)
+17:28:22.862 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:28:22.862 [INF] overlay: opened
+17:28:23.295 [INF] overlay: game resumed (time scale 1.00)
+17:28:23.295 [INF] overlay: closed
+17:28:24.464 [INF] [halflife_movement] deactivated
+17:28:24.469 [INF] EthhhPatch orbit: HL / external camera owns control -> waiting for a playable camera (native 5.88 u, orbit 5.94 u, capture off; guard mask 00, failures 0; 2 transitions coalesced)
+17:28:57.200 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.88 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:29:02.146 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.88 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:29:03.552 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:29:03.552 [INF] overlay: opened
+17:29:03.562 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:29:07.725 [INF] overlay: game resumed (time scale 1.00)
+17:29:07.725 [INF] overlay: closed
+17:29:07.726 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:29:13.685 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:29:13.686 [INF] overlay: opened
+17:29:13.696 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.88 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:29:19.786 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:29:19.786 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:29:19.845 [INF] overlay: game resumed (time scale 1.00)
+17:29:19.845 [INF] overlay: closed
+17:29:42.207 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:29:42.207 [INF] overlay: opened
+17:29:42.209 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 3 transitions coalesced)
+17:29:43.472 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:29:43.472 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:29:43.723 [INF] overlay: game resumed (time scale 1.00)
+17:29:43.723 [INF] overlay: closed
+17:32:57.314 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:32:57.314 [INF] overlay: opened
+17:32:57.315 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.88 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 3 transitions coalesced)
+17:33:11.153 [INF] overlay: game resumed (time scale 1.00)
+17:33:11.153 [INF] overlay: closed
+17:33:11.164 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:33:22.633 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:33:22.633 [INF] overlay: opened
+17:33:22.644 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 6.17 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:33:23.153 [INF] overlay: game resumed (time scale 1.00)
+17:33:23.153 [INF] overlay: closed
+17:33:24.324 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:33:24.324 [INF] overlay: opened
+17:33:24.325 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.97 u, orbit 6.08 u, capture off; guard mask 00, failures 0; 2 transitions coalesced)
+17:33:36.487 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:33:36.487 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:33:36.605 [INF] overlay: game resumed (time scale 1.00)
+17:33:36.605 [INF] overlay: closed
+17:33:37.504 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:33:37.504 [INF] overlay: opened
+17:33:37.505 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.97 u, orbit 5.97 u, capture off; guard mask 00, failures 0; 3 transitions coalesced)
+17:33:38.158 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:33:38.325 [INF] overlay: game resumed (time scale 1.00)
+17:33:38.325 [INF] overlay: closed
+17:34:14.298 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 6.20 u, capture off; guard mask 00, failures 0; 4 transitions coalesced)
+17:34:29.336 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 6.20 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:34:33.729 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 8.60 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:34:50.749 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 8.60 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:35:22.689 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:35:22.689 [INF] overlay: opened
+17:35:22.691 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.88 u, orbit 4.10 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:35:23.933 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:35:23.933 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:35:24.059 [INF] overlay: game resumed (time scale 1.00)
+17:35:24.060 [INF] overlay: closed
+17:35:29.610 [INF] overlay: game paused (time scale 1.00, camera frozen)
+17:35:29.610 [INF] overlay: opened
+17:35:29.611 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.89 u, orbit 5.87 u, capture off; guard mask 00, failures 0; 3 transitions coalesced)
+17:35:30.694 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+17:35:30.695 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:35:31.099 [INF] overlay: game resumed (time scale 1.00)
+17:35:31.099 [INF] overlay: closed
+17:35:35.774 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 7.80 u, capture off; guard mask 00, failures 0; 3 transitions coalesced)
+17:36:48.946 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 7.80 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:36:59.666 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.87 u, orbit 4.60 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:39:59.624 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 4.60 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:40:04.848 [INF] [halflife_movement] activated (movement=1 camera=1)
+17:40:04.849 [INF] EthhhPatch orbit: mouse orbit following -> HL / external camera owns control (native 5.87 u, orbit 7.00 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+17:40:34.397 [INF] [halflife_movement] deactivated
+17:40:34.402 [INF] EthhhPatch orbit: HL / external camera owns control -> waiting for a playable camera (native 5.93 u, orbit 7.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+17:40:35.077 [INF] [halflife_movement] activated (movement=1 camera=1)
+===== EthhhSDK 0.1.0  session 2026-11-11 19:25:26 =====
+19:25:26.847 [INF] ==========================================================
+19:25:26.847 [INF] EthhhSDK v0.1.0 (build 2026-11-11) entry gate
+19:25:26.847 [INF] game directory: C:\Users\Administrator\Desktop\ininja
+19:25:26.848 [INF] mods: scanned 2 mod(s) in C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods
+19:25:26.848 [INF] launcher: opening pre-game mod manager
+19:25:26.928 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.00)
+19:25:26.958 [INF] launcher: window 1152x704 at (384,188), scale 1.00
+19:26:25.250 [INF] launcher: start requested
+19:26:25.281 [INF] MinHook initialized
+19:26:25.322 [INF] Fn_Tick hooked at 0043E0A0
+19:26:25.325 [INF] [lua] trainer: loaded (F6 teleport, F7 save, F8 restore)
+19:26:25.325 [INF] lua[trainer]: loaded C:\Users\Administrator\Desktop\ininja\EthhhSDK\mods\trainer\mod.lua
+19:26:25.343 [INF] managed: Bootstrap.Initialize, game dir C:\Users\Administrator\Desktop\ininja
+19:26:25.437 [INF] [halflife_movement] Half-Life movement loaded (F2 = enable, F3 = panic)
+19:26:25.438 [INF] managed mod loaded (HalfLifeMovement.HalfLifeMovementMod)
+19:26:25.438 [INF] clr: managed callbacks set (tick=04F80776 gui=04F8079E overlay=04F807C6)
+19:26:25.438 [INF] managed: 1 mod(s) initialised, callbacks registered
+19:26:25.438 [INF] clr: runtime started, Bootstrap.Initialize returned 0 (callbacks registered)
+19:26:25.438 [INF] mods: 2 enabled, 2 loaded (lua 1, csharp 1)
+19:26:25.438 [INF] EthhhSDK ready: 2 mod(s) enabled, 2 loaded
+19:26:25.439 [INF] watcher: waiting for game window / D3D9 device
+19:26:26.038 [INF] D3D9 hooked: EndScene/Reset/Present/SetTransform; EthhhPatch observation only (device=0087E200)
+19:26:26.148 [INF] raw mouse registered
+19:26:26.148 [INF] window hook installed (hwnd=009707FA)
+19:26:26.148 [INF] watcher: all hooks installed
+19:26:26.326 [INF] Native keyboard bridge installed at 004427A0 (mouse attacks / opt-in one-tick HL WASD lease)
+19:26:26.357 [INF] fonts loaded: C:\Windows\Fonts\segoeui.ttf (scale 1.10)
+19:26:26.357 [INF] overlay: ImGui backends ready (hwnd=009707FA device=0087E200 scale 1.10)
+19:26:33.475 [INF] player: exact Ninja 053E3C78 class 0E78AFC0 handle 00000007
+19:26:36.713 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:26:36.717 [INF] overlay: opened
+19:26:45.224 [INF] EthhhPatch: future fullscreen display plan 1920x1080 @ 100 Hz (saved); NOT applied, simulation untouched
+19:26:45.263 [INF] EthhhPatch compatibility hooks ready (culling/HUD/movie/scoped orbit/heading/entity poses); render split inactive
+19:26:45.774 [INF] EthhhPatch orbit: waiting for a playable camera -> paused / unfocused (native 0.00 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:26:45.774 [INF] EthhhPatch render split activated internally (aspect 1.777778); display application still gated
+19:26:50.153 [INF] overlay: game resumed (time scale 1.00)
+19:26:50.153 [INF] overlay: closed
+19:26:50.155 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 4.35 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:26:50.156 [INF] EthhhPatch render interpolation active (60-Hz simulation, 0.0272 alpha)
+19:26:53.614 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 4.52 u, orbit 4.35 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:26:57.720 [INF] player: exact Ninja 053DDD88 class 0E78AFC0 handle 000000D4
+19:26:57.720 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> scripted camera hold (auto-resume) (native 79.23 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:27:01.544 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:27:01.544 [INF] overlay: opened
+19:27:01.546 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> paused / unfocused (native 66.79 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:27:04.876 [INF] player: manual selection 053DDD88 (class 0E78AFC0) pos 67.11 5.09 47.69
+19:27:05.328 [INF] overlay: game resumed (time scale 1.00)
+19:27:05.328 [INF] overlay: closed
+19:27:05.329 [INF] EthhhPatch orbit: paused / unfocused -> scripted camera hold (auto-resume) (native 66.66 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:27:13.059 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> waiting for a playable camera (native 25.96 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:27:51.308 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 6.00 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:27:51.537 [WRN] player: manual strat 053DDD88 disappeared
+19:27:56.397 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> yielding to movie (native 6.00 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:27:57.538 [INF] EthhhPatch orbit: yielding to movie -> waiting for exact Ninja / camera (native 6.00 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:00.998 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:28:00.998 [INF] overlay: opened
+19:28:00.999 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> paused / unfocused (native 6.00 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:02.324 [INF] player: exact Ninja 053DA978 class 0E78AFC0 handle 00000290
+19:28:03.224 [INF] player: manual selection 053DA978 (class 0E78AFC0) pos 83.91 1.00 -21.61
+19:28:03.725 [INF] overlay: game resumed (time scale 1.00)
+19:28:03.725 [INF] overlay: closed
+19:28:03.736 [INF] EthhhPatch orbit: paused / unfocused -> scripted camera hold (auto-resume) (native 56.52 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:11.732 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> waiting for a playable camera (native 31.17 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:32.632 [INF] EthhhPatch orbit: mouse orbit following -> scripted camera hold (auto-resume) (native 20.40 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:28:36.261 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:28:36.261 [INF] overlay: opened
+19:28:36.264 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> paused / unfocused (native 2.45 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:38.031 [INF] overlay: game resumed (time scale 1.00)
+19:28:38.031 [INF] overlay: closed
+19:28:38.032 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 2.45 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:42.616 [INF] EthhhPatch orbit: mouse orbit following -> waiting for exact Ninja / camera (native 7.15 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:28:42.792 [WRN] player: manual strat 053DA978 disappeared
+19:28:43.850 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:28:43.850 [INF] overlay: opened
+19:28:43.860 [INF] EthhhPatch orbit: waiting for exact Ninja / camera -> paused / unfocused (native 7.15 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:28:45.110 [INF] player: exact Ninja 053CE888 class 0E78AFC0 handle 00000389
+19:28:46.234 [INF] player: manual selection 053CE888 (class 0E78AFC0) pos 42.65 -2.49 -20.19
+19:28:46.285 [INF] overlay: game resumed (time scale 1.00)
+19:28:46.285 [INF] overlay: closed
+19:28:46.296 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 8.13 u, orbit 6.00 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:29:06.361 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:29:06.361 [INF] overlay: opened
+19:29:06.362 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.88 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:29:13.871 [INF] overlay: game resumed (time scale 1.00)
+19:29:13.871 [INF] overlay: closed
+19:29:13.872 [INF] EthhhPatch orbit: paused / unfocused -> waiting for a playable camera (native 5.87 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:29:17.202 [INF] overlay: game paused (time scale 1.00, camera frozen)
+19:29:17.203 [INF] overlay: opened
+19:29:17.203 [INF] EthhhPatch orbit: mouse orbit following -> paused / unfocused (native 5.86 u, orbit 5.40 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:29:17.652 [INF] overlay: game resumed (time scale 1.00)
+19:29:17.652 [INF] overlay: closed
+19:30:11.165 [INF] EthhhPatch orbit: mouse orbit following -> scripted camera hold (auto-resume) (native 4.44 u, orbit 5.70 u, capture off; guard mask 00, failures 0; 2 transitions coalesced)
+19:30:12.786 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> waiting for a playable camera (native 4.83 u, orbit 5.70 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:30:26.265 [INF] EthhhPatch orbit: mouse orbit following -> scripted camera hold (auto-resume) (native 4.00 u, orbit 5.70 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)
+19:30:27.865 [INF] EthhhPatch orbit: scripted camera hold (auto-resume) -> waiting for a playable camera (native 6.71 u, orbit 5.70 u, capture off; guard mask 00, failures 0; 0 transitions coalesced)
+19:31:24.395 [INF] [halflife_movement] activated (movement=1 camera=1)
+19:31:24.407 [INF] EthhhPatch orbit: mouse orbit following -> HL / external camera owns control (native 6.00 u, orbit 5.70 u, capture off; guard mask 00, failures 0; 1 transitions coalesced)

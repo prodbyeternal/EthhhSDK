@@ -11,6 +11,9 @@
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\dist\dinput8.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_camera_relative_heading_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\interop\eth_entity_performance_tests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>

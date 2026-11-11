@@ -1,4 +1,4 @@
-# EthhhPatch — display, camera/FOV, mouse attacks and animation interpolation
+# EthhhPatch — display, camera-relative movement/FOV, mouse attacks and animation interpolation
 
 ## Current behavior
 
@@ -167,7 +167,7 @@ The active policies also:
 - disable compatibility changes if a later successful Reset no longer matches
   the verified active mode.
 
-Compatibility hooks for culling, HUD pulse, movie fit, camera and entity submissions are installed lazily
+Compatibility hooks for culling, HUD pulse, movie fit, camera, scoped movement heading and entity submissions are installed lazily
 only when an Apply transaction begins and are removed after restore/failure.
 Inactive EthhhPatch therefore adds no pass-through detour to the hot sphere-cull
 path. Projection-matrix validation is sampled once per 30 engine frames rather
@@ -235,6 +235,53 @@ retracts immediately for obstructions and eases back outward. It is not a verifi
 camera hull; it can miss geometry between directions/samples. Failed/unreadable
 queries retain the native camera instead of assuming a clear path. The full
 exact-Ninja identity/list check runs once per completed tick, not every render.
+
+### Native camera-relative movement
+
+While the active third-person mouse orbit is rendering, native movement follows
+that orbit's horizontal viewing direction. No separate setting, axis remap,
+speed change, player transform write or forced movement/attack state is used.
+With orbit off, ordinary I-Ninja camera-relative movement remains entirely native.
+
+The fingerprinted Ninja shared ASL unit reads built-in heading field `0x6A`,
+resolves Camera-owner field `0x91`, reads that strat's yaw field `0x0E`, then
+**adds** the two. `0x423720` has already normalized native controller axes,
+applied the dead zone and capped magnitude before scripts run. The heading getter
+at `0x421680` is thiscall with `(output, other strat, field)`, returning `ret 12`.
+Yaw is Camera **strat** `+0x174`, in **4096 units per turn**; it is not the separate
+render Camera object or strat `+0x178`.
+
+The new getter hook always invokes the original exactly once and retains its
+native EAX result. Only when called from selector-`0x10` return `0x4252EA` for the
+selected exact Ninja, with the verified five-word heading/camera-yaw/add/store
+sequence at native ESI, may it replace **one VM scratch float**:
+
+`native heading + last primary orbit yaw * 4096/(2*pi) - native Camera strat yaw`
+
+The script's existing addition then produces the same native directional offset
+relative to the orbit. Original axes, magnitude, action bytes, traversal script,
+animation, speed and player/camera transforms are not edited by this hook. The
+original register pool, output address, both class/handle-manager generations,
+camera target handle and render Camera/View identities are checked twice; a
+changed/unreadable token, instruction or scratch value leaves the native result.
+The scratch write uses protected copying without changing page permissions.
+
+Eligibility lasts only within an original native tick. It uses a successfully
+installed primary orbit, not a pending mouse target, and expires after four
+catch-up ticks or 0.25 seconds. F9/focus loss, pause, movie/camera holds, failed
+camera restoration, HL's camera ownership and its one-tick WASD lease invalidate
+the old heading. Resumption requires a fresh orbit render. The current native
+camera is also checked with a copy of the orbit heuristic before compensation.
+Ctrl retains native traversal priority, including a bounded 30-tick release
+grace that cannot be refreshed by ordinary motion. Camera-owner full identity
+sampling is cached under unchanged tokens; the shared field getter performs no
+live-list walk, allocation, file log or lock for unrelated VM reads.
+
+This is **offline-verified, not live-accepted**. There is still no verified native
+cutscene/death/rail/chain/traversal flag. Native scripts keep those decisions;
+Ctrl grace and scripted-camera detection are safeguards, not a complete state map.
+Manual direction, traversal, death, HL handoff and FPS acceptance are required.
+The Camera page exposes routed-heading and guarded-refusal counters.
 
 ### Normal-mode FOV
 
@@ -399,8 +446,10 @@ The runtime uses the game's original timer rather than instantiating the offline
 scheduler class. The prototype remains a deterministic oracle for 30..360-Hz
 cadence and debt policy.
 
-Earlier builds were installed and manually exercised; this performance/camera/input/FOV correction
-is **staged only, not installed or live-accepted**. Live acceptance must confirm exact 1080p/4K Reset,
+Earlier builds were installed and manually exercised; this performance/camera/movement/input/FOV correction
+was **staged only at the verified 19:22 snapshot, not live-accepted**. Later staged/installed DLL
+changes outside this continuation's commands are recorded in the dated report below; they were
+preserved, not overwritten. Live acceptance must confirm exact 1080p/4K Reset,
 100-Hz game Presents with 60 active ticks/s, edge visibility, HUD containment,
 movie fit, pause/focus/load behavior, and successful manual restore. Unsupported
 or mismatched modes are refused or rolled back rather than silently accepted.
@@ -410,6 +459,9 @@ Check FOV at 30/60/90/120 degrees with orbit on and off, including projection/cu
 at screen edges and native lens restoration after disabling the override. Check
 M1 slash, held M2 spin/hover, keyboard/gamepad coexistence, custom keys, and safe
 release-to-rearm after F9/alt-tab/respawn.
+Movement acceptance must rotate the displayed orbit through 0/90/180/270 degrees
+and check W/A/S/D and diagonals, native magnitude, attacks, death, chains/rails,
+Ctrl release grace and HL ownership handoff. Orbit off must retain native control.
 Animation acceptance must compare enabled/disabled blending at 100 render Hz
 while active simulation remains 60 Hz, with visible Ninja/enemy/attachment poses,
 pause/load/respawn, teleports and double-buffered models. UI acceptance includes
@@ -423,10 +475,10 @@ python .\tools\inspect-ethhhpatch.py --out "$env:LOCALAPPDATA\Temp\opencode\ethh
 .\tests\run-preview-tests.ps1
 ```
 
-The inspector checks 199 instruction anchors, 59 bounded disassembly slices,
-51 explicit render/lifecycle/collision/camera/entity/input edges, PE import/section mapping,
+The inspector checks 235 instruction anchors, 73 bounded disassembly slices,
+57 explicit render/lifecycle/collision/camera/entity/input/movement edges, PE import/section mapping,
 the projection/movie/entity submissions, primary/secondary View callers, native
-keyboard action/pressure paths and both Present return sites. Thirty evidence tests
+keyboard action/pressure paths and both Present return sites. Thirty-two evidence tests
 exercise those checks and the fingerprinted embedded control maps. It refuses altered executable/archive
 fingerprints, output outside the approved temporary directory, and overwrite.
 It never opens a process or modifies executable/archive bytes. Off-screen
@@ -456,6 +508,14 @@ engine rendering or prove cutscene detection/camera collision in a live level.
 buttons, safe rearming, custom bindings, flag padding and cross-action conflicts.
 `EthhhPatchLensTests.cpp` tests primary-only installation, coupled orbit/lens
 restoration, projection/culling lens math, foreign edits and failed-write cleanup.
+`CameraRelativeHeadingTests.cpp` tests rendered-yaw signs/wrapping, one-tick
+eligibility/expiry, traversal and ownership handoff, exact ASL/register-pool scope,
+generation/address/read/write refusal, unchanged non-scratch bytes and the actual
+production Win32 thunk's stack cleanup, EAX and nonvolatile-register preservation.
+The read-only `inspect-camera-relative-movement.py` additionally checks the
+fingerprinted decoded Ninja ASL sequence; decoded packages remain outside the SDK.
 
 The latest dated offline verification and staged artifact hashes are in
-[the 2026-11-11 entity performance report](verification-entity-performance-2026-11-11.md).
+[the 2026-11-11 camera-relative movement report](verification-camera-relative-movement-2026-11-11.md).
+The [earlier entity performance report](verification-entity-performance-2026-11-11.md)
+is retained as historical evidence; its hashes/counts precede the movement build.

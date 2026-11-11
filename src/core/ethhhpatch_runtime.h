@@ -14,6 +14,8 @@ bool Active();
 bool ActivateRenderSplit(float aspect, unsigned width = 0, unsigned height = 0, int targetHz = 0);
 void DeactivateRenderSplit();
 void OnTickCompleted();
+void BeginNativeMovementTick();
+void EndNativeMovementTick();
 void BeforeGamePresent();
 bool AdjustHudProjection(uintptr_t returnAddress, const D3DMATRIX* input, D3DMATRIX& output);
 
@@ -43,6 +45,7 @@ struct OrbitTelemetry {
     float nativeDistance = 0, orbitDistance = 0, yawDegrees = 0, pitchDegrees = 0;
     uint64_t transitions = 0;
     uint32_t renderGuardFailures = 0, renderGuardMask = 0;
+    uint64_t headingRouted = 0, headingRefused = 0;
 };
 OrbitTuning ReadOrbitTuning();
 void SetOrbitTuning(float sensitivity, bool invertY);

@@ -145,6 +145,20 @@ RANGES = [
     ("native_attack_pressure_dispatch_fragment", 0x442B43, 0x442B67, False),
     ("native_binding_pressure_owner_fragment", 0x442FA0, 0x442FD3, False),
     ("native_keyboard_held_pressure_fragment", 0x442FE3, 0x442FF6, False),
+    ("movement_controller_axis_poll_fragment", 0x43FF9D, 0x43FFD3, False),
+    ("movement_axis_normalization", 0x4236A0, 0x423720, True),
+    ("movement_manager_axis_heading_fragment", 0x423720, 0x42380D, False),
+    ("movement_manager_conversion_order_fragment", 0x4246F0, 0x424742, False),
+    ("movement_builtin_getter_entry_fragment", 0x421680, 0x4216A2, False),
+    ("movement_builtin_heading_case", 0x422239, 0x42224C, False),
+    ("movement_builtin_yaw_case", 0x421822, 0x42183E, False),
+    ("movement_builtin_camera_owner_case", 0x4225F6, 0x422612, False),
+    ("movement_script_camera_owner_setter", 0x416BE0, 0x416BEA, True),
+    ("movement_VM_opcode_fetch_fragment", 0x424C18, 0x424C44, False),
+    ("movement_VM_register_pool_fragment", 0x424BDE, 0x424C18, False),
+    ("movement_VM_builtin_selector_fragment", 0x4252AA, 0x4252EF, False),
+    ("movement_VM_float_add_case", 0x424D6C, 0x424D7D, False),
+    ("movement_native_angle_wrap", 0x410700, 0x410724, True),
 ]
 
 ANCHORS = {
@@ -347,6 +361,42 @@ ANCHORS = {
     0x442FE3: "0fb64604",    # keyboard scan is read as a BYTE
     0x442FE7: "8a0438",      # pressure reads DOWN, not repeated press edges
     0x442FF0: "25ff000000",  # held pressure is 0xFF
+    0x43E0DB: "b9e4ff5000",  # first native controller
+    0x43FF9D: "39afc8370000",# axes respect native suppression
+    0x43FFAD: "bb7f000000",  # neutral x is 127
+    0x43FFB4: "0fb69f38020000",
+    0x43FFBD: "885e52",      # controller +0x52
+    0x43FFC7: "0fb69739020000",
+    0x43FFD0: "885653",      # controller +0x53
+    0x4236A0: "8b4c2404",
+    0x423777: "e824ffffff",  # normalize x
+    0x423785: "2bc6",        # invert second axis before normalization
+    0x423788: "e813ffffff",
+    0x4237B6: "e8d55bfeff",  # native atan heading
+    0x4237CE: "d83df47c4c00",# radians -> 4096 units/turn
+    0x4237DE: "d99e3c180000",# manager heading +0x183C = 0x5119D8
+    0x423807: "c7010000803f",# native magnitude capped at 1
+    0x42473D: "e8deefffff",  # conversion before script VM
+    0x421680: "55",
+    0x421686: "83ec48",      # verified getter prologue stack size
+    0x421689: "8b4510",      # third stack arg is field selector
+    0x421822: "8b8674010000",# yaw is strat+0x174, not +0x178
+    0x42183B: "c20c00",      # getter case ret 12
+    0x422239: "d905d8195100",# field 0x6A returns native heading
+    0x422249: "c20c00",
+    0x4225F6: "8b15b8195100",# field 0x91 resolves script Camera owner
+    0x4225FD: "e84ee1feff",
+    0x416BE4: "a3b8195100",  # native 137 stores script Camera strat
+    0x424C41: "83c604",      # ESI already points past current ASL word
+    0x424BDE: "8b87b4010000",# strat+0x1B4 is register pool base, not player pose
+    0x424BE6: "8944240c",    # base is stack+0x10 after the following push ESI
+    0x4252BD: "25f0000000",  # distinguish built-in selector 0x10 from script variables
+    0x4252E2: "57",          # push field
+    0x4252E3: "51",          # push other strat
+    0x4252E4: "55",          # push scratch output
+    0x4252E5: "e896c3ffff",  # getter return 0x4252EA
+    0x424D72: "d80488",      # ASL opcode 0x0B adds floats
+    0x410705: "d80df87c4c00",# reciprocal 4096 angle wrap
 }
 
 # Explicit checked edges only; not a guessed whole-program call graph.
@@ -371,6 +421,8 @@ EDGES = [
     (0x44FA57, 0x43F290), (0x45094E, 0x43F290),
     (0x441E66, 0x4427A0), (0x43FEDF, 0x441E60), (0x43E0E7, 0x43FEC0),
     (0x441C0A, 0x442FA0), (0x442B56, 0x441BB0), (0x442B62, 0x441BB0),
+    (0x423777, 0x4236A0), (0x423788, 0x4236A0), (0x4237B6, 0x409390),
+    (0x42473D, 0x423720), (0x4252E5, 0x421680), (0x4225FD, 0x410750),
 ]
 
 
@@ -442,6 +494,15 @@ def evidence(data):
     pulse_step = struct.unpack_from("<f", data, constant_offset)[0]
     if data[constant_offset:constant_offset + 4].hex() != "cdcccc3d":
         raise ValueError("render-path pulse constant differs")
+    field_table = {field: struct.unpack_from("<I", data, image.offset(0x422B40+field*4, 4))[0]
+                   for field in (0x0E, 0x6A, 0x91)}
+    if field_table != {0x0E: 0x421822, 0x6A: 0x422239, 0x91: 0x4225F6}:
+        raise ValueError("movement built-in field dispatch differs")
+    if struct.unpack_from("<I", data, image.offset(0x426370+0x0B*4, 4))[0] != 0x424D6C:
+        raise ValueError("movement VM float-add dispatch differs")
+    if struct.unpack_from("<f", data, image.offset(0x4C7CF4, 4))[0] != 4096 or \
+       struct.unpack_from("<f", data, image.offset(0x4C7CF8, 4))[0] != 1/4096:
+        raise ValueError("movement native angle units differ")
     if image.import_name(0x4C720C) != "PostMessageA" or image.import_name(0x4C71F4) != "GetWindowInfo":
         raise ValueError("display lifecycle imports differ")
     movie = image.offset(0x496CB3, 3, executable=True)
@@ -530,7 +591,21 @@ def evidence(data):
                  "keyboard_pressure_owner": 0x51C470, "keyboard_suppression_offset": 0x37CC,
                  "held_pressure_read": 0x442FE7, "down_offset": 0, "press_offset": 0x100,
                  "slash_action": 9, "spin_action": 7, "windows_input_synthesis": False,
-                 "release_to_rearm": True},
+                  "release_to_rearm": True},
+             "camera_relative_movement_contract": {
+                 "controller": 0x50FFE4, "controller_axes": [0x52, 0x53], "neutral_axis": 0x7F,
+                 "axis_conversion": 0x423720, "native_heading": 0x5119D8,
+                 "getter": 0x421680, "getter_return": 0x4252EA,
+                 "calling_convention": "x86 thiscall, (output, other strat, field), ret 12",
+                 "next_ASL_instruction_register": "ESI", "field_table": field_table,
+                 "heading_field": 0x6A, "camera_owner_field": 0x91, "yaw_field": 0x0E,
+                 "script_camera_owner_global": 0x5119B8, "script_camera_yaw_offset": 0x174,
+                 "angle_units_per_turn": 4096, "ASL_add_opcode": 0x0B,
+                 "runtime_sequence_words": [0x4275106A, 0x42761091, 0x4276500E, 0x0B747576, 0x4374701F],
+                 "compensation": "native heading + displayed orbit radians * 4096/(2*pi) - script Camera yaw units",
+                 "writes": "one verified VM scratch float only; original getter result/EAX retained",
+                 "traversal_guard": "Ctrl + bounded 30-tick release grace; no native state flag is claimed",
+                 "live_gameplay_accepted": False},
             "entity_render_contract": {
                 "owner_submit": 0x44A490, "node_submit": 0x449EB0,
                 "owner_arguments": ["owner", "model instance", "world matrix"],

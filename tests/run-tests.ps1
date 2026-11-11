@@ -14,7 +14,7 @@ foreach ($file in @('EthhhSDK.dll','EthhhSDK.Managed.dll','mods\HalfLifeMovement
 }
 & $cmake -S $root -B $build -G 'Visual Studio 17 2022' -A Win32 -DETH_BUILD_TESTS=ON
 if ($LASTEXITCODE -ne 0) { throw 'Test configure failed.' }
-& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_entity_performance_tests eth_movement_input_tests eth_mouse_attack_tests eth_ethhhpatch_lens_tests eth_sha256_tests --parallel
+& $cmake --build $build --config $Configuration --target eth_test_native eth_player_learning_tests eth_strat_identity_tests eth_ethhhpatch_policy_tests eth_ethhhpatch_projection_tests eth_ethhhpatch_camera_tests eth_ethhhpatch_interpolation_tests eth_ethhhpatch_entity_tests eth_entity_performance_tests eth_movement_input_tests eth_mouse_attack_tests eth_ethhhpatch_lens_tests eth_sha256_tests eth_camera_relative_heading_tests --parallel
 if ($LASTEXITCODE -ne 0) { throw 'Native test shim build failed.' }
 Copy-Item (Join-Path $dist 'EthhhSDK.Managed.dll') $out -Force
 Copy-Item (Join-Path $dist 'mods\HalfLifeMovement\Mod.dll') $out -Force
@@ -59,6 +59,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Player learning regression failed.' }
 if ($LASTEXITCODE -ne 0) { throw 'Strat identity regression failed.' }
 & "$out\eth_movement_input_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Native movement input regression failed.' }
+& "$out\eth_camera_relative_heading_tests.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Scoped camera-relative heading/Win32 ABI regression failed.' }
 & "$out\eth_mouse_attack_tests.exe"
 if ($LASTEXITCODE -ne 0) { throw 'Mouse attack hold/edge regression failed.' }
 & "$out\eth_ethhhpatch_lens_tests.exe"

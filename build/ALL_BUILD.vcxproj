@@ -181,6 +181,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6972641C-583A-334F-8A04-98B7AA2F8EA6}</Project>
       <Name>dinput8</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_camera_relative_heading_tests.vcxproj">
+      <Project>{F785E019-4BB4-3197-BCED-211D4388AF2B}</Project>
+      <Name>eth_camera_relative_heading_tests</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\Administrator\Desktop\ininja\EthhhSDK\build\tests\eth_entity_performance_tests.vcxproj">
       <Project>{454EE8AA-6359-388C-9264-25E073B8D1C9}</Project>
       <Name>eth_entity_performance_tests</Name>

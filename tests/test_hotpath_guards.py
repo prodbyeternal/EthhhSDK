@@ -193,7 +193,7 @@ class HotPathGuards(unittest.TestCase):
         self.assertNotIn("SendInput", self.input)
         self.assertNotIn("keybd_event", self.input)
         self.assertIn("input::ResetTransient();", self.hooks)
-        self.assertIn("__finally { input::EndNativeTick(); }", self.hooks)
+        self.assertIn("__finally { patch::runtime::EndNativeMovementTick(); input::EndNativeTick(); }", self.hooks)
         sample = self.input[self.input.index("void SampleAttackOwner()"):self.input.index("void BeginNativeTick()")]
         self.assertNotIn("tracker.Valid()", sample)
         self.assertNotIn("SnapshotStrats", sample)
@@ -206,6 +206,24 @@ class HotPathGuards(unittest.TestCase):
         self.assertNotIn("g_mouseLookEnabled", fov)
         self.assertNotIn("ReadStratIdentity", fov)
         self.assertNotIn("SetCapture", fov)
+
+    def test_camera_relative_heading_is_native_tick_and_exact_vm_scoped(self):
+        body = self.runtime[self.runtime.index("uint32_t __fastcall BuiltinFieldScoped"):self.runtime.index("float CurrentRenderFraction()")]
+        for guard in ("field != 0x6A", "kBuiltinFieldReturn", "other != self", "g_headingPolicy.Eligible()",
+                      "input::OverlayOpen()", "input::KeyDown(VK_CONTROL)", "NativeMovementKeysOwned()",
+                      "g_externalCameraOwned.load()", "NativeOrbitStillPlayable(self)"):
+            self.assertIn(guard, body)
+        for expensive in ("SnapshotStrats", "ReadStratIdentity", "VirtualProtect", "ETH_INFO", "lock_guard", "SafeWrite"):
+            self.assertNotIn(expensive, body)
+        self.assertLess(body.index("g_builtinFieldOrig(self, output, other, field)"),body.index("movement::Route"))
+        tick=self.hooks[self.hooks.index("void __fastcall TickDetour"):self.hooks.index("void __fastcall KeyboardTickDetour")]
+        self.assertLess(tick.index("input::BeginNativeTick()"),tick.index("BeginNativeMovementTick()"))
+        self.assertLess(tick.index("BeginNativeMovementTick()"),tick.index("g_tickOrig(self"))
+        self.assertLess(tick.index("EndNativeMovementTick()"),tick.index("input::EndNativeTick()"))
+        self.assertIn("g_headingPolicy.Rendered",self.runtime)
+        scratch=self.runtime[self.runtime.index("bool WriteHeadingScratch"):self.runtime.index("bool NativeOrbitStillPlayable")]
+        self.assertNotIn("VirtualProtect(",scratch)
+        self.assertIn("__except (EXCEPTION_EXECUTE_HANDLER)",scratch)
 
 
 if __name__ == "__main__":

@@ -75,11 +75,15 @@ void Metric(const char* label, const char* value, const char* hint)
     ImGui::PushID(label);
     ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(24,32,34,255));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(14*ui::Scale(),12*ui::Scale()));
-    ImGui::BeginChild("##metric", ImVec2(0,89*ui::Scale()), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysUseWindowPadding,
+    ImGui::SetNextWindowSizeConstraints(ImVec2(0,89*ui::Scale()),ImVec2(FLT_MAX,FLT_MAX));
+    ImGui::BeginChild("##metric", ImVec2(0,0), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysUseWindowPadding |
+        ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
         ImGuiWindowFlags_NoScrollbar);
+    ImGui::PushTextWrapPos(0);
     ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s", label); ImGui::PopFont();
     ImGui::PushFont(FontBold()); ImGui::TextUnformatted(value); ImGui::PopFont();
     ImGui::PushFont(FontSmall()); ImGui::TextDisabled("%s",hint); ImGui::PopFont();
+    ImGui::PopTextWrapPos();
     ImGui::EndChild(); ImGui::PopStyleVar(); ImGui::PopStyleColor(); ImGui::PopID();
 }
 
@@ -889,6 +893,8 @@ void DrawPatchPage(bool launcherMode)
             if (ui::GhostButton("Resume orbit after scripted camera")) patch::runtime::ResumeOrbit();
             ImGui::EndDisabled();
             ImGui::TextWrapped("Camera cuts and off-target pans yield to native framing with a temporary hold. Stable gameplay reacquires automatically. HL and movies always have priority.");
+            ImGui::TextWrapped("Native movement follows the displayed orbit (%llu routed headings, %llu guarded refusals). Ctrl keeps native traversal priority, including a 30-tick release grace. No speed or player-pose override.",
+                (unsigned long long)orbit.headingRouted,(unsigned long long)orbit.headingRefused);
             ImGui::TextWrapped("Cutscene detection is heuristic, not a verified game flag. If a cinematic looks wrong, disable orbit. Live cutscene validation is still required.");
             ImGui::EndTabItem();
         }

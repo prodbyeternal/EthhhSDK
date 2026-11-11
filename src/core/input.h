@@ -20,6 +20,7 @@ void ResetTransient();
 bool LeaseMovementKeys(uintptr_t player, bool enabled);
 void BeginNativeTick();
 void EndNativeTick();
+bool NativeMovementKeysOwned(); // current one-tick HL lease, game-tick thread only
 void FilterNativeKeyboard(void* keyboard);
 
 bool KeyDown(int vk);

@@ -17,7 +17,7 @@ set_target_properties(eth_player_learning_tests PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/interop"
   RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/interop")
 
-foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection ethhhpatch_camera ethhhpatch_interpolation ethhhpatch_entity ethhhpatch_lens movement_input mouse_attack)
+foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection ethhhpatch_camera ethhhpatch_interpolation ethhhpatch_entity ethhhpatch_lens movement_input mouse_attack camera_relative_heading)
   if(name STREQUAL "strat_identity")
     set(test_source StratIdentityTests.cpp)
   elseif(name STREQUAL "ethhhpatch_policy")
@@ -34,6 +34,8 @@ foreach(name IN ITEMS strat_identity ethhhpatch_policy ethhhpatch_projection eth
     set(test_source MouseAttackTests.cpp)
   elseif(name STREQUAL "ethhhpatch_lens")
     set(test_source EthhhPatchLensTests.cpp)
+  elseif(name STREQUAL "camera_relative_heading")
+    set(test_source CameraRelativeHeadingTests.cpp)
   else()
     set(test_source EthhhPatchCameraTests.cpp)
   endif()

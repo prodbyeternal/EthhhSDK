@@ -265,6 +265,8 @@ void BeginNativeTick()
 
 void EndNativeTick() { g_nativeMovementKeysOwned = false; g_nativeTickActive = false; }
 
+bool NativeMovementKeysOwned() { return g_nativeMovementKeysOwned; }
+
 namespace {
 void FailMovementFilter(const char* reason, const void* keyboard)
 {
