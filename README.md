@@ -129,6 +129,3 @@ with [consolidated attribution](THIRD-PARTY-NOTICES.md) under `build/dist`.
 Valve applicability and the supplied sounds' rights still need review; this is
 not distribution approval. No affiliation with Namco, Argonaut, Valve or Apple.
 
-Generated builds, installation backups, local settings/logs and legacy DLL
-copies are ignored and no longer tracked. They remain on disk; historical Git
-blobs were not purged. See [repository cleanup](docs/repository-cleanup.md).
